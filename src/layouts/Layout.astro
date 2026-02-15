@@ -10,7 +10,7 @@ const { title } = Astro.props;
 <html lang="en" class="scroll-smooth">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
@@ -18,7 +18,7 @@ const { title } = Astro.props;
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
 	</head>
-	<body class="bg-[#fafafa] text-gray-900 font-['Inter',sans-serif] selection:bg-purple-100 selection:text-purple-900">
+	<body class="bg-[#fafafa] text-gray-900 font-['Inter',sans-serif] selection:bg-purple-100 selection:text-purple-900 overflow-x-hidden">
 		<nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
 			<div class="max-w-6xl mx-auto px-6 h-20 flex justify-between items-center">
 				<a href="/" class="group flex items-center gap-3">
@@ -27,7 +27,7 @@ const { title } = Astro.props;
 					</div>
 					<span class="text-xl font-black tracking-tighter group-hover:text-purple-600 transition-colors">Seeking Gradient</span>
 				</a>
-				<div class="flex items-center gap-8 text-sm font-bold uppercase tracking-widest text-gray-500">
+				<div class="hidden md:flex items-center gap-8 text-sm font-bold uppercase tracking-widest text-gray-500">
 					<a href="/#blog" class="hover:text-gray-900 transition-colors">Journey</a>
 					<a href="/#blog" class="hover:text-gray-900 transition-colors">Thoughts</a>
 					<a href="mailto:seekinggradient@gmail.com" class="px-5 py-2.5 bg-gray-900 text-white rounded-full hover:bg-gray-800 transition-all hover:shadow-lg shadow-gray-200">Contact</a>
