@@ -16,7 +16,7 @@ const { Content } = await render(post);
 
 <Layout title={post.data.title}>
 	<article class="prose prose-lg prose-slate max-w-none prose-headings:tracking-tight prose-headings:font-black prose-a:text-purple-600 hover:prose-a:text-purple-500 transition-colors">
-		<header class="mb-12 not-prose">
+		<header class="mb-8 not-prose">
 			<div class="flex items-center gap-3 mb-6">
 				<time class="text-xs font-bold text-orange-500 tracking-wider">
 					{post.data.pubDate.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }).toUpperCase()}
@@ -24,7 +24,7 @@ const { Content } = await render(post);
 				<span class="w-1 h-1 rounded-full bg-gray-300"></span>
 				<span class="text-xs font-bold text-gray-400 uppercase tracking-widest">{post.data.author}</span>
 			</div>
-			<h1 class="text-5xl font-black tracking-tighter leading-tight mb-8">
+			<h1 class="text-5xl font-black tracking-tighter leading-tight mb-4">
 				{post.data.title}
 			</h1>
 			<p class="text-2xl text-gray-500 font-light leading-relaxed">
@@ -35,9 +35,9 @@ const { Content } = await render(post);
 	</article>
 </Layout>
 
-<style>
+<style is:global>
 	article.prose p {
-		margin-bottom: 4em !important;
+		margin-bottom: 1.5em !important;
 		line-height: 1.8 !important;
 	}
 </style>
