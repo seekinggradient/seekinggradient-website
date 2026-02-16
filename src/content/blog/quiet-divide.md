@@ -5,7 +5,7 @@ description: "How access to high-tier AI models is creating a new economic and c
 author: "Seeking Gradient"
 ---
 
-When I started building OpenClaw, I assumed the hard problems would be engineering ones: making the gateway resilient, wiring channels together, and teaching agents to call tools instead of hallucinating them. I didn’t expect to stumble across a social and economic question that felt bigger than the code — a slow, dawning realization that access to the best models isn’t just convenience; it can become a direct vector of advantage.
+When I was setting up OpenClaw, I assumed the hard problems would be engineering ones: making the gateway resilient, wiring channels together, and teaching agents to call tools instead of hallucinating them. I didn’t expect to stumble across a social and economic question that felt bigger than the code — a slow, dawning realization that access to the best models isn’t just convenience; it can become a direct vector of advantage.
 
 The realization arrived plainly. On my first day running OpenClaw with an Anthropic Opus 4.6 key, I watched credits drain fast — about $50 in twelve hours. I was experimenting, letting the agent riff, iterating long prompts and longer sessions. The results were striking: sharper synthesis, fewer prompt gymnastics, and a tone of thoughtfulness that made delegation feel safe. But the price was real. When the balance dropped I switched to Claude Haiku and then to Gemini Flash as my default: cheaper and usable, but not the same. Now I save Opus for the handful of tasks where the difference matters. I ration tokens the way someone budgets a scarce resource.
 
