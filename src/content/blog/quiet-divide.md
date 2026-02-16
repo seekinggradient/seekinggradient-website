@@ -1,5 +1,5 @@
 ---
-title: "The Quiet Divide I Found While Building an Agent"
+title: "The AI Wealth Divide"
 pubDate: 2026-02-14
 description: "How access to high-tier AI models is creating a new economic and cognitive gradient."
 author: "Seeking Gradient"
