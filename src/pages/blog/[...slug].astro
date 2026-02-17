@@ -14,7 +14,12 @@ const { post } = Astro.props;
 const { Content } = await render(post);
 ---
 
-<Layout title={post.data.title}>
+<Layout
+	title={post.data.title}
+	description={post.data.description}
+	canonicalPath={`/blog/${post.slug}`}
+	ogType="article"
+>
 	<article class="prose prose-lg prose-slate max-w-none prose-headings:tracking-tight prose-headings:font-black prose-a:text-purple-600 hover:prose-a:text-purple-500 transition-colors">
 		<header class="mb-8 not-prose">
 			<div class="flex items-center gap-3 mb-6">
@@ -39,6 +44,22 @@ const { Content } = await render(post);
 	article.prose p {
 		margin-bottom: 1.5em !important;
 		line-height: 1.8 !important;
+		font-size: 1.05rem !important;
+	}
+
+	article.prose ul,
+	article.prose ol {
+		margin: 1rem 0 1.5rem 0 !important;
+		padding-left: 1.5rem !important;
+	}
+
+	article.prose ul { list-style: disc !important; }
+	article.prose ol { list-style: decimal !important; }
+
+	article.prose li {
+		display: list-item !important;
+		margin: 0.35rem 0 !important;
+		line-height: 1.7 !important;
 	}
 	
 	article.prose h2 {
