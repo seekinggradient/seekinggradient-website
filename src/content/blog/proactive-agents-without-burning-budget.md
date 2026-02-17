@@ -135,6 +135,38 @@ And the cost-control delegation rule:
 - Start with low-tier sub-agents unless risk/complexity clearly requires higher tier.
 ```
 
+From `HEARTBEAT.md` (operational maintenance loop):
+
+```md
+### 5) Token usage + cost hygiene
+- Check session usage with `session_status`.
+- If usage is rising, propose 1–3 concrete reductions.
+
+### 6) Proactive reflection + execution
+- Reflect on current priorities.
+- Select 1–2 projects to execute autonomously today.
+- Update `~/Desktop/TODO.md`.
+```
+
+From `MEMORY.md` (structure only, no personal content):
+
+```md
+## Semantic Memory (Facts)
+## Procedural Memory (Workflows)
+## Episodic Memory (Key Events)
+## Associative/Conditional Memory (Preferences)
+```
+
+From `TODO.md` (execution surface):
+
+```md
+## Active Now
+- [ ] Project / objective
+- [ ] Current status
+- [ ] Next concrete action
+- [ ] Blocker (if any)
+```
+
 These are small lines, but they remove ambiguity. That ambiguity removal is what drives reliable proactivity and lower operating cost.
 
 ## Actionable checklist
