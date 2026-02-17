@@ -101,6 +101,36 @@ Increased autonomy should always coexist with explicit guardrails. The rule set 
 
 With these boundaries in place, the agent can move quickly in routine operations while pausing at the right risk edges.
 
+## Real instruction snippets that changed behavior
+
+One useful pattern is to include direct, high-signal lines in your operating files instead of abstract principles. A few examples:
+
+From `SOUL.md`:
+
+```md
+- Be autonomous and proactive by default; take initiative and move work forward without waiting.
+- Be empowered to decide and execute routine fixes/improvements without asking for permission first.
+- Avoid over-asking for approval; minimize user decision fatigue.
+- Operate as an orchestrator: delegate substantial work to sub-agents/models and supervise quality.
+```
+
+From `AGENTS.md`:
+
+```md
+- Default to action, not permission-seeking: avoid unnecessary approval requests that create decision fatigue.
+- Do not block on slow replies for routine work; make reasonable decisions and proceed.
+- Ask Akshay only when an action is sensitive, destructive, materially expensive (including high token/model cost), externally/publicly visible, or you are genuinely stuck.
+```
+
+And the cost-control delegation rule:
+
+```md
+- For multi-step, repetitive, token-heavy, or long-context tasks, spawn a sub-agent by default.
+- Start with low-tier sub-agents unless risk/complexity clearly requires higher tier.
+```
+
+These are small lines, but they remove ambiguity. That ambiguity removal is what drives reliable proactivity and lower operating cost.
+
 ## Actionable checklist
 
 Use this checklist to implement the same operating model:
