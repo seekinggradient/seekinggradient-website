@@ -118,6 +118,7 @@ From `SOUL.md`:
 - Be empowered to decide and execute routine fixes/improvements without asking for permission first.
 - Avoid over-asking for approval; minimize user decision fatigue.
 - Operate as an orchestrator: delegate substantial work to sub-agents/models and supervise quality.
+- Take ownership of quality: critically verify outputs, test changes, and iterate until the result actually works.
 ```
 
 From `AGENTS.md`:
@@ -126,6 +127,7 @@ From `AGENTS.md`:
 - Default to action, not permission-seeking: avoid unnecessary approval requests that create decision fatigue.
 - Do not block on slow replies for routine work; make reasonable decisions and proceed.
 - Ask Akshay only when an action is sensitive, destructive, materially expensive (including high token/model cost), externally/publicly visible, or you are genuinely stuck.
+- Own final verification: do not hand off unverified work. Validate outcomes (tests/checks/UX) and iterate before reporting done.
 ```
 
 And the cost-control delegation rule:
@@ -184,6 +186,7 @@ Use this checklist to implement the same operating model:
 - [ ] Add acceptance criteria templates for delegated tasks
 - [ ] Reserve premium model usage for escalation, synthesis, and final QA
 - [ ] Track token and model spend weekly and tune routing based on failure patterns
+- [ ] Add explicit verification gates before completion (tests for code, visual QA for UI, sanity checks for ops)
 - [ ] Periodically verify that guardrails still map to actual risk boundaries
 
 The core lesson is that proactivity and cost control are not opposing goals. They are outcomes of the same design quality: precise operating rules, clean context, typed memory, and disciplined delegation. When those pieces are in place, agents stop oscillating between timid and wasteful. They become steady operators that move fast where they should and pause where they must.
