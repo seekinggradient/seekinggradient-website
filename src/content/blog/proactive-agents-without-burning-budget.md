@@ -24,6 +24,7 @@ A key detail is scope framing. “Be autonomous” is too broad. Better instruct
 A frequent failure mode in agent systems is decision fatigue caused by unnecessary approvals. If an agent asks for permission for every minor branch, the user becomes a routing layer instead of a decision-maker.
 
 The improvement was to narrow approval requirements to actions that are truly sensitive:
+
 - destructive actions
 - public or externally visible actions
 - materially expensive actions, including high model/token spend
@@ -38,6 +39,7 @@ This change increases throughput while preserving safety. The important distinct
 Proactivity degrades quickly when plans are not externalized. Agents may hold intent in ephemeral context, but without a maintained task surface they drift, repeat work, or miss follow-through.
 
 A practical fix is to treat TODO maintenance as a first-class behavior. The agent should continuously maintain a concise task board with:
+
 - active priorities
 - current status
 - next action per item
@@ -52,6 +54,7 @@ Heartbeat loops can easily become noise if they devolve into mechanical “still
 Using `HEARTBEAT.md` as a structured maintenance and reflection ritual has been high leverage. Instead of passive status, the agent checks system hygiene, revisits priorities, and identifies one or two proactive improvements worth executing. This turns periodic pings into intentional steering moments.
 
 The payoff is compound:
+
 - less silent drift
 - earlier detection of stale plans
 - a regular trigger for proactive project discovery
@@ -70,6 +73,7 @@ In short, curation is optimization. Every line in default context should justify
 ## MEMORY.md split by memory type for cleaner retrieval
 
 Long-term memory became more reliable after splitting `MEMORY.md` into four explicit categories:
+
 - **Semantic memory** for stable facts and preferences
 - **Procedural memory** for repeatable workflows and rules
 - **Episodic memory** for notable past events and outcomes
@@ -84,6 +88,7 @@ For agent behavior, this matters because memory is policy in practice. If memory
 This is one of the highest-impact cost optimizations: route first-pass work to cheaper model tiers via sub-agents, then escalate selectively.
 
 A robust pattern is:
+
 1. assign drafting, data gathering, classification, and repetitive transforms to low-cost sub-agents
 2. define clear acceptance criteria and output format up front
 3. review results in a supervisory agent
@@ -94,6 +99,7 @@ This is not about blindly using the cheapest model. It is about matching model c
 ## Guardrails that keep autonomy safe
 
 Increased autonomy should always coexist with explicit guardrails. The rule set that performed best was simple and enforceable:
+
 - require approval before sensitive actions
 - require approval before destructive actions
 - require approval before public or external actions
