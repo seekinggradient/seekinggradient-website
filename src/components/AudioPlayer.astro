@@ -1,0 +1,131 @@
+---
+/**
+ * AudioPlayer.astro
+ * Renders a minimal play/pause audio player for a blog post.
+ * If `audioSrc` is undefined or the file doesn't exist at build time,
+ * the component renders nothing (graceful fallback).
+ */
+interface Props {
+  audioSrc: string | undefined;
+  title?: string;
+}
+
+const { audioSrc, title = 'Listen to this post' } = Astro.props;
+
+// If no audio path provided, render nothing
+if (!audioSrc) return;
+---
+
+<div class="not-prose my-6" id="tts-player">
+  <div class="flex items-center gap-4 rounded-xl border border-slate-200 bg-slate-50 px-5 py-4">
+    <!-- Play / Pause button -->
+    <button
+      id="tts-toggle"
+      aria-label="Play audio"
+      class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-purple-600 text-white shadow transition hover:bg-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2"
+    >
+      <!-- Play icon -->
+      <svg id="icon-play" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
+        <path d="M8 5v14l11-7z"/>
+      </svg>
+      <!-- Pause icon (hidden by default) -->
+      <svg id="icon-pause" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5 hidden">
+        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+      </svg>
+    </button>
+
+    <!-- Label + progress -->
+    <div class="flex min-w-0 flex-1 flex-col gap-1">
+      <span class="text-xs font-semibold uppercase tracking-widest text-purple-600">Listen</span>
+      <!-- Progress bar -->
+      <div class="relative h-1.5 w-full overflow-hidden rounded-full bg-slate-200">
+        <div id="tts-progress" class="h-full rounded-full bg-purple-500 transition-all" style="width: 0%"></div>
+      </div>
+      <!-- Time display -->
+      <div class="flex justify-between text-xs text-slate-400">
+        <span id="tts-current">0:00</span>
+        <span id="tts-duration">—</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Hidden <audio> element -->
+<audio id="tts-audio" src={audioSrc} preload="metadata"></audio>
+
+<script>
+  (function () {
+    const audio = document.getElementById('tts-audio') as HTMLAudioElement | null;
+    const toggle = document.getElementById('tts-toggle') as HTMLButtonElement | null;
+    const iconPlay = document.getElementById('icon-play') as SVGElement | null;
+    const iconPause = document.getElementById('icon-pause') as SVGElement | null;
+    const progress = document.getElementById('tts-progress') as HTMLDivElement | null;
+    const currentEl = document.getElementById('tts-current') as HTMLSpanElement | null;
+    const durationEl = document.getElementById('tts-duration') as HTMLSpanElement | null;
+    const player = document.getElementById('tts-player') as HTMLDivElement | null;
+
+    if (!audio || !toggle) return;
+
+    function fmt(secs: number): string {
+      const m = Math.floor(secs / 60);
+      const s = Math.floor(secs % 60);
+      return `${m}:${s.toString().padStart(2, '0')}`;
+    }
+
+    // Show duration once metadata is loaded
+    audio.addEventListener('loadedmetadata', () => {
+      if (durationEl && isFinite(audio.duration)) {
+        durationEl.textContent = fmt(audio.duration);
+      }
+    });
+
+    // If audio fails to load (file missing), hide the player
+    audio.addEventListener('error', () => {
+      if (player) player.style.display = 'none';
+    });
+
+    // Update progress bar and current time
+    audio.addEventListener('timeupdate', () => {
+      if (!audio.duration) return;
+      const pct = (audio.currentTime / audio.duration) * 100;
+      if (progress) progress.style.width = `${pct}%`;
+      if (currentEl) currentEl.textContent = fmt(audio.currentTime);
+    });
+
+    // Reset on end
+    audio.addEventListener('ended', () => {
+      if (iconPlay) iconPlay.classList.remove('hidden');
+      if (iconPause) iconPause.classList.add('hidden');
+      toggle.setAttribute('aria-label', 'Play audio');
+      if (progress) progress.style.width = '0%';
+      if (currentEl) currentEl.textContent = '0:00';
+      audio.currentTime = 0;
+    });
+
+    // Play/pause toggle
+    toggle.addEventListener('click', () => {
+      if (audio.paused) {
+        audio.play();
+        if (iconPlay) iconPlay.classList.add('hidden');
+        if (iconPause) iconPause.classList.remove('hidden');
+        toggle.setAttribute('aria-label', 'Pause audio');
+      } else {
+        audio.pause();
+        if (iconPlay) iconPlay.classList.remove('hidden');
+        if (iconPause) iconPause.classList.add('hidden');
+        toggle.setAttribute('aria-label', 'Play audio');
+      }
+    });
+
+    // Seek by clicking on the progress track
+    const track = progress?.parentElement;
+    if (track) {
+      track.addEventListener('click', (e: MouseEvent) => {
+        const rect = track.getBoundingClientRect();
+        const ratio = (e.clientX - rect.left) / rect.width;
+        audio.currentTime = ratio * audio.duration;
+      });
+      track.style.cursor = 'pointer';
+    }
+  })();
+</script>

@@ -6,8 +6,11 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
+    "prebuild": "npm run tts:blog",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "tts:blog": "node scripts/generate-tts.mjs",
+    "tts:blog:force": "node scripts/generate-tts.mjs --force"
   },
   "keywords": [],
   "author": "",
