@@ -1,0 +1,102 @@
+{
+  "generatedAt": "2026-02-18T21:54:15.387Z",
+  "stocks": [
+    {
+      "symbol": "GOOGL",
+      "price": null,
+      "change": null,
+      "currency": "USD",
+      "placeholder": true
+    },
+    {
+      "symbol": "AAPL",
+      "price": null,
+      "change": null,
+      "currency": "USD",
+      "placeholder": true
+    }
+  ],
+  "crypto": [
+    {
+      "symbol": "BTC",
+      "name": "Bitcoin",
+      "price": 66326,
+      "change24h": -1.876907980012711
+    },
+    {
+      "symbol": "ETH",
+      "name": "Ethereum",
+      "price": 1940.37,
+      "change24h": -2.821475790696061
+    }
+  ],
+  "hackerNews": [
+    {
+      "title": "Cosmologically Unique IDs",
+      "url": "https://jasonfantl.com/posts/Universal-Unique-IDs/",
+      "points": 195,
+      "comments": 52,
+      "hnUrl": "https://news.ycombinator.com/item?id=47064490"
+    },
+    {
+      "title": "Tailscale Peer Relays is now generally available",
+      "url": "https://tailscale.com/blog/peer-relays-ga",
+      "points": 263,
+      "comments": 116,
+      "hnUrl": "https://news.ycombinator.com/item?id=47063005"
+    },
+    {
+      "title": "Zero-day CSS: CVE-2026-2441 exists in the wild",
+      "url": "https://chromereleases.googleblog.com/2026/02/stable-channel-update-for-desktop_13.html",
+      "points": 196,
+      "comments": 102,
+      "hnUrl": "https://news.ycombinator.com/item?id=47062748"
+    },
+    {
+      "title": "DNS-Persist-01: A New Model for DNS-Based Challenge Validation",
+      "url": "https://letsencrypt.org/2026/02/18/dns-persist-01.html",
+      "points": 121,
+      "comments": 51,
+      "hnUrl": "https://news.ycombinator.com/item?id=47064047"
+    },
+    {
+      "title": "R3forth: A concatenative language derived from ColorForth",
+      "url": "https://github.com/phreda4/r3/blob/main/doc/r3forth_tutorial.md",
+      "points": 31,
+      "comments": 2,
+      "hnUrl": "https://news.ycombinator.com/item?id=47065179"
+    }
+  ],
+  "techCrunch": [
+    {
+      "title": "Is your startup’s check engine light on? Google Cloud’s VP explains what to do",
+      "url": "https://techcrunch.com/video/is-your-startups-check-engine-light-on-google-clouds-vp-explains-what-to-do/",
+      "pubDate": "Wed, 18 Feb 2026 21:07:00 +0000",
+      "creator": "Theresa Loconsolo"
+    },
+    {
+      "title": "A startup called Germ becomes the first private messenger that launches directly from Bluesky’s app",
+      "url": "https://techcrunch.com/2026/02/18/a-startup-called-germ-becomes-the-first-private-messenger-that-launches-directly-from-blueskys-app/",
+      "pubDate": "Wed, 18 Feb 2026 20:57:48 +0000",
+      "creator": "Sarah Perez"
+    },
+    {
+      "title": "SeatGeek and Spotify team up to offer concert ticket sales inside the music platform",
+      "url": "https://techcrunch.com/2026/02/18/seatgeek-and-spotify-team-up-to-offer-concert-ticket-sales-inside-the-music-platform/",
+      "pubDate": "Wed, 18 Feb 2026 19:07:40 +0000",
+      "creator": "Lauren Forristal"
+    },
+    {
+      "title": "Amazon halts Blue Jay robotics project after less than 6 months",
+      "url": "https://techcrunch.com/2026/02/18/amazon-halts-blue-jay-robotics-project-after-less-than-six-months/",
+      "pubDate": "Wed, 18 Feb 2026 18:27:10 +0000",
+      "creator": "Rebecca Szkutak"
+    },
+    {
+      "title": "Mastodon, a decentralized alternative to X, plans to target creators with new features",
+      "url": "https://techcrunch.com/2026/02/18/mastodon-a-decentralized-alternative-to-x-plans-to-target-creators-with-new-features/",
+      "pubDate": "Wed, 18 Feb 2026 18:19:14 +0000",
+      "creator": "Sarah Perez"
+    }
+  ]
+}

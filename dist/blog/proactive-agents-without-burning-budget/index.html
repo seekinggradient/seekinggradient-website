@@ -1,0 +1,173 @@
+<!DOCTYPE html><html lang="en" class="scroll-smooth"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v5.17.2"><title>The Files That Train Your Agent</title><meta name="description" content="How editing OpenClaw's default workspace markdown files changed agent behavior, improved proactivity, and cut token waste in real usage."><link rel="canonical" href="https://seekinggradient.com/blog/proactive-agents-without-burning-budget"><meta property="og:type" content="article"><meta property="og:site_name" content="Seeking Gradient"><meta property="og:title" content="The Files That Train Your Agent"><meta property="og:description" content="How editing OpenClaw's default workspace markdown files changed agent behavior, improved proactivity, and cut token waste in real usage."><meta property="og:url" content="https://seekinggradient.com/blog/proactive-agents-without-burning-budget"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="The Files That Train Your Agent"><meta name="twitter:description" content="How editing OpenClaw's default workspace markdown files changed agent behavior, improved proactivity, and cut token waste in real usage."><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet"><link rel="stylesheet" href="/_astro/_slug_.jPvNys2R.css">
+<link rel="stylesheet" href="/_astro/_slug_.BDulFwiB.css"></head> <body class="bg-[#fafafa] text-gray-900 font-['Inter',sans-serif] selection:bg-purple-100 selection:text-purple-900 overflow-x-hidden leading-normal"> <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100"> <div class="max-w-6xl mx-auto px-6 h-20 flex justify-between items-center"> <a href="/" class="group flex items-center gap-3"> <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 to-orange-500 flex items-center justify-center text-white font-black text-xl shadow-lg shadow-purple-100 group-hover:scale-105 transition-transform">
+S
+</div> <span class="text-xl font-black tracking-tighter group-hover:text-purple-600 transition-colors">Seeking Gradient</span> </a> <div class="hidden md:flex items-center gap-8 text-sm font-bold uppercase tracking-widest text-gray-500"> <a href="/#blog" class="hover:text-gray-900 transition-colors">Journey</a> <a href="/#blog" class="hover:text-gray-900 transition-colors">Thoughts</a> <a href="/tracking" class="hover:text-gray-900 transition-colors">Tracking</a> <a href="mailto:seekinggradient@gmail.com" class="px-5 py-2.5 bg-gray-900 text-white rounded-full hover:bg-gray-800 transition-all hover:shadow-lg shadow-gray-200">Contact</a> </div> </div> </nav> <main class="max-w-6xl mx-auto px-6 py-20">  <div class="max-w-3xl mx-auto"> <article class="prose prose-lg prose-slate max-w-none prose-headings:tracking-tight prose-headings:font-black prose-a:text-purple-600 hover:prose-a:text-purple-500 transition-colors"> <header class="mb-12 not-prose"> <div class="flex items-center gap-3 mb-6"> <time class="text-xs font-bold text-orange-500 tracking-wider"> FEB 16, 2026 </time> <span class="w-1 h-1 rounded-full bg-gray-300"></span> <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">Seeking Gradient</span> </div> <h1 class="text-4xl md:text-5xl font-black tracking-tighter leading-[1.1] mb-5"> The Files That Train Your Agent </h1> <p class="text-xl md:text-2xl text-gray-500 font-light leading-relaxed"> How editing OpenClaw&#39;s default workspace markdown files changed agent behavior, improved proactivity, and cut token waste in real usage. </p> <div class="not-prose my-6" id="tts-player"> <div class="flex items-center gap-4 rounded-xl border border-slate-200 bg-slate-50 px-5 py-4"> <!-- Play / Pause button --> <button id="tts-toggle" aria-label="Play audio" class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-purple-600 text-white shadow transition hover:bg-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2"> <!-- Play icon --> <svg id="icon-play" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5"> <path d="M8 5v14l11-7z"></path> </svg> <!-- Pause icon (hidden by default) --> <svg id="icon-pause" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5 hidden"> <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path> </svg> </button> <!-- Label + progress --> <div class="flex min-w-0 flex-1 flex-col gap-1"> <span class="text-xs font-semibold uppercase tracking-widest text-purple-600">Listen</span> <!-- Progress bar --> <div class="relative h-1.5 w-full overflow-hidden rounded-full bg-slate-200"> <div id="tts-progress" class="h-full rounded-full bg-purple-500 transition-all" style="width: 0%"></div> </div> <!-- Time display --> <div class="flex justify-between text-xs text-slate-400"> <span id="tts-current">0:00</span> <span id="tts-duration">—</span> </div> </div> </div> </div> <!-- Hidden <audio> element --> <audio id="tts-audio" src="/audio/blog/proactive-agents-without-burning-budget.mp3" preload="metadata"></audio> <script type="module">(function(){const t=document.getElementById("tts-audio"),d=document.getElementById("tts-toggle"),e=document.getElementById("icon-play"),n=document.getElementById("icon-pause"),s=document.getElementById("tts-progress"),o=document.getElementById("tts-current"),l=document.getElementById("tts-duration"),u=document.getElementById("tts-player");if(!t||!d)return;function m(i){const r=Math.floor(i/60),c=Math.floor(i%60);return`${r}:${c.toString().padStart(2,"0")}`}t.addEventListener("loadedmetadata",()=>{l&&isFinite(t.duration)&&(l.textContent=m(t.duration))}),t.addEventListener("error",()=>{u&&(u.style.display="none")}),t.addEventListener("timeupdate",()=>{if(!t.duration)return;const i=t.currentTime/t.duration*100;s&&(s.style.width=`${i}%`),o&&(o.textContent=m(t.currentTime))}),t.addEventListener("ended",()=>{e&&e.classList.remove("hidden"),n&&n.classList.add("hidden"),d.setAttribute("aria-label","Play audio"),s&&(s.style.width="0%"),o&&(o.textContent="0:00"),t.currentTime=0}),d.addEventListener("click",()=>{t.paused?(t.play(),e&&e.classList.add("hidden"),n&&n.classList.remove("hidden"),d.setAttribute("aria-label","Pause audio")):(t.pause(),e&&e.classList.remove("hidden"),n&&n.classList.add("hidden"),d.setAttribute("aria-label","Play audio"))});const a=s?.parentElement;a&&(a.addEventListener("click",i=>{const r=a.getBoundingClientRect(),c=(i.clientX-r.left)/r.width;t.currentTime=c*t.duration}),a.style.cursor="pointer")})();</script> </header> <p>When you first set up OpenClaw, it drops a handful of markdown files into your workspace. They look like documentation. They’re actually more like the agent’s constitution, memory, and operating manual rolled into one. After a few weeks of running a personal autonomous agent on a Raspberry Pi, I’ve found that editing these files is one of the highest-leverage things you can do — both for shaping behavior and for controlling token costs. This is a practical walkthrough of what those files are, what’s in them today, and what I’ve learned from iterating on them in production.</p>
+<hr>
+<h2 id="the-default-workspace-files-and-why-they-matter">The Default Workspace Files and Why They Matter</h2>
+<p>Out of the box, OpenClaw creates six core files at the workspace root:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>File</th><th>Role</th></tr></thead><tbody><tr><td><code>IDENTITY.md</code></td><td>Minimal stub — name, vibe, avatar. Starting point only.</td></tr><tr><td><code>SOUL.md</code></td><td>Personality, core principles, communication style, safety rules.</td></tr><tr><td><code>AGENTS.md</code></td><td>Operating manual: session bootstrap order, memory rules, autonomy policy, model tiers, coding workflow.</td></tr><tr><td><code>USER.md</code></td><td>Stable facts about the user: name, timezone, permissions, preferences.</td></tr><tr><td><code>HEARTBEAT.md</code></td><td>Recurring maintenance checklist executed every ~30 minutes.</td></tr><tr><td><code>MEMORY.md</code></td><td>Long-term durable memory, structured into four sections.</td></tr></tbody></table>
+<p>There’s also <code>TOOLS.md</code>, a lightweight environment-specific notes file (browser profile, messaging delivery method, data-retrieval preferences).</p>
+<p>These aren’t read once at setup and forgotten. The agent re-reads them at the start of every session, and <code>HEARTBEAT.md</code> is executed on a timed cadence. This means every edit you make propagates to all future agent behavior immediately — no retraining, no deployment, no restart. The files are the model’s instruction set.</p>
+<hr>
+<h2 id="what-the-files-actually-contain">What the Files Actually Contain</h2>
+<p>Here’s a quick tour of the current state of each file, with relevant excerpts.</p>
+<h3 id="soulmd--the-agents-character">SOUL.md — The Agent’s Character</h3>
+<p><code>SOUL.md</code> defines identity, principles, and communication style. The current version has evolved considerably from the default stub. Some key lines:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="markdown"><code><span class="line"><span style="color:#79B8FF;font-weight:bold">## Core Principles</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> Be autonomous and proactive by default; take initiative and move work forward without waiting.</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> Be empowered to decide and execute routine fixes/improvements without asking for permission first.</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> Avoid over-asking for approval; minimize user decision fatigue.</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> Operate as an orchestrator: delegate substantial work to sub-agents/models and supervise quality.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF;font-weight:bold">## Communication Style</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> Do not pause or abandon in-progress work just because Akshay asks a side question;</span></span>
+<span class="line"><span style="color:#E1E4E8">  answer briefly and continue unless explicitly told to stop.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF;font-weight:bold">## Safety</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> Be cost-conscious with model and token usage; prefer efficient approaches unless</span></span>
+<span class="line"><span style="color:#E1E4E8">  higher quality/risk requires escalation.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF;font-weight:bold">## Model Preference</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> Default: Gemini 3 Flash.</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> Use Sonnet for complex architecture/debugging/security/reviews.</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> Use Opus or Gemini 3 Pro only with explicit approval.</span></span></code></pre>
+<p>The model preference section alone has measurable cost impact. Making Flash the explicit default — and requiring explicit approval for Opus — prevents quiet tier creep.</p>
+<h3 id="agentsmd--the-operating-manual">AGENTS.md — The Operating Manual</h3>
+<p>This is the densest file. It specifies the session bootstrap order (which files to read and in what sequence), the memory system rules, the autonomy preference, model tiers, delegation/escalation logic, the coding workflow, and the heartbeat protocol.</p>
+<p>A few sections worth highlighting:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="markdown"><code><span class="line"><span style="color:#79B8FF;font-weight:bold">## Autonomy Preference (Akshay)</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> Default to action, not permission-seeking: avoid unnecessary approval requests</span></span>
+<span class="line"><span style="color:#E1E4E8">  that create decision fatigue.</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> Do not block on slow replies for routine work; make reasonable decisions and proceed.</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> Do not pause or abandon an in-progress task because Akshay asks a side question;</span></span>
+<span class="line"><span style="color:#E1E4E8">  answer it briefly, then continue execution unless Akshay explicitly says to stop/pause.</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> Ask Akshay only when an action is sensitive, destructive, materially expensive</span></span>
+<span class="line"><span style="color:#E1E4E8">  (including high token/model cost), externally/publicly visible, or you are genuinely stuck.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF;font-weight:bold">## Model &#x26; Subagent Orchestration Policy</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> Start with low-tier sub-agents unless risk/complexity clearly requires higher tier.</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> For writing/spec work, prefer: low-tier draft → manager/high-tier review →</span></span>
+<span class="line"><span style="color:#E1E4E8">  low-tier revision → manager sign-off.</span></span></code></pre>
+<p>The supervision loop rules are particularly useful: they define acceptance criteria, require verification before delivery, and mandate that partial/broken work not be handed back.</p>
+<h3 id="usermd--stable-user-facts">USER.md — Stable User Facts</h3>
+<p>This file is intentionally minimal and stable. It holds timezone, preferred name, development environment defaults, and permissions granted. The rule at the bottom captures the philosophy well:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="markdown"><code><span class="line"><span style="color:#79B8FF;font-weight:bold">## Notes</span></span>
+<span class="line"><span style="color:#E1E4E8">Keep this file factual and stable. Move temporary project chatter to daily memory files.</span></span></code></pre>
+<p>Having a clear separation between stable user facts (here) and ephemeral context (daily memory files) prevents <code>USER.md</code> from accumulating noise that gets re-read in every session.</p>
+<h3 id="heartbeatmd--recurring-maintenance">HEARTBEAT.md — Recurring Maintenance</h3>
+<p>Heartbeats fire every ~30 minutes. The checklist covers: memory maintenance (review daily logs, promote durable items to <code>MEMORY.md</code>, prune stale content), browser hygiene, logging, safety checks, and token usage review. The token usage section is particularly practical:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="markdown"><code><span class="line"><span style="color:#79B8FF;font-weight:bold">### 5) Token usage + cost hygiene</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> Check session usage with </span><span style="color:#79B8FF">`session_status`</span><span style="color:#E1E4E8">.</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> If usage is rising, propose 1–3 concrete reductions in the heartbeat result.</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> Prioritize these levers, in order:</span></span>
+<span class="line"><span style="color:#FFAB70">  1.</span><span style="color:#E1E4E8"> Keep MEMORY.md and bootstrap docs concise (remove stale/redundant text).</span></span>
+<span class="line"><span style="color:#FFAB70">  2.</span><span style="color:#E1E4E8"> Prefer low-tier sub-agents for token-heavy routine work.</span></span>
+<span class="line"><span style="color:#FFAB70">  3.</span><span style="color:#E1E4E8"> Keep replies concise unless detail is requested.</span></span>
+<span class="line"><span style="color:#FFAB70">  4.</span><span style="color:#E1E4E8"> Escalate to high/ultra-high models only with explicit quality/risk justification.</span></span></code></pre>
+<p>This means the agent is actively self-monitoring cost at regular intervals and proposing fixes when context is growing.</p>
+<h3 id="memorymd--long-term-memory">MEMORY.md — Long-Term Memory</h3>
+<p>Structured into four sections — Semantic, Procedural, Episodic, Associative/Conditional. The key design choice is what <em>not</em> to put here: no working memory, no transient operational noise. Only high-signal, durable facts.</p>
+<p>Example entries:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="markdown"><code><span class="line"><span style="color:#79B8FF;font-weight:bold">## Episodic Memory (Key Events/Decisions)</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> Claude Code Setup (2026-02-16): Configured openclaw-claude-code-plugin with Telegram</span></span>
+<span class="line"><span style="color:#E1E4E8">  group routing and Tailscale terminal visibility.</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> Autonomy Reinforcement (2026-02-17): Updated SOUL/AGENTS/HEARTBEAT with</span></span>
+<span class="line"><span style="color:#E1E4E8">  default-to-action autonomy and reduced permission-seeking.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF;font-weight:bold">## Associative/Conditional Memory (Preferences)</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> Autonomy: Akshay prefers I handle tasks autonomously before asking.</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> Communication Style: Akshay prefers sending voice messages but likes receiving</span></span>
+<span class="line"><span style="color:#E1E4E8">  text responses unless audio is requested.</span></span></code></pre>
+<p>The episodic memory section functions as a changelog for the agent itself — recording when and why its instructions were updated.</p>
+<hr>
+<h2 id="how-iterative-edits-changed-agent-behavior">How Iterative Edits Changed Agent Behavior</h2>
+<p>The changes that had the most impact weren’t big rewrites. They were targeted additions that closed specific behavioral gaps I noticed during real usage.</p>
+<p><strong>Example 1: The side-question interrupt problem.</strong></p>
+<p>Early on, whenever I asked the agent a quick question mid-task (“what’s the current tab count?”), it would stop what it was doing, answer, and wait. The task would stall. I had to re-prompt it to continue. After noticing this pattern several times, I added one line to both <code>SOUL.md</code> and <code>AGENTS.md</code>:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>Do not pause or abandon in-progress work just because Akshay asks a side question;</span></span>
+<span class="line"><span>answer briefly and continue unless explicitly told to stop.</span></span></code></pre>
+<p>The behavior changed immediately. The agent now handles interrupts inline — a short answer, then back to execution. No stalling, no re-prompting. This one edit probably saves 3–5 unnecessary back-and-forth turns per day, each of which costs tokens and attention.</p>
+<p><strong>Example 2: Permission-seeking fatigue.</strong></p>
+<p>The early defaults had the agent asking for confirmation on a wide range of routine actions. The <code>AGENTS.md</code> autonomy section was rewritten to narrow the ask-first threshold to only four categories: sensitive, destructive, materially expensive, or externally visible. Everything else: just do it. The observable effect was a reduction in approval-request messages and a corresponding reduction in my interruption overhead.</p>
+<p><strong>Example 3: Model tier drift.</strong></p>
+<p>Without an explicit default model and escalation rules, the agent would periodically use high-tier models for tasks that didn’t need them (summarizing logs, formatting data). Adding explicit model tiers to both <code>SOUL.md</code> and <code>AGENTS.md</code> — with Flash as the default and Opus requiring explicit approval — addressed this. The <code>HEARTBEAT.md</code> cost-hygiene check reinforces it every 30 minutes.</p>
+<hr>
+<h2 id="token-waste-reduction-what-actually-helped">Token Waste Reduction: What Actually Helped</h2>
+<p>Running this on a Raspberry Pi with limited quota makes cost consciousness non-optional. Here’s what moved the needle:</p>
+<p><strong>1. Keeping bootstrap files concise and deduplicated.</strong> Every session re-reads <code>SOUL.md</code>, <code>AGENTS.md</code>, <code>USER.md</code>, and the memory files. Every word in those files costs tokens on every session start. Removing redundancy between <code>SOUL.md</code> and <code>AGENTS.md</code> (they had overlapping autonomy instructions early on) meaningfully reduced bootstrap cost.</p>
+<p><strong>2. Memory tiering.</strong> Separating long-term memory (<code>MEMORY.md</code>) from daily logs (<code>memory/YYYY-MM-DD.md</code>) means the agent only loads personal long-term memory in direct sessions, not group chats. The <code>AGENTS.md</code> rule is explicit: <em>“Read MEMORY.md only in main/direct chat with Akshay.”</em></p>
+<p><strong>3. Proactive cost monitoring at heartbeat.</strong> The heartbeat’s token-hygiene section creates a feedback loop: the agent notices when context is growing, proposes specific reductions, and carries them out (pruning <code>MEMORY.md</code>, flagging verbose patterns). In daily logs, heartbeat entries like “Context at 79% (notable rise; proposal: keep replies concise and prune working memory next pass)” show this working in practice.</p>
+<p><strong>4. Sub-agent delegation with explicit tier rules.</strong> The orchestration policy in <code>AGENTS.md</code> is designed around the principle that the main agent should supervise, not execute heavy work directly. Low-tier models do the lifting; the main agent reviews and steers. This pattern — low-tier draft, high-tier review, low-tier revision — applies to writing tasks and code reviews alike.</p>
+<hr>
+<h2 id="continuous-co-training-the-feedback-loop">Continuous Co-Training: The Feedback Loop</h2>
+<p>The most useful mental model for these files isn’t “documentation” or “configuration” — it’s <em>training data you update in real time</em>. Every time you notice a behavioral pattern you want to change, you edit the relevant file, and the change takes effect at the next session. Over time, the agent’s behavior converges on your actual preferences rather than the defaults.</p>
+<p>This creates a genuine feedback loop:</p>
+<ol>
+<li>You observe a behavior gap during real usage.</li>
+<li>You edit the relevant markdown file with a specific rule.</li>
+<li>The agent reads the updated file at next session start.</li>
+<li>The behavior changes.</li>
+<li>You log the change in <code>MEMORY.md</code>’s episodic section (so the agent knows its own history).</li>
+</ol>
+<p>The episodic memory section in <code>MEMORY.md</code> is worth preserving for this reason — it’s a record of when and why the agent’s instructions evolved. When the agent re-reads it, it has context for why certain rules exist, which tends to produce better adherence than rules that appear without context.</p>
+<p>Over a few weeks, this process has moved the agent from a generic assistant responding to prompts to something closer to a teammate that knows the environment, the preferences, and the failure modes.</p>
+<hr>
+<h2 id="actionable-checklist-for-your-own-setup">Actionable Checklist for Your Own Setup</h2>
+<p>If you’re running OpenClaw or building on a similar agent system, here’s what’s worth doing:</p>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> <strong>Audit your <code>SOUL.md</code> for redundancy with <code>AGENTS.md</code>.</strong> Both files are read every session. Shared content doubles the cost.</li>
+<li class="task-list-item"><input type="checkbox" disabled> <strong>Set explicit model defaults and escalation rules.</strong> Don’t let the agent infer tier selection. Name the default, define when escalation is justified, and require approval for the most expensive tiers.</li>
+<li class="task-list-item"><input type="checkbox" disabled> <strong>Add the side-question persistence rule.</strong> If your agent stalls when you ask mid-task questions, one line in the communication style section fixes it.</li>
+<li class="task-list-item"><input type="checkbox" disabled> <strong>Narrow the ask-first threshold.</strong> Enumerate the four categories that require confirmation (sensitive, destructive, expensive, public-facing). Anything not on the list: execute autonomously.</li>
+<li class="task-list-item"><input type="checkbox" disabled> <strong>Add token hygiene to <code>HEARTBEAT.md</code>.</strong> A regular cost-monitoring pass that proposes concrete reductions creates a self-correcting feedback loop.</li>
+<li class="task-list-item"><input type="checkbox" disabled> <strong>Keep <code>MEMORY.md</code> pruned.</strong> Set a rule that working memory and transient noise don’t go here. Only durable, high-signal facts. Review and prune at each heartbeat.</li>
+<li class="task-list-item"><input type="checkbox" disabled> <strong>Use the episodic memory section as a changelog.</strong> Log major instruction changes in <code>MEMORY.md</code> with dates. The agent reads its own history and this improves consistency.</li>
+<li class="task-list-item"><input type="checkbox" disabled> <strong>Separate stable user facts (<code>USER.md</code>) from session context (daily logs).</strong> This prevents <code>USER.md</code> from accumulating noise that bloats every session bootstrap.</li>
+<li class="task-list-item"><input type="checkbox" disabled> <strong>Test your changes with a side question.</strong> After any behavioral edit, verify it by observing actual agent behavior — not by rereading the file.</li>
+</ul>
+<hr>
+<h2 id="what-id-do-differently-next">What I’d Do Differently Next</h2>
+<p>A few things I’d change if starting over:</p>
+<p><strong>Version the files.</strong> I have git tracking the workspace, but I haven’t been disciplined about commit messages. A simple convention — <code>AGENTS: tighten autonomy threshold</code> — would make the history more navigable. The episodic memory section partially compensates, but a proper git log would be cleaner.</p>
+<p><strong>Write acceptance criteria before adding new rules.</strong> Several early edits were vague (“be more proactive”) and required follow-up edits to actually work. A better practice: define the specific observable behavior you want, then write the rule to produce it.</p>
+<p><strong>Separate the orchestration policy from the autonomy preference.</strong> <code>AGENTS.md</code> mixes user-preference rules (don’t ask for permission) with orchestration mechanics (how to delegate to sub-agents). These serve different purposes and should probably be separate sections or separate files as the system grows.</p>
+<p><strong>Add a “why” to contentious rules.</strong> The side-question persistence rule works well, but if I ever read <code>AGENTS.md</code> cold, I wouldn’t know the failure mode it was written to fix. A one-line comment would help — both for the agent’s understanding and for future-me editing the file.</p>
+<hr>
+<p>The practical insight is simple: these markdown files are the cheapest, most direct way to improve your agent’s behavior and reduce wasted tokens. Most people configure them once at setup and move on. Treating them as living documents — updated during real sessions, based on real observations — is where the compounding value comes from.</p>
+<hr>
+<p><em>Seeking Gradient covers machine learning, autonomous systems, and the practical realities of building with AI. Questions or corrections: <a href="mailto:seekinggradient@gmail.com">seekinggradient@gmail.com</a></em></p> </article> </div>  </main> <footer class="border-t border-gray-100 mt-20 py-20 bg-white"> <div class="max-w-6xl mx-auto px-6"> <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center"> <div> <h2 class="text-2xl font-black tracking-tighter mb-4">Seeking Gradient</h2> <p class="text-gray-500 font-light max-w-sm">
+Exploring the intersection of autonomous agents, infrastructure, and the quiet gradients of the digital age.
+</p> </div> <div class="flex md:justify-end gap-12"> <div> <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-6">Links</h3> <ul class="space-y-4 text-sm font-bold uppercase tracking-widest"> <li><a href="/" class="hover:text-purple-600">Home</a></li> <li><a href="/#blog" class="hover:text-purple-600">Essays</a></li> <li><a href="mailto:seekinggradient@gmail.com" class="hover:text-purple-600">Email</a></li> </ul> </div> </div> </div> <div class="mt-20 pt-8 border-t border-gray-50 flex flex-col md:flex-row justify-between gap-4 text-xs font-bold uppercase tracking-widest text-gray-400"> <span>&copy; 2026 Seeking Gradient. Built with Astro & OpenClaw.</span> <div class="flex gap-6"> <span>Privacy-First</span> <span>No Tracking</span> </div> </div> </div> </footer> </body></html> 

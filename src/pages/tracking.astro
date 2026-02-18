@@ -1,0 +1,243 @@
+---
+import Layout from '../layouts/Layout.astro';
+import fs from 'fs';
+import path from 'path';
+
+// Load build-time tracking data
+const dataPath = path.join(process.cwd(), 'data', 'tracking.json');
+let tracking = { generatedAt: null, stocks: [], crypto: [], hackerNews: [], techCrunch: [] };
+try {
+	const raw = fs.readFileSync(dataPath, 'utf-8');
+	tracking = JSON.parse(raw);
+} catch {
+	// data/tracking.json missing — page renders with empty state
+}
+
+const { generatedAt, stocks, crypto, hackerNews, techCrunch } = tracking;
+
+/** Format a price as $X,XXX.XX */
+function fmtPrice(n: number | null): string {
+	if (n == null) return '—';
+	return n.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+}
+
+/** Format a percentage with sign and color class */
+function fmtChange(n: number | null): { text: string; cls: string } {
+	if (n == null) return { text: '—', cls: 'text-gray-400' };
+	const sign = n >= 0 ? '+' : '';
+	const text = `${sign}${n.toFixed(2)}%`;
+	const cls = n >= 0 ? 'text-green-600' : 'text-red-500';
+	return { text, cls };
+}
+
+/** Format ISO date to a readable string */
+function fmtDate(iso: string | null): string {
+	if (!iso) return 'Unknown';
+	const d = new Date(iso);
+	return d.toLocaleDateString('en-US', {
+		month: 'short',
+		day: '2-digit',
+		year: 'numeric',
+		hour: '2-digit',
+		minute: '2-digit',
+		timeZoneName: 'short',
+	});
+}
+---
+
+<Layout
+	title="What I'm Tracking | Seeking Gradient"
+	description="A live dashboard of stocks, crypto, Hacker News, and TechCrunch headlines that I'm keeping an eye on."
+	canonicalPath="/tracking"
+	ogType="website"
+>
+	<div>
+		{/* Page Header */}
+		<section class="pb-12 border-b border-gray-100 mb-12">
+			<div class="inline-block px-4 py-1.5 mb-6 text-sm font-semibold tracking-wide text-white uppercase bg-gradient-to-r from-purple-500 to-orange-500 rounded-full">
+				Dashboard
+			</div>
+			<h1 class="text-5xl font-black tracking-tighter mb-4">What I'm Tracking</h1>
+			<p class="text-lg text-gray-500 font-light max-w-2xl leading-relaxed">
+				A snapshot of the markets, crypto, and tech news I'm following. Refreshed at each site build.
+			</p>
+			{generatedAt && (
+				<p class="mt-4 text-xs font-bold uppercase tracking-widest text-gray-400">
+					Last updated: {fmtDate(generatedAt)}
+				</p>
+			)}
+		</section>
+
+		<div class="max-w-4xl mx-auto space-y-16">
+
+			{/* ── Tech Stocks ── */}
+			<section>
+				<div class="flex items-center gap-4 mb-8">
+					<div class="h-px flex-1 bg-gray-100"></div>
+					<h2 class="text-xs font-black uppercase tracking-[0.3em] text-gray-400">Tech Stocks</h2>
+					<div class="h-px flex-1 bg-gray-100"></div>
+				</div>
+
+				{stocks.length === 0 ? (
+					<p class="text-gray-400 text-sm italic">No stock data available.</p>
+				) : (
+					<div class="overflow-x-auto">
+						<table class="w-full text-left">
+							<thead>
+								<tr class="border-b border-gray-100">
+									<th class="pb-3 text-xs font-black uppercase tracking-widest text-gray-400">Symbol</th>
+									<th class="pb-3 text-xs font-black uppercase tracking-widest text-gray-400 text-right">Price</th>
+									<th class="pb-3 text-xs font-black uppercase tracking-widest text-gray-400 text-right">Change</th>
+								</tr>
+							</thead>
+							<tbody>
+								{stocks.map((s: any) => {
+									const change = fmtChange(s.change);
+									return (
+										<tr class="border-b border-gray-50">
+											<td class="py-4 font-bold text-gray-900">{s.symbol}</td>
+											<td class="py-4 text-right tabular-nums">
+												{s.placeholder
+													? <span class="text-gray-400 italic text-sm">Pending setup</span>
+													: fmtPrice(s.price)
+												}
+											</td>
+											<td class={`py-4 text-right font-semibold tabular-nums ${change.cls}`}>
+												{s.placeholder ? '—' : change.text}
+											</td>
+										</tr>
+									);
+								})}
+							</tbody>
+						</table>
+					</div>
+				)}
+			</section>
+
+			{/* ── Crypto ── */}
+			<section>
+				<div class="flex items-center gap-4 mb-8">
+					<div class="h-px flex-1 bg-gray-100"></div>
+					<h2 class="text-xs font-black uppercase tracking-[0.3em] text-gray-400">Crypto</h2>
+					<div class="h-px flex-1 bg-gray-100"></div>
+				</div>
+
+				{crypto.length === 0 ? (
+					<p class="text-gray-400 text-sm italic">No crypto data available.</p>
+				) : (
+					<div class="overflow-x-auto">
+						<table class="w-full text-left">
+							<thead>
+								<tr class="border-b border-gray-100">
+									<th class="pb-3 text-xs font-black uppercase tracking-widest text-gray-400">Asset</th>
+									<th class="pb-3 text-xs font-black uppercase tracking-widest text-gray-400 text-right">Price</th>
+									<th class="pb-3 text-xs font-black uppercase tracking-widest text-gray-400 text-right">24h</th>
+								</tr>
+							</thead>
+							<tbody>
+								{crypto.map((c: any) => {
+									const change = fmtChange(c.change24h);
+									return (
+										<tr class="border-b border-gray-50">
+											<td class="py-4">
+												<span class="font-bold text-gray-900">{c.symbol}</span>
+												<span class="ml-2 text-sm text-gray-400">{c.name}</span>
+											</td>
+											<td class="py-4 text-right tabular-nums">{fmtPrice(c.price)}</td>
+											<td class={`py-4 text-right font-semibold tabular-nums ${change.cls}`}>{change.text}</td>
+										</tr>
+									);
+								})}
+							</tbody>
+						</table>
+					</div>
+				)}
+			</section>
+
+			{/* ── Hacker News ── */}
+			<section>
+				<div class="flex items-center gap-4 mb-8">
+					<div class="h-px flex-1 bg-gray-100"></div>
+					<h2 class="text-xs font-black uppercase tracking-[0.3em] text-gray-400">Hacker News</h2>
+					<div class="h-px flex-1 bg-gray-100"></div>
+				</div>
+
+				{hackerNews.length === 0 ? (
+					<p class="text-gray-400 text-sm italic">No Hacker News data available.</p>
+				) : (
+					<ul class="space-y-6">
+						{hackerNews.map((story: any) => (
+							<li class="group">
+								<a href={story.url} target="_blank" rel="noopener noreferrer" class="block">
+									<h3 class="text-lg font-bold text-gray-900 group-hover:text-purple-600 transition-colors leading-snug">
+										{story.title}
+									</h3>
+									<div class="mt-1 flex items-center gap-3 text-xs font-bold text-gray-400 uppercase tracking-widest">
+										<span>{story.points} pts</span>
+										<span class="w-1 h-1 rounded-full bg-gray-300"></span>
+										<a href={story.hnUrl} target="_blank" rel="noopener noreferrer" class="hover:text-orange-500 transition-colors">
+											{story.comments} comments
+										</a>
+									</div>
+								</a>
+							</li>
+						))}
+					</ul>
+				)}
+			</section>
+
+			{/* ── TechCrunch ── */}
+			<section>
+				<div class="flex items-center gap-4 mb-8">
+					<div class="h-px flex-1 bg-gray-100"></div>
+					<h2 class="text-xs font-black uppercase tracking-[0.3em] text-gray-400">TechCrunch</h2>
+					<div class="h-px flex-1 bg-gray-100"></div>
+				</div>
+
+				{techCrunch.length === 0 ? (
+					<p class="text-gray-400 text-sm italic">No TechCrunch data available.</p>
+				) : (
+					<ul class="space-y-6">
+						{techCrunch.map((item: any) => (
+							<li class="group">
+								<a href={item.url} target="_blank" rel="noopener noreferrer" class="block">
+									<h3 class="text-lg font-bold text-gray-900 group-hover:text-purple-600 transition-colors leading-snug">
+										{item.title}
+									</h3>
+									<div class="mt-1 flex items-center gap-3 text-xs font-bold text-gray-400 uppercase tracking-widest">
+										{item.creator && (
+											<>
+												<span>{item.creator}</span>
+												<span class="w-1 h-1 rounded-full bg-gray-300"></span>
+											</>
+										)}
+										{item.pubDate && (
+											<time>{new Date(item.pubDate).toLocaleDateString('en-US', { month: 'short', day: '2-digit' }).toUpperCase()}</time>
+										)}
+									</div>
+								</a>
+							</li>
+						))}
+					</ul>
+				)}
+			</section>
+
+			{/* ── Quick Take ── */}
+			<section>
+				<div class="flex items-center gap-4 mb-8">
+					<div class="h-px flex-1 bg-gray-100"></div>
+					<h2 class="text-xs font-black uppercase tracking-[0.3em] text-gray-400">Quick Take</h2>
+					<div class="h-px flex-1 bg-gray-100"></div>
+				</div>
+
+				<div class="bg-white border border-gray-100 rounded-xl p-8">
+					<p class="text-gray-500 font-light leading-relaxed italic">
+						No quick take yet. This section will contain brief commentary on what's interesting in the data above.
+					</p>
+					{/* TODO: Replace with actual quick-take content, either from a markdown file or CMS */}
+				</div>
+			</section>
+
+		</div>
+	</div>
+</Layout>

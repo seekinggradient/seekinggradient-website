@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "prebuild": "npm run tts:blog",
+    "prebuild": "npm run tracking:build && npm run tts:blog",
+    "tracking:build": "node scripts/build-tracking.mjs",
     "build": "astro build",
     "preview": "astro preview",
     "tts:blog": "node scripts/generate-tts.mjs",

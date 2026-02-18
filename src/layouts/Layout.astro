@@ -1,9 +1,20 @@
 ---
 interface Props {
 	title: string;
+	description?: string;
+	canonicalPath?: string;
+	ogType?: 'website' | 'article';
 }
 
-const { title } = Astro.props;
+const {
+	title,
+	description = 'Seeking Gradient explores autonomous agents, infrastructure, and practical lessons from building on the internet.',
+	canonicalPath = '/',
+	ogType = 'website',
+} = Astro.props;
+
+const SITE_URL = 'https://seekinggradient.com';
+const canonicalUrl = new URL(canonicalPath, SITE_URL).toString();
 ---
 
 <!doctype html>
@@ -14,11 +25,56 @@ const { title } = Astro.props;
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
+		<meta name="description" content={description} />
+		<link rel="canonical" href={canonicalUrl} />
+
+		<meta property="og:type" content={ogType} />
+		<meta property="og:site_name" content="Seeking Gradient" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonicalUrl} />
+
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet">
+
+		<style is:global>
+			/* Global typography baseline */
+			html {
+				-webkit-font-smoothing: antialiased;
+				-moz-osx-font-smoothing: grayscale;
+				text-rendering: optimizeLegibility;
+				font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+			}
+
+			/* Smooth scrollbar for code blocks */
+			pre::-webkit-scrollbar {
+				height: 6px;
+			}
+			pre::-webkit-scrollbar-track {
+				background: transparent;
+			}
+			pre::-webkit-scrollbar-thumb {
+				background: rgba(139, 92, 246, 0.25);
+				border-radius: 3px;
+			}
+			pre::-webkit-scrollbar-thumb:hover {
+				background: rgba(139, 92, 246, 0.4);
+			}
+
+			/* Focus-visible outlines for accessibility */
+			:focus-visible {
+				outline: 2px solid #7c3aed;
+				outline-offset: 2px;
+				border-radius: 2px;
+			}
+		</style>
 	</head>
-	<body class="bg-[#fafafa] text-gray-900 font-['Inter',sans-serif] selection:bg-purple-100 selection:text-purple-900 overflow-x-hidden">
+	<body class="bg-[#fafafa] text-gray-900 font-['Inter',sans-serif] selection:bg-purple-100 selection:text-purple-900 overflow-x-hidden leading-normal">
 		<nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
 			<div class="max-w-6xl mx-auto px-6 h-20 flex justify-between items-center">
 				<a href="/" class="group flex items-center gap-3">
@@ -30,6 +86,7 @@ const { title } = Astro.props;
 				<div class="hidden md:flex items-center gap-8 text-sm font-bold uppercase tracking-widest text-gray-500">
 					<a href="/#blog" class="hover:text-gray-900 transition-colors">Journey</a>
 					<a href="/#blog" class="hover:text-gray-900 transition-colors">Thoughts</a>
+					<a href="/tracking" class="hover:text-gray-900 transition-colors">Tracking</a>
 					<a href="mailto:seekinggradient@gmail.com" class="px-5 py-2.5 bg-gray-900 text-white rounded-full hover:bg-gray-800 transition-all hover:shadow-lg shadow-gray-200">Contact</a>
 				</div>
 			</div>
