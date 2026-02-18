@@ -1,192 +1,187 @@
 ---
-title: "Proactive Agents Without Burning Budget"
+title: "The Files That Train Your Agent"
 pubDate: 2026-02-17
-description: "A practical playbook for making agents more proactive while reducing waste through tighter autonomy, better memory structure, and tiered model delegation."
+description: "How editing OpenClaw's default workspace markdown files changed agent behavior, improved proactivity, and cut token waste in real usage."
 author: "Seeking Gradient"
 ---
 
-Building an agent that is both proactive and cost-efficient sounds like a contradiction at first. Proactivity implies initiative, persistence, and frequent action. Cost optimization implies restraint, selective execution, and operational discipline. In practice, the best agent behavior emerges when both goals are designed together.
+When you first set up OpenClaw, it drops a handful of markdown files into your workspace. They look like documentation. They're actually more like the agent's constitution, memory, and operating manual rolled into one.
 
-Over the last iteration cycle, I implemented a set of behavior changes aimed at exactly this balance. The objective was straightforward: increase autonomous progress without letting token usage, model spend, or coordination overhead spiral. The result was not one “magic prompt” but a system of mutually reinforcing rules around autonomy, permissions, memory, maintenance, and delegation.
+After a few weeks of running a personal autonomous agent on a Raspberry Pi, I've found that editing these files is one of the highest-leverage things you can do — both for shaping behavior and for controlling token costs.
 
-This post summarizes the upgrades that worked, why they worked, and how to apply them to your own agent stack.
+This is a practical walkthrough of what those files are, what's in mine today, and what changed when I started iterating on them in production.
 
-## Stronger autonomy instructions that produce action
+## The default workspace files and why they matter
 
-The first change was to make autonomy explicit rather than implied. Agents often default to conservative ambiguity when instructions are vague: they ask another question, wait for confirmation, or stop at partial completion. That behavior can look safe, but in non-sensitive workflows it creates friction and burns cycles.
+Out of the box, OpenClaw creates a core set of files at the workspace root:
 
-The update was to clearly define an autonomy default: execute end-to-end for routine tasks, make reasonable assumptions when ambiguity is low-risk, and try alternatives before declaring failure. This reduced dead time and handoff churn.
+| File | Role |
+|---|---|
+| `IDENTITY.md` | Minimal stub: name, vibe, avatar. |
+| `SOUL.md` | Personality, principles, communication style, safety rules. |
+| `AGENTS.md` | Operating manual: bootstrap order, autonomy policy, model tiers, workflows. |
+| `USER.md` | Stable user facts (preferences, permissions, constraints). |
+| `HEARTBEAT.md` | Recurring maintenance loop (~every 30m). |
+| `MEMORY.md` | Durable long-term memory. |
+| `TOOLS.md` | Local environment notes (profiles, delivery details, defaults). |
 
-A key detail is scope framing. “Be autonomous” is too broad. Better instructions specify outcome completion, basic self-recovery, and concise milestone reporting.
+These are not “set and forget” docs. The agent re-reads them continuously across sessions, and heartbeat executes on a cadence. Every edit propagates into behavior without retraining or redeploying.
 
-## Reduced over-permission-seeking without removing guardrails
+That makes these files your real control surface.
 
-A frequent failure mode in agent systems is decision fatigue caused by unnecessary approvals. If an agent asks for permission for every minor branch, the user becomes a routing layer instead of a decision-maker.
+## What my files contain today
 
-The improvement was to narrow approval requirements to actions that are truly sensitive:
+### `SOUL.md` (behavior baseline)
 
-- destructive actions
-- public or externally visible actions
-- materially expensive actions, including high model/token spend
-- operations with security, privacy, or irreversible impact
-
-Everything else should proceed autonomously.
-
-This change increases throughput while preserving safety. The important distinction is not “ask less” but “ask only when consequences justify interruption.” That protects users from both risk and alert fatigue.
-
-## Proactive TODO maintenance as operational memory
-
-Proactivity degrades quickly when plans are not externalized. Agents may hold intent in ephemeral context, but without a maintained task surface they drift, repeat work, or miss follow-through.
-
-A practical fix is to treat TODO maintenance as a first-class behavior. The agent should continuously maintain a concise task board with:
-
-- active priorities
-- current status
-- next action per item
-- blocked conditions
-
-It creates visibility for the human and gives the agent a stable execution spine across sessions and context resets.
-
-## HEARTBEAT.md as useful maintenance and proactive reflection
-
-Heartbeat loops can easily become noise if they devolve into mechanical “still running” messages. The better pattern is to make heartbeat prompts do real maintenance work.
-
-Using `HEARTBEAT.md` as a structured maintenance and reflection ritual has been high leverage. Instead of passive status, the agent checks system hygiene, revisits priorities, and identifies one or two proactive improvements worth executing. This turns periodic pings into intentional steering moments.
-
-The payoff is compound:
-
-- less silent drift
-- earlier detection of stale plans
-- a regular trigger for proactive project discovery
-- improved alignment with current goals rather than outdated context
-
-When heartbeat is integrated with TODO maintenance, it becomes a lightweight control loop, not just an uptime signal.
-
-## Stripping redundant workspace content for token efficiency and salience
-
-Token efficiency is not only about shorter prompts. It is also about information salience. Large, redundant workspace context increases cost and can dilute attention away from the highest-signal instructions.
-
-One implemented improvement was to remove repetitive or low-value context files and tighten what is loaded by default. The goal is to reduce cognitive clutter for both the model and the human reviewer.
-
-In short, curation is optimization. Every line in default context should justify its recurring cost.
-
-## MEMORY.md split by memory type for cleaner retrieval
-
-Long-term memory became more reliable after splitting `MEMORY.md` into four explicit categories:
-
-- **Semantic memory** for stable facts and preferences
-- **Procedural memory** for repeatable workflows and rules
-- **Episodic memory** for notable past events and outcomes
-- **Associative or conditional memory** for triggers and “if X then Y” patterns
-
-This structure reduced duplication and retrieval ambiguity. It also improved update discipline: temporary noise stays out, durable signal stays in.
-
-For agent behavior, this matters because memory is policy in practice. If memory is mixed and noisy, behavior becomes inconsistent. If memory is typed and curated, behavior becomes stable and cheaper to sustain.
-
-## Use sub-agents with cheaper models for first-pass work
-
-This is one of the highest-impact cost optimizations: route first-pass work to cheaper model tiers via sub-agents, then escalate selectively.
-
-A robust pattern is:
-
-1. assign drafting, data gathering, classification, and repetitive transforms to low-cost sub-agents
-2. define clear acceptance criteria and output format up front
-3. review results in a supervisory agent
-4. escalate only failed or high-risk segments to stronger models
-
-This is not about blindly using the cheapest model. It is about matching model capability to task stage: low-cost first pass, high-capability selective refinement.
-
-## Guardrails that keep autonomy safe
-
-Increased autonomy should always coexist with explicit guardrails. The rule set that performed best was simple and enforceable:
-
-- require approval before sensitive actions
-- require approval before destructive actions
-- require approval before public or external actions
-- require approval before materially expensive actions
-
-With these boundaries in place, the agent can move quickly in routine operations while pausing at the right risk edges.
-
-## Real instruction snippets that changed behavior
-
-One useful pattern is to include direct, high-signal lines in your operating files instead of abstract principles. A few examples:
-
-From `SOUL.md`:
+This is where I push high-level behavior preferences:
 
 ```md
 - Be autonomous and proactive by default; take initiative and move work forward without waiting.
-- Be empowered to decide and execute routine fixes/improvements without asking for permission first.
 - Avoid over-asking for approval; minimize user decision fatigue.
 - Operate as an orchestrator: delegate substantial work to sub-agents/models and supervise quality.
-- Take ownership of quality: critically verify outputs, test changes, and iterate until the result actually works.
 ```
 
-From `AGENTS.md`:
+Also communication style and cost behavior:
 
 ```md
-- Default to action, not permission-seeking: avoid unnecessary approval requests that create decision fatigue.
-- Do not block on slow replies for routine work; make reasonable decisions and proceed.
-- Ask Akshay only when an action is sensitive, destructive, materially expensive (including high token/model cost), externally/publicly visible, or you are genuinely stuck.
-- Own final verification: do not hand off unverified work. Validate outcomes (tests/checks/UX) and iterate before reporting done.
+- Prefer concise answers; expand only when useful.
+- Be cost-conscious with model and token usage; prefer efficient approaches unless higher quality/risk requires escalation.
 ```
 
-And the cost-control delegation rule:
+### `AGENTS.md` (execution rules)
+
+This file holds the operational policy. For me, the most important section is autonomy boundaries:
 
 ```md
-- For multi-step, repetitive, token-heavy, or long-context tasks, spawn a sub-agent by default.
-- Start with low-tier sub-agents unless risk/complexity clearly requires higher tier.
+- Default to action, not permission-seeking.
+- Do not block on slow replies for routine work.
+- Ask only for sensitive, destructive, materially expensive, or externally visible actions.
 ```
 
-From `HEARTBEAT.md` (operational maintenance loop):
+It also includes model-tiering and delegation rules (low-tier first pass, escalation only when needed), which helps keep routine work cheap.
+
+### `USER.md` (stable facts only)
+
+This should stay concise and factual. Mine includes fixed preferences like timezone, development defaults, and permissions granted.
+
+Key rule:
 
 ```md
-### 5) Token usage + cost hygiene
-- Check session usage with `session_status`.
+Keep this file factual and stable. Move temporary project chatter to daily memory files.
+```
+
+### `HEARTBEAT.md` (maintenance + self-correction)
+
+Heartbeat turned out to be more than a status ping. It became a control loop:
+
+- memory maintenance
+- browser hygiene
+- token usage checks
+- proactive reflection and project execution
+
+The token section matters most for cost control:
+
+```md
+- Check session usage with session_status.
 - If usage is rising, propose 1–3 concrete reductions.
-
-### 6) Proactive reflection + execution
-- Reflect on current priorities.
-- Select 1–2 projects to execute autonomously today.
-- Update `~/Desktop/TODO.md`.
 ```
 
-From `MEMORY.md` (structure only, no personal content):
+### `MEMORY.md` (durable memory only)
+
+I split memory into four types:
+
+- Semantic (stable facts)
+- Procedural (workflows)
+- Episodic (key events/decisions)
+- Associative/Conditional (preferences/triggers)
+
+This reduced retrieval noise and made behavior more consistent.
+
+### `TODO.md` (execution spine)
+
+This gives the agent a durable task surface across sessions:
+
+- active priorities
+- current status
+- next action
+- blockers
+
+Without this, “proactive” often decays into scattered starts.
+
+## The change that made proactivity feel real
+
+One behavior bug was recurring: if I asked a side question during an in-progress task, the agent would answer and then stop the main task.
+
+I added this line to both `SOUL.md` and `AGENTS.md`:
 
 ```md
-## Semantic Memory (Facts)
-## Procedural Memory (Workflows)
-## Episodic Memory (Key Events)
-## Associative/Conditional Memory (Preferences)
+Do not pause or abandon an in-progress task because Akshay asks a side question; answer briefly, then continue unless explicitly told to stop/pause.
 ```
 
-From `TODO.md` (execution surface):
+That one instruction changed execution quality immediately.
 
-```md
-## Active Now
-- [ ] Project / objective
-- [ ] Current status
-- [ ] Next concrete action
-- [ ] Blocker (if any)
-```
+Before: frequent stalls and re-prompts.
+After: brief side-answer, then automatic continuation.
 
-These are small lines, but they remove ambiguity. That ambiguity removal is what drives reliable proactivity and lower operating cost.
+It sounds small, but it removed a lot of coordination friction and turn waste.
+
+## How modifying these files reduced token waste
+
+The biggest savings came from structure, not from fancy prompts.
+
+### 1) Keep bootstrap docs concise
+
+`SOUL.md`, `AGENTS.md`, `USER.md`, and memory are repeatedly loaded. Redundant text there becomes recurring token tax. Pruning duplication reduced context noise.
+
+### 2) Separate durable vs transient memory
+
+`MEMORY.md` stays durable. Daily logs go into `memory/YYYY-MM-DD.md`. That prevents transient noise from bloating every future session.
+
+### 3) Enforce model-tier routing
+
+Explicit low-tier-first routing in `AGENTS.md` prevented expensive-model drift for routine tasks.
+
+### 4) Make heartbeat enforce cost hygiene
+
+A recurring usage check catches context growth early and prompts corrective action before things spiral.
+
+## Continuous co-training in practice
+
+The key shift is treating these files as a living training interface.
+
+Loop:
+
+1. Observe behavior during real work.
+2. Add/adjust a concrete instruction in the right file.
+3. Verify behavior change.
+4. Keep what works, remove what doesn’t.
+5. Log durable decisions in `MEMORY.md`.
+
+This turns the assistant from “generic and capable” into “aligned to how I actually work.”
+
+You’re not retraining a model. You’re tightening the operating system around it.
 
 ## Actionable checklist
 
-Use this checklist to implement the same operating model:
+If you’re running OpenClaw (or any agent stack with persistent policy files), do this:
 
-- [ ] Define autonomy defaults for routine work, including end-to-end completion expectations
-- [ ] Add explicit thresholds for when approval is mandatory
-- [ ] Remove “ask by default” language from non-sensitive workflows
-- [ ] Introduce a maintained TODO surface with status and next actions
-- [ ] Convert heartbeat prompts into maintenance plus proactive reflection loops
-- [ ] Audit workspace context and remove redundant or low-salience content
-- [ ] Restructure long-term memory into semantic, procedural, episodic, and associative sections
-- [ ] Implement sub-agent routing for low-cost first-pass execution
-- [ ] Add acceptance criteria templates for delegated tasks
-- [ ] Reserve premium model usage for escalation, synthesis, and final QA
-- [ ] Track token and model spend weekly and tune routing based on failure patterns
-- [ ] Add explicit verification gates before completion (tests for code, visual QA for UI, sanity checks for ops)
-- [ ] Periodically verify that guardrails still map to actual risk boundaries
+- [ ] Audit `SOUL.md` and `AGENTS.md` for overlap; dedupe aggressively.
+- [ ] Define explicit autonomy boundaries for when to ask vs act.
+- [ ] Add the side-question continuation rule.
+- [ ] Set explicit model tier defaults and escalation rules.
+- [ ] Keep `USER.md` factual and stable.
+- [ ] Keep `MEMORY.md` durable-only; move transient notes to daily files.
+- [ ] Add token-hygiene checks to heartbeat.
+- [ ] Maintain `TODO.md` as a durable execution surface.
+- [ ] Verify behavior changes with real tasks, not just by reading files.
 
-The core lesson is that proactivity and cost control are not opposing goals. They are outcomes of the same design quality: precise operating rules, clean context, typed memory, and disciplined delegation. When those pieces are in place, agents stop oscillating between timid and wasteful. They become steady operators that move fast where they should and pause where they must.
+## What I’d do differently next
+
+1. **Version file edits more rigorously.** Better commit discipline would make behavior changes easier to trace.
+2. **Attach acceptance criteria to each new rule.** “Be proactive” is vague; observable outcomes are better.
+3. **Further separate preference policy from orchestration policy.** `AGENTS.md` can become too dense without clear boundaries.
+4. **Add rationale comments for high-impact rules.** Future edits are safer when the “why” is preserved.
+
+The core lesson: these markdown files are not setup artifacts. They are the cheapest, highest-leverage way to tune both behavior and cost.
+
+If you want more proactivity *and* lower waste, start by rewriting your workspace files — then keep rewriting them as you work.
