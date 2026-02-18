@@ -70,11 +70,11 @@ function fmtDate(iso: string | null): string {
 
 		<div class="max-w-4xl mx-auto space-y-16">
 
-			{/* ── Tech Stocks ── */}
+			{/* ── Markets & Stocks ── */}
 			<section>
 				<div class="flex items-center gap-4 mb-8">
 					<div class="h-px flex-1 bg-gray-100"></div>
-					<h2 class="text-xs font-black uppercase tracking-[0.3em] text-gray-400">Tech Stocks</h2>
+					<h2 class="text-xs font-black uppercase tracking-[0.3em] text-gray-400">Markets &amp; Stocks</h2>
 					<div class="h-px flex-1 bg-gray-100"></div>
 				</div>
 
@@ -95,15 +95,18 @@ function fmtDate(iso: string | null): string {
 									const change = fmtChange(s.change);
 									return (
 										<tr class="border-b border-gray-50">
-											<td class="py-4 font-bold text-gray-900">{s.symbol}</td>
+											<td class="py-4">
+												<span class="font-bold text-gray-900">{s.symbol}</span>
+												{s.name && <span class="ml-2 text-sm text-gray-400">{s.name}</span>}
+											</td>
 											<td class="py-4 text-right tabular-nums">
-												{s.placeholder
-													? <span class="text-gray-400 italic text-sm">Pending setup</span>
-													: fmtPrice(s.price)
+												{s.price != null
+													? fmtPrice(s.price)
+													: <span class="text-gray-400 italic text-sm">Unavailable</span>
 												}
 											</td>
 											<td class={`py-4 text-right font-semibold tabular-nums ${change.cls}`}>
-												{s.placeholder ? '—' : change.text}
+												{change.text}
 											</td>
 										</tr>
 									);

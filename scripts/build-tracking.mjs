@@ -7,13 +7,12 @@
  * (wired into the prebuild npm hook).
  *
  * Data sources:
- *   • Tech stocks (GOOGL, AAPL) — yahoo-finance2 if installed, otherwise placeholder
+ *   • Market indices (^GSPC, ^NDX) & tech stocks (AAPL, GOOGL) — yahoo-finance2
  *   • Crypto (BTC, ETH) — CoinGecko simple/price (free, no key)
  *   • Hacker News top 5 — official Firebase API
  *   • TechCrunch latest 5 — RSS feed (XML)
  *
- * The script is intentionally dependency-free (Node 18+ built-ins only)
- * with an optional yahoo-finance2 enhancement.
+ * Requires: yahoo-finance2 (`npm i yahoo-finance2`)
  *
  * Usage:
  *   node scripts/build-tracking.mjs
@@ -88,41 +87,55 @@ function decodeEntities(str) {
 // Data fetchers
 // ---------------------------------------------------------------------------
 
+/** Human-readable names for index / stock symbols */
+const SYMBOL_NAMES = {
+  '^GSPC': 'S&P 500',
+  '^NDX': 'Nasdaq 100',
+  'AAPL': 'Apple',
+  'GOOGL': 'Google',
+};
+
 /**
- * Fetch stock prices for given symbols.
- * Tries yahoo-finance2 first; falls back to placeholders with TODO.
+ * Fetch stock & index prices via yahoo-finance2.
+ * Each symbol is fetched independently so one failure doesn't block the rest.
  */
-async function fetchStocks(symbols = ['GOOGL', 'AAPL']) {
-  // Try yahoo-finance2 (optional dependency)
-  try {
-    const yf = await import('yahoo-finance2');
-    const yahoo = yf.default || yf;
-    const results = [];
-    for (const symbol of symbols) {
-      const quote = await yahoo.quote(symbol);
-      results.push({
-        symbol,
-        price: quote.regularMarketPrice ?? null,
-        change: quote.regularMarketChangePercent ?? null,
-        currency: quote.currency ?? 'USD',
-      });
-    }
-    console.log(`  ✅ Stocks fetched via yahoo-finance2`);
-    return results;
-  } catch (_) {
-    // yahoo-finance2 not installed — use placeholder data
-    // TODO: Install yahoo-finance2 (`npm i yahoo-finance2`) for live stock data,
-    //       or integrate an alternative free API (e.g. Alpha Vantage, Finnhub).
-    console.log(`  ⚠️  yahoo-finance2 not available — using placeholder stock data`);
-    console.log(`     TODO: npm i yahoo-finance2 for live prices`);
-    return symbols.map((symbol) => ({
-      symbol,
-      price: null,
-      change: null,
-      currency: 'USD',
-      placeholder: true, // TODO: Remove once live data is wired up
-    }));
-  }
+async function fetchStocks(symbols = ['^GSPC', '^NDX', 'AAPL', 'GOOGL']) {
+  const yf = await import('yahoo-finance2');
+  const YahooFinance = yf.default || yf;
+
+  // yahoo-finance2 v3 requires instantiation
+  const yahoo = typeof YahooFinance === 'function'
+    ? new YahooFinance({ suppressNotices: ['yahooSurvey'] })
+    : YahooFinance;
+
+  const results = await Promise.all(
+    symbols.map(async (symbol) => {
+      try {
+        const quote = await yahoo.quote(symbol);
+        return {
+          symbol,
+          name: SYMBOL_NAMES[symbol] ?? quote.shortName ?? symbol,
+          price: quote.regularMarketPrice ?? null,
+          change: quote.regularMarketChangePercent ?? null,
+          currency: quote.currency ?? 'USD',
+        };
+      } catch (err) {
+        console.warn(`  ⚠️  yahoo-finance2 failed for ${symbol}: ${err.message}`);
+        return {
+          symbol,
+          name: SYMBOL_NAMES[symbol] ?? symbol,
+          price: null,
+          change: null,
+          currency: 'USD',
+          error: err.message,
+        };
+      }
+    })
+  );
+
+  const liveCount = results.filter((r) => r.price != null).length;
+  console.log(`  ✅ Stocks: ${liveCount}/${symbols.length} fetched via yahoo-finance2`);
+  return results;
 }
 
 /**
