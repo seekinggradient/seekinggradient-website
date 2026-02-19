@@ -1,4 +1,9 @@
 {
+  "podcasts": {
+    "hackerNews": "/audio/podcasts/hackernews_2026-02-18.mp3",
+    "openclaw": "/audio/podcasts/openclaw_2026-02-18.mp3",
+    "worldnews": "/audio/podcasts/worldnews_2026-02-18.mp3"
+  },
   "generatedAt": "2026-02-19T01:20:24.993Z",
   "stocks": [
     {
