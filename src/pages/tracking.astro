@@ -13,7 +13,7 @@ try {
 	// data/tracking.json missing — page renders with empty state
 }
 
-const { generatedAt, stocks, crypto, hackerNews, techCrunch } = tracking;
+const { generatedAt, stocks, crypto, hackerNews, techCrunch, podcasts } = tracking;
 
 /** Format a price as $X,XXX.XX */
 function fmtPrice(n: number | null): string {
@@ -69,6 +69,38 @@ function fmtDate(iso: string | null): string {
 		</section>
 
 		<div class="max-w-4xl mx-auto space-y-16">
+
+			{/* ── Podcasts ── */}
+			{podcasts && (
+				<section>
+					<div class="flex items-center gap-4 mb-8">
+						<div class="h-px flex-1 bg-gray-100"></div>
+						<h2 class="text-xs font-black uppercase tracking-[0.3em] text-gray-400">Podcasts</h2>
+						<div class="h-px flex-1 bg-gray-100"></div>
+					</div>
+
+					<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+						{podcasts.hackerNews && (
+							<div class="bg-white border border-gray-100 rounded-xl p-6 shadow-sm">
+								<h3 class="text-sm font-black uppercase tracking-widest text-gray-400 mb-4">Hacker News</h3>
+								<audio src={podcasts.hackerNews} controls class="w-full h-8" />
+							</div>
+						)}
+						{podcasts.openclaw && (
+							<div class="bg-white border border-gray-100 rounded-xl p-6 shadow-sm">
+								<h3 class="text-sm font-black uppercase tracking-widest text-gray-400 mb-4">r/openclaw</h3>
+								<audio src={podcasts.openclaw} controls class="w-full h-8" />
+							</div>
+						)}
+						{podcasts.worldnews && (
+							<div class="bg-white border border-gray-100 rounded-xl p-6 shadow-sm">
+								<h3 class="text-sm font-black uppercase tracking-widest text-gray-400 mb-4">r/worldnews</h3>
+								<audio src={podcasts.worldnews} controls class="w-full h-8" />
+							</div>
+						)}
+					</div>
+				</section>
+			)}
 
 			{/* ── Markets & Stocks ── */}
 			<section>
@@ -234,10 +266,9 @@ function fmtDate(iso: string | null): string {
 				</div>
 
 				<div class="bg-white border border-gray-100 rounded-xl p-8">
-					<p class="text-gray-500 font-light leading-relaxed italic">
-						No quick take yet. This section will contain brief commentary on what's interesting in the data above.
+					<p class="text-gray-900 font-medium leading-relaxed italic">
+						{tracking.quickTake || "No quick take yet. This section will contain brief commentary on what's interesting in the data above."}
 					</p>
-					{/* TODO: Replace with actual quick-take content, either from a markdown file or CMS */}
 				</div>
 			</section>
 
