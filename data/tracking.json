@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-18T23:06:57.285Z",
+  "generatedAt": "2026-02-19T01:20:24.993Z",
   "stocks": [
     {
       "symbol": "^GSPC",
@@ -19,14 +19,14 @@
       "symbol": "AAPL",
       "name": "Apple",
       "price": 264.35,
-      "change": 0.17811172,
+      "change": 0.178112,
       "currency": "USD"
     },
     {
       "symbol": "GOOGL",
       "name": "Google",
       "price": 303.33,
-      "change": 0.43374532,
+      "change": 0.433745,
       "currency": "USD"
     }
   ],
@@ -34,51 +34,51 @@
     {
       "symbol": "BTC",
       "name": "Bitcoin",
-      "price": 66289,
-      "change24h": -1.7658399713078285
+      "price": 66591,
+      "change24h": -0.7785664749637263
     },
     {
       "symbol": "ETH",
       "name": "Ethereum",
-      "price": 1946.44,
-      "change24h": -2.3255278685352643
+      "price": 1963.8,
+      "change24h": -0.5562015382996109
     }
   ],
   "hackerNews": [
     {
-      "title": "Sizing chaos",
-      "url": "https://pudding.cool/2026/02/womens-sizing/",
-      "points": 151,
-      "comments": 65,
-      "hnUrl": "https://news.ycombinator.com/item?id=47066552"
+      "title": "Ladybird: Closing this as we are no longer pursuing Swift adoption",
+      "url": "https://github.com/LadybirdBrowser/ladybird/issues/933",
+      "points": 143,
+      "comments": 82,
+      "hnUrl": "https://news.ycombinator.com/item?id=47067678"
     },
     {
-      "title": "Cosmologically Unique IDs",
-      "url": "https://jasonfantl.com/posts/Universal-Unique-IDs/",
-      "points": 239,
-      "comments": 63,
-      "hnUrl": "https://news.ycombinator.com/item?id=47064490"
+      "title": "Sizing chaos",
+      "url": "https://pudding.cool/2026/02/womens-sizing/",
+      "points": 249,
+      "comments": 131,
+      "hnUrl": "https://news.ycombinator.com/item?id=47066552"
     },
     {
       "title": "27-year-old Apple iBooks can connect to Wi-Fi and download official updates",
       "url": "https://old.reddit.com/r/MacOS/comments/1r8900z/macos_which_officially_supports_27_year_old/",
-      "points": 45,
-      "comments": 21,
+      "points": 123,
+      "comments": 68,
       "hnUrl": "https://news.ycombinator.com/item?id=47066241"
+    },
+    {
+      "title": "Cosmologically Unique IDs",
+      "url": "https://jasonfantl.com/posts/Universal-Unique-IDs/",
+      "points": 273,
+      "comments": 81,
+      "hnUrl": "https://news.ycombinator.com/item?id=47064490"
     },
     {
       "title": "Tailscale Peer Relays is now generally available",
       "url": "https://tailscale.com/blog/peer-relays-ga",
-      "points": 282,
-      "comments": 148,
+      "points": 315,
+      "comments": 169,
       "hnUrl": "https://news.ycombinator.com/item?id=47063005"
-    },
-    {
-      "title": "Zero-day CSS: CVE-2026-2441 exists in the wild",
-      "url": "https://chromereleases.googleblog.com/2026/02/stable-channel-update-for-desktop_13.html",
-      "points": 223,
-      "comments": 112,
-      "hnUrl": "https://news.ycombinator.com/item?id=47062748"
     }
   ],
   "techCrunch": [
