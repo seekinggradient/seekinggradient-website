@@ -1,32 +1,32 @@
 {
-  "generatedAt": "2026-02-19T07:15:54.450Z",
+  "generatedAt": "2026-03-13T05:34:39.744Z",
   "stocks": [
     {
       "symbol": "^GSPC",
       "name": "S&P 500",
-      "price": 6881.31,
-      "change": 0.556607,
+      "price": 6672.62,
+      "change": -1.5227677,
       "currency": "USD"
     },
     {
       "symbol": "^NDX",
       "name": "Nasdaq 100",
-      "price": 24898.867,
-      "change": 0.7986184,
+      "price": 24533.582,
+      "change": -1.7281142,
       "currency": "USD"
     },
     {
       "symbol": "AAPL",
       "name": "Apple",
-      "price": 264.35,
-      "change": 0.178112,
+      "price": 255.76,
+      "change": -1.93628,
       "currency": "USD"
     },
     {
       "symbol": "GOOGL",
       "name": "Google",
-      "price": 303.33,
-      "change": 0.433745,
+      "price": 303.55,
+      "change": -1.66829,
       "currency": "USD"
     }
   ],
@@ -34,83 +34,83 @@
     {
       "symbol": "BTC",
       "name": "Bitcoin",
-      "price": 67118,
-      "change24h": -0.9836274364252013
+      "price": 71477,
+      "change24h": 3.1728667170026528
     },
     {
       "symbol": "ETH",
       "name": "Ethereum",
-      "price": 1983.93,
-      "change24h": -0.913177251384919
+      "price": 2110.86,
+      "change24h": 4.42574191614487
     }
   ],
   "hackerNews": [
     {
-      "title": "European Tech Alternatives",
-      "url": "https://eutechmap.com/map",
-      "points": 147,
-      "comments": 89,
-      "hnUrl": "https://news.ycombinator.com/item?id=47070142"
-    },
-    {
-      "title": "Sizing chaos",
-      "url": "https://pudding.cool/2026/02/womens-sizing/",
-      "points": 452,
-      "comments": 232,
-      "hnUrl": "https://news.ycombinator.com/item?id=47066552"
-    },
-    {
-      "title": "27-year-old Apple iBooks can connect to Wi-Fi and download official updates",
-      "url": "https://old.reddit.com/r/MacOS/comments/1r8900z/macos_which_officially_supports_27_year_old/",
-      "points": 280,
-      "comments": 143,
-      "hnUrl": "https://news.ycombinator.com/item?id=47066241"
-    },
-    {
-      "title": "15 years of FP64 segmentation, and why the Blackwell Ultra breaks the pattern",
-      "url": "https://nicolasdickenmann.com/blog/the-great-fp64-divide.html",
-      "points": 82,
+      "title": "Willingness to look stupid",
+      "url": "https://sharif.io/looking-stupid",
+      "points": 80,
       "comments": 26,
-      "hnUrl": "https://news.ycombinator.com/item?id=47068890"
+      "hnUrl": "https://news.ycombinator.com/item?id=47307124"
     },
     {
-      "title": "Anthropic officially bans using subscription auth for third party use",
-      "url": "https://code.claude.com/docs/en/legal-and-compliance",
-      "points": 250,
-      "comments": 261,
-      "hnUrl": "https://news.ycombinator.com/item?id=47069299"
+      "title": "Malus – Clean Room as a Service",
+      "url": "https://malus.sh",
+      "points": 1141,
+      "comments": 423,
+      "hnUrl": "https://news.ycombinator.com/item?id=47350424"
+    },
+    {
+      "title": "Bubble Sorted Amen Break",
+      "url": "https://parametricavocado.itch.io/amen-sorting",
+      "points": 295,
+      "comments": 90,
+      "hnUrl": "https://news.ycombinator.com/item?id=47354098"
+    },
+    {
+      "title": "Shall I implement it? No",
+      "url": "https://gist.github.com/bretonium/291f4388e2de89a43b25c135b44e41f0",
+      "points": 1078,
+      "comments": 411,
+      "hnUrl": "https://news.ycombinator.com/item?id=47357042"
+    },
+    {
+      "title": "Hyperlinks in Terminal Emulators",
+      "url": "https://gist.github.com/egmontkob/eb114294efbcd5adb1944c9f3cb5feda",
+      "points": 13,
+      "comments": 2,
+      "hnUrl": "https://news.ycombinator.com/item?id=47360383"
     }
   ],
   "techCrunch": [
     {
-      "title": "OpenAI taps Tata for 100MW AI data center capacity in India, eyes 1GW",
-      "url": "https://techcrunch.com/2026/02/18/openai-taps-tata-for-100mw-ai-data-center-capacity-in-india-eyes-1gw/",
-      "pubDate": "Thu, 19 Feb 2026 05:34:25 +0000",
-      "creator": "Jagmeet Singh"
+      "title": "Before quantum computing arrives, this startup wants enterprises already running on it",
+      "url": "https://techcrunch.com/2026/03/12/before-quantum-computing-arrives-this-startup-wants-enterprises-already-running-on-it/",
+      "pubDate": "Fri, 13 Mar 2026 05:00:00 +0000",
+      "creator": "Anna Heim"
     },
     {
-      "title": "OpenAI deepens India push with Pine Labs fintech partnership",
-      "url": "https://techcrunch.com/2026/02/18/openai-deepens-india-push-with-pine-labs-fintech-partnership/",
-      "pubDate": "Thu, 19 Feb 2026 03:30:00 +0000",
-      "creator": "Jagmeet Singh"
+      "title": "Truecaller now lets you hang up on scammers — on behalf of your family",
+      "url": "https://techcrunch.com/2026/03/12/truecallers-now-lets-you-hang-up-on-scammers-on-behalf-of-your-family/",
+      "pubDate": "Fri, 13 Mar 2026 04:30:00 +0000",
+      "creator": "Ivan Mehta"
     },
     {
-      "title": "Etsy sells secondhand clothing marketplace Depop to eBay for $1.2B",
-      "url": "https://techcrunch.com/2026/02/18/etsy-sells-secondhand-clothing-marketplace-depop-to-ebay-for-1-2b/",
-      "pubDate": "Wed, 18 Feb 2026 22:55:41 +0000",
-      "creator": "Aisha Malik"
+      "title": "How to watch Jensen Huang’s Nvidia GTC 2026 keynote",
+      "url": "https://techcrunch.com/2026/03/12/how-to-watch-jensen-huangs-nvidia-gtc-2026-keynote/",
+      "pubDate": "Thu, 12 Mar 2026 23:25:39 +0000",
+      "creator": "Rebecca Szkutak"
     },
     {
-      "title": "Hacking conference Def Con bans three people linked to Epstein",
-      "url": "https://techcrunch.com/2026/02/18/hacking-conference-def-con-bans-three-people-linked-to-epstein/",
-      "pubDate": "Wed, 18 Feb 2026 22:04:13 +0000",
-      "creator": "Lorenzo Franceschi-Bicchierai"
+      "title": "Sales automation startup Rox AI hits $1.2B valuation, sources say",
+      "url": "https://techcrunch.com/2026/03/12/sales-automation-startup-rox-ai-hits-1-2b-valuation-sources-say/",
+      "pubDate": "Thu, 12 Mar 2026 22:25:50 +0000",
+      "creator": "Marina Temkin"
     },
     {
-      "title": "Is your startup’s check engine light on? Google Cloud’s VP explains what to do",
-      "url": "https://techcrunch.com/video/is-your-startups-check-engine-light-on-google-clouds-vp-explains-what-to-do/",
-      "pubDate": "Wed, 18 Feb 2026 21:07:00 +0000",
-      "creator": "Theresa Loconsolo"
+      "title": "Channel Surfer lets you watch YouTube like it’s old-school cable TV",
+      "url": "https://techcrunch.com/2026/03/12/channel-surfer-watch-youtube-retro-cable-tv-guide/",
+      "pubDate": "Thu, 12 Mar 2026 20:27:17 +0000",
+      "creator": "Sarah Perez"
     }
   ],
   "quickTake": "Tech equity markets show resilience with Nasdaq and S&P 500 up, even as OpenAI signals an aggressive infrastructure push into India with 1GW capacity targets. Meanwhile, Anthropic's tightening of third-party subscription auth and Blackwell's architectural shifts highlight a maturing AI ecosystem pivoting toward both stricter governance and specialized compute patterns."
