@@ -1,6 +1,6 @@
 ---
 title: "Beads: Structured Task Execution for AI Agents"
-pubDate: 2026-03-03
+pubDate: 2026-03-12
 description: "Why I built a dependency-aware issue tracker for my personal agents, and how it closed the loop between planning and shipped outcomes."
 author: "Seeking Gradient"
 ---
