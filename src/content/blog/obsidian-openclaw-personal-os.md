@@ -1,6 +1,6 @@
 ---
 title: "How I Use Obsidian + OpenClaw as a Cross-Platform Personal Operating System"
-pubDate: 2026-03-13
+pubDate: 2026-03-10
 description: "A practical workflow for turning notes into shipped outcomes across phone, laptop, and Raspberry Pi using Obsidian and OpenClaw."
 author: "Seeking Gradient"
 ---

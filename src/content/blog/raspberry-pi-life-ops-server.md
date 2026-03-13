@@ -1,6 +1,6 @@
 ---
 title: "My Raspberry Pi Became My Life Ops Server"
-pubDate: 2026-03-13
+pubDate: 2026-02-24
 description: "How a Raspberry Pi, Tailscale, Claude Code, and OpenClaw turned into a private 24/7 execution engine for work and life admin."
 author: "Seeking Gradient"
 ---
