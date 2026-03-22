@@ -65,12 +65,17 @@ After `openclaw gateway restart`, everything converged into one session.
 
 DMs are a workaround. The real issue is that the Claude Code plugin wakes agents with `--agent` (always routes to main) instead of `--session-id` (routes to the originating session). The plugin has `ctx.sessionKey` available at launch time but doesn't store it. That's a small fix in [the plugin source](https://github.com/alizarion/openclaw-claude-code-plugin) — until it lands, DMs are reliable.
 
+## The Key Takeaway
+
+It doesn't matter whether you use DMs or group chats — what matters is that **everything points to the same place.** Your conversation, heartbeats, cron jobs, and Claude Code wake messages all need to land in the same session. If there's a mismatch — you're chatting in a group but heartbeats run in main, or Claude Code wakes go to main while you're in a forum topic — your agent is operating with split context and will make bad decisions.
+
+Pick one surface. Route everything there. Verify it.
+
 ## Quick Checklist
 
-- **Use DMs for primary agent interaction** — group chats create isolated sessions
-- **Point heartbeat, cron delivery, and agentChannels at your DM** — not group chat IDs
-- **Search your config for stale group IDs** — check `openclaw.json` and `cron/jobs.json`
-- **If an agent seems to ignore you**, check which session is actually handling the automated responses
+- **Pick DMs or a group chat — then make everything match.** Heartbeat `to`, cron `sessionKey` and `delivery.to`, and `agentChannels` should all point to the same Telegram destination.
+- **Search your config for mismatches** — check `openclaw.json` and `cron/jobs.json` for any IDs that don't match your chosen surface
+- **If an agent seems to ignore you**, check which session is actually handling the automated responses — it's probably a different one than where you're chatting
 
 ---
 
