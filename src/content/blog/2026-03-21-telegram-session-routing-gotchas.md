@@ -35,7 +35,7 @@ The problem: **automated messages don't always land where you expect.**
 
 I was chatting with my agent in a **group chat**, telling it to change the podcast pipeline. The agent launched a Claude Code session from the group chat. So far, so good.
 
-But when Claude Code needed input, the wake message went to the **main session** — which had never seen my instructions. The main session had its own stale context where it had earlier approved a different approach. So it told Claude Code to revert my changes.
+But when Claude Code needed input, the wake message went to the **main session** — which had never seen my instructions. The main session had its own stale context where it had earlier approved a different approach. **So it told Claude Code to revert my changes.**
 
 Two sessions were fighting over the same Claude Code process. Every time the group chat forwarded my instructions, the main session woke up seconds later and overrode them. I killed the session, started a fresh one, and the main session immediately told the new one to stop too.
 
