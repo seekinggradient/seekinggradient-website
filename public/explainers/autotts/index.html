@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Test-Time Scaling, then AutoTTS</title>
+  <meta name="description" content="A plain-language explainer for test-time scaling and the AutoTTS paper, LLMs Improving LLMs: Agentic Discovery for Test-Time Scaling." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="hero">
+    <nav class="nav" aria-label="Page sections">
+      <a href="#background">Background</a>
+      <a href="#methods">TTS methods</a>
+      <a href="#paper">The paper</a>
+      <a href="#controller">CMC</a>
+      <a href="#takeaways">Takeaways</a>
+    </nav>
+    <div class="hero-grid">
+      <div>
+        <p class="eyebrow">Paper explainer</p>
+        <h1>Test-Time Scaling is not “make the model bigger.” It’s “spend more thought at inference.”</h1>
+        <p class="lede">The AutoTTS paper is easier to understand once you see the field’s basic move: keep the base model fixed, then use extra inference-time compute to sample, extend, check, prune, or vote over multiple reasoning attempts.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#paper">Jump to AutoTTS</a>
+          <a class="button" href="https://arxiv.org/html/2605.08083" target="_blank" rel="noreferrer">Read the paper</a>
+        </div>
+      </div>
+      <aside class="scorecard" aria-label="AutoTTS headline numbers">
+        <h2>AutoTTS in four numbers</h2>
+        <div class="metric"><strong>~69.5%</strong><span>token savings vs SC@64 at β≈0.5, with matched average held-out accuracy</span></div>
+        <div class="metric"><strong>$39.90</strong><span>reported discovery cost for one full search run</span></div>
+        <div class="metric"><strong>160 min</strong><span>reported wall-clock discovery time</span></div>
+        <div class="metric"><strong>0</strong><span>new base-model calls during controller evaluation, because it uses replay</span></div>
+      </aside>
+    </div>
+  </header>
+
+  <main>
+    <section id="background" class="section split">
+      <div>
+        <p class="eyebrow">Part 1</p>
+        <h2>The background: what test-time scaling is</h2>
+        <p>Training-time scaling is the familiar story: use more data, more parameters, more pretraining compute, and get a stronger model. Test-time scaling is different. You keep the model fixed, but when a hard question arrives, you spend more computation while answering it.</p>
+        <p>That can mean “ask the model 64 times and vote.” It can mean “let one chain of thought run longer.” It can mean “sample many branches, inspect partial answers, throw away the bad branches, then keep pushing the promising branches.” Same model. More inference-time search.</p>
+        <p>The simplest mental model is a human doing math. If the problem is easy, you answer quickly. If it’s hard, you try multiple approaches, check intermediate results, abandon dead ends, and only then give the final answer. Test-time scaling asks whether LLMs can get the same kind of benefit from spending more thought.</p>
+      </div>
+      <div class="concept-card">
+        <h3>Core distinction</h3>
+        <div class="compare">
+          <div><span>Training-time scaling</span><b>Make the model stronger before deployment.</b></div>
+          <div><span>Test-time scaling</span><b>Use the deployed model more intelligently at inference.</b></div>
+        </div>
+        <p class="note">This is why TTS matters commercially: it turns inference compute into a quality knob.</p>
+      </div>
+    </section>
+
+    <section id="methods" class="section">
+      <p class="eyebrow">Part 2</p>
+      <h2>Most TTS methods are different ways to spend the same budget</h2>
+      <p class="section-intro">The paper’s useful simplification is the width–depth view. Width is how many independent reasoning branches you start. Depth is how far you let each branch go. A lot of named methods are just different paths through that space.</p>
+
+      <div class="width-depth" role="img" aria-label="Width depth diagram showing test-time scaling methods">
+        <div class="axis y">more width<br><span>more branches</span></div>
+        <div class="axis x">more depth <span>longer reasoning</span></div>
+        <div class="gridlines"></div>
+        <div class="path self">SC@64</div>
+        <div class="path one">single long chain</div>
+        <div class="path pp">Parallel-Probe</div>
+        <div class="path auto">AutoTTS search space</div>
+      </div>
+
+      <div class="cards four">
+        <article class="card">
+          <h3>Self-consistency</h3>
+          <p>Sample many full answers, then majority-vote. It’s blunt but surprisingly strong, especially on math. The obvious downside is waste: all 64 branches run to completion even if the answer is already clear.</p>
+        </article>
+        <article class="card">
+          <h3>Adaptive stopping</h3>
+          <p>Sample answers until confidence is high enough, then stop. This saves tokens when consensus appears early, but it can stop too early when the first few answers agree for the wrong reason.</p>
+        </article>
+        <article class="card">
+          <h3>Parallel probing</h3>
+          <p>Run branches in chunks, probe intermediate answers, and prune or continue based on the partial evidence. This is more like search than voting, because you’re steering compute as evidence arrives.</p>
+        </article>
+        <article class="card">
+          <h3>Controller policies</h3>
+          <p>A controller decides what to do next: branch, continue, probe, prune, or answer. That controller is where most of the interesting TTS design lives.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="paper" class="section split reverse">
+      <div>
+        <p class="eyebrow">Part 3</p>
+        <h2>What AutoTTS changes: don’t hand-design the controller. Discover it.</h2>
+        <p>The paper’s claim is not that it invented “more thinking at test time.” The claim is that TTS strategy design itself should become an agentic search problem. Humans define the environment. A coding agent writes candidate controller programs. The environment evaluates those programs cheaply, gives feedback, and the agent edits the controller again.</p>
+        <p>That’s the real move. The authors shift the human work from “invent another heuristic” to “build a replay environment where good heuristics can be found.” This is why I described it as adjacent to continuous learning but not the same thing: the base model is fixed. The thing improving is the inference controller around the model.</p>
+        <p>In their setup, each candidate controller is evaluated against cached reasoning traces. That means the search loop doesn’t need to keep calling Qwen for every candidate. It replays already-collected branches, probes, and intermediate answers, then scores the controller’s accuracy–cost trade-off.</p>
+      </div>
+      <div class="pipeline" aria-label="AutoTTS pipeline">
+        <div><b>1</b><span>Collect reasoning traces once</span></div>
+        <div><b>2</b><span>Freeze a replay environment</span></div>
+        <div><b>3</b><span>Claude Code proposes controller.py</span></div>
+        <div><b>4</b><span>Replay evaluates accuracy and cost</span></div>
+        <div><b>5</b><span>Trace feedback guides the next edit</span></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="eyebrow">The mechanics</p>
+      <h2>The AutoTTS environment is basically an inference-time MDP</h2>
+      <p class="section-intro">At any step, the controller sees the active branches, how deep they are, which probe answers have been revealed, and how much budget remains. Then it chooses one action.</p>
+      <div class="actions">
+        <div><strong>BRANCH</strong><span>open a new reasoning attempt</span></div>
+        <div><strong>CONTINUE(i)</strong><span>extend branch i by one interval</span></div>
+        <div><strong>PROBE(i)</strong><span>read branch i’s current intermediate answer</span></div>
+        <div><strong>PRUNE(i)</strong><span>drop branch i from the active set</span></div>
+        <div><strong>ANSWER</strong><span>stop and aggregate the evidence</span></div>
+      </div>
+      <div class="callout">
+        <h3>Why replay matters</h3>
+        <p>If every candidate controller had to call the base model live, discovery would be expensive and noisy. Replay makes controller evaluation cheap, deterministic, and frequent. This is the same pattern I’d watch across agent research: pay once to build a sandbox, then let agents search inside the sandbox.</p>
+      </div>
+    </section>
+
+    <section id="controller" class="section split">
+      <div>
+        <p class="eyebrow">The discovered strategy</p>
+        <h2>AutoTTS finds the Confidence Momentum Controller</h2>
+        <p>The best discovered controller, CMC, has a very human-sounding rule: don’t stop just because confidence is high right now. Stop when confidence is high and the confidence trend isn’t getting worse.</p>
+        <p>That matters because TTS systems can get fooled by early agreement. A few branches may converge on the same wrong answer. CMC smooths confidence with an exponential moving average, then uses the trend to decide whether to stop, widen, deepen, or prune.</p>
+        <p>It also couples width and depth. If existing branches are producing better evidence, it doesn’t need to spawn more branches. If progress stalls or reverses, it widens. That feedback loop is the important discovered structure.</p>
+      </div>
+      <div class="controller-card">
+        <h3>CMC’s four ideas</h3>
+        <ol>
+          <li><b>Trend-based stopping:</b> stop on stable confidence, not a spike.</li>
+          <li><b>Coupled width–depth control:</b> widen when deepening stops helping.</li>
+          <li><b>Alignment-aware depth:</b> spend more on branches matching the current winner.</li>
+          <li><b>Conservative pruning:</b> abandon branches only after persistent disagreement.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section beta-section">
+      <p class="eyebrow">Interactive intuition</p>
+      <h2>β is the paper’s single “spend more or spend less” knob</h2>
+      <p class="section-intro">AutoTTS forces each controller to expose one scalar parameter, β. Lower β pushes cheaper behavior. Higher β pushes more expensive, accuracy-seeking behavior. This is partly an anti-overfitting trick: don’t let the coding agent invent ten brittle thresholds that only work on the search set.</p>
+      <label class="slider-label" for="beta">β = <output id="betaOut">0.50</output></label>
+      <input id="beta" type="range" min="0" max="1" step="0.01" value="0.5" />
+      <div class="beta-readout">
+        <div><span>Initial branches</span><b id="nInit">5</b></div>
+        <div><span>Max branch ceiling</span><b id="maxBranch">34</b></div>
+        <div><span>Stop confidence threshold</span><b id="confThresh">0.91</b></div>
+        <div><span>Behavior</span><b id="behavior">balanced</b></div>
+      </div>
+    </section>
+
+    <section class="section results">
+      <p class="eyebrow">Results, in plain English</p>
+      <h2>The headline is a better accuracy–token frontier, not magic</h2>
+      <div class="result-grid">
+        <div class="result-card">
+          <strong>Qwen3-8B / AIME24</strong>
+          <p>AutoTTS β=1.0 reports 85.8% accuracy and 467.4k tokens, compared with Parallel-Probe at 81.5% and 730.8k tokens.</p>
+        </div>
+        <div class="result-card">
+          <strong>Held-out average</strong>
+          <p>At β=0.5, the project page reports 45.3 average held-out accuracy across models versus 45.2 for SC@64, using roughly 69.5% fewer tokens.</p>
+        </div>
+        <div class="result-card">
+          <strong>Generalization</strong>
+          <p>The discovered policy is searched on AIME24, then evaluated on held-out AIME25 and HMMT25 across Qwen3 model sizes.</p>
+        </div>
+      </div>
+      <p class="caveat">My read: this is a strong systems paper, but not a “model improves itself” paper in the weight-update sense. It’s an agent discovering a better inference-time algorithm around a fixed model.</p>
+    </section>
+
+    <section id="takeaways" class="section split reverse final">
+      <div>
+        <p class="eyebrow">What to remember</p>
+        <h2>The durable idea is environment-driven algorithm discovery</h2>
+        <p>AutoTTS is interesting because it makes a small version of a larger pattern concrete. If you can build a cheap, faithful environment with good feedback, a coding agent can search over programs that would be annoying for a human to design manually.</p>
+        <p>For TTS, the searched program is an inference controller. For coding agents, it might be a harness. For memory systems, it might be a retrieval policy. The field is going to keep finding places where the “algorithm” around the model is easier to improve than the model itself.</p>
+      </div>
+      <div class="sources">
+        <h3>Sources used</h3>
+        <a href="https://arxiv.org/html/2605.08083" target="_blank" rel="noreferrer">AutoTTS paper on arXiv</a>
+        <a href="https://github.com/zhengkid/AutoTTS" target="_blank" rel="noreferrer">AutoTTS GitHub repo</a>
+        <a href="https://zhengkid.github.io/AutoTTS-web/" target="_blank" rel="noreferrer">Authors’ project page</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Built as a local explainer site. Claims labeled in the text come from the paper/project page unless marked as my read.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
