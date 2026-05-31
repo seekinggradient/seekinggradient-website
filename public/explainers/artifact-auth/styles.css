@@ -43,6 +43,112 @@ button, input { font: inherit; }
   background: var(--white);
 }
 
+.cookie-primer {
+  min-height: calc(100vh - 48px);
+  border: 1px solid var(--rule);
+  background: var(--white);
+  padding: clamp(28px, 5vw, 58px);
+  margin-bottom: 24px;
+  display: grid;
+  gap: 24px;
+}
+
+.primer-copy {
+  max-width: 980px;
+}
+
+.cookie-demo {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 14px;
+  align-items: stretch;
+}
+
+.demo-card,
+.cookie-grid article,
+.cookie-flags div,
+.cookie-warning {
+  border: 1px solid var(--rule);
+  background: var(--paper);
+}
+
+.demo-card {
+  padding: 18px;
+}
+
+.demo-card span {
+  display: block;
+  margin-bottom: 12px;
+  font-family: "JetBrains Mono", monospace;
+  color: var(--teal);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+}
+
+.demo-card pre {
+  min-height: 126px;
+}
+
+.demo-arrow {
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  font-size: 34px;
+}
+
+.cookie-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.cookie-grid article,
+.cookie-flags div {
+  padding: 18px;
+}
+
+.cookie-grid b,
+.cookie-flags b {
+  display: block;
+  margin-bottom: 8px;
+  font-family: "JetBrains Mono", monospace;
+  color: var(--teal);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+}
+
+.cookie-grid p,
+.cookie-flags span {
+  display: block;
+  margin: 0;
+  color: var(--soft);
+  font-size: 15px;
+}
+
+.cookie-flags {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+}
+
+.cookie-warning {
+  padding: 22px;
+  border-color: rgba(191, 77, 63, .45);
+}
+
+.cookie-warning h2 {
+  font-size: clamp(30px, 3.5vw, 48px);
+  max-width: 900px;
+  margin-bottom: 12px;
+}
+
+.cookie-warning p {
+  max-width: 980px;
+  font-size: 17px;
+}
+
 .lesson-rail {
   border-right: 1px solid var(--rule);
   padding: 28px;
@@ -454,6 +560,7 @@ pre {
 
 @media (max-width: 1020px) {
   .workspace,
+  .cookie-demo,
   .section-heading,
   .split,
   .split.reverse,
@@ -476,6 +583,8 @@ pre {
   }
 
   .diagram,
+  .cookie-grid,
+  .cookie-flags,
   .concept-grid,
   .token-board,
   .glossary,

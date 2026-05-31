@@ -12,6 +12,63 @@
 </head>
 <body>
   <main class="shell">
+    <section class="cookie-primer" aria-labelledby="cookie-primer-title">
+      <div class="primer-copy">
+        <p class="eyebrow">Start here · Cookies from zero</p>
+        <h1 id="cookie-primer-title">A cookie is a tiny note a website asks your browser to remember.</h1>
+        <p class="lede">The browser stores that note for a specific site and automatically sends it back on later requests to that site. That one behavior is why cookies are so useful for login.</p>
+      </div>
+
+      <div class="cookie-demo" aria-label="Cookie request response example">
+        <div class="demo-card">
+          <span>1 · Server response</span>
+          <pre>HTTP/1.1 200 OK
+Set-Cookie: session=sess_9pL...
+  HttpOnly; Secure; SameSite=Lax</pre>
+        </div>
+        <div class="demo-arrow" aria-hidden="true">→</div>
+        <div class="demo-card">
+          <span>2 · Later browser request</span>
+          <pre>GET /dashboard
+Host: example.com
+Cookie: session=sess_9pL...</pre>
+        </div>
+      </div>
+
+      <div class="cookie-grid">
+        <article>
+          <b>What is stored?</b>
+          <p>Usually a random opaque ID, not the whole user record. The server maps that ID to a session row.</p>
+        </article>
+        <article>
+          <b>Who sends it?</b>
+          <p>The browser. Your JavaScript does not have to attach it manually; matching cookies ride along automatically.</p>
+        </article>
+        <article>
+          <b>What does matching mean?</b>
+          <p>The cookie has rules: domain, path, expiration, Secure, HttpOnly, and SameSite decide when it is sent.</p>
+        </article>
+        <article>
+          <b>Why auth uses cookies</b>
+          <p>After login, the browser can prove “same browser session as before” on every dashboard request.</p>
+        </article>
+      </div>
+
+      <div class="cookie-flags">
+        <div><b>Domain</b><span>Which host can receive it. Host-only cookies are narrower; domain cookies can include subdomains.</span></div>
+        <div><b>Path</b><span>Which URL paths receive it. A cookie for /dashboard is not sent everywhere.</span></div>
+        <div><b>Expires / Max-Age</b><span>How long it survives. Without this, it is usually a session cookie.</span></div>
+        <div><b>HttpOnly</b><span>JavaScript cannot read it. This helps if a page has an XSS bug.</span></div>
+        <div><b>Secure</b><span>Only sent over HTTPS. Auth cookies should always use this.</span></div>
+        <div><b>SameSite</b><span>Controls cross-site sending. This is a major defense against CSRF.</span></div>
+      </div>
+
+      <div class="cookie-warning">
+        <h2>Cookies are automatic. That is the superpower and the danger.</h2>
+        <p>If you visit another site, that site might try to cause your browser to submit a form to the app where you are logged in. Because cookies are automatic, your browser might include your session cookie. That attack is called CSRF: cross-site request forgery. SameSite cookies and CSRF tokens help stop it.</p>
+      </div>
+    </section>
+
     <section class="workspace" aria-labelledby="page-title">
       <aside class="lesson-rail">
         <p class="eyebrow">Interactive explainer</p>
