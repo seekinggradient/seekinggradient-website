@@ -13,7 +13,7 @@ npm run preview  # preview built site
 
 ## Ideas Notebook
 
-The ideas notebook from `ideas-repository` now lives in this repo under:
+The ideas notebook lives in this repo under:
 
 ```txt
 src/ideas/
