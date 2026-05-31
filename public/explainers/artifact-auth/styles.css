@@ -446,6 +446,29 @@ pre code {
     padding: 12px;
   }
 
+  h1 {
+    font-size: 39px;
+    line-height: 1.02;
+  }
+
+  h2 {
+    font-size: 33px;
+    line-height: 1.05;
+  }
+
+  h3 {
+    font-size: 23px;
+  }
+
+  p,
+  li {
+    font-size: 17px;
+  }
+
+  .dek {
+    font-size: 20px;
+  }
+
   .post-hero,
   .prose-section,
   .stage,
