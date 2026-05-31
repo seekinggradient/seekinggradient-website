@@ -28,19 +28,19 @@ const audioSrc = fs.existsSync(audioFile) ? `/audio/blog/${post.slug}.mp3` : und
 	ogType="article"
 >
 	<div class="max-w-3xl mx-auto">
-		<article class="prose prose-lg prose-slate max-w-none prose-headings:tracking-tight prose-headings:font-black prose-a:text-purple-600 hover:prose-a:text-purple-500 transition-colors">
-			<header class="mb-12 not-prose">
-				<div class="flex items-center gap-3 mb-6">
-					<time class="text-xs font-bold text-orange-500 tracking-wider">
+		<article class="prose prose-lg max-w-none">
+			<header class="mb-12 not-prose border-b border-[color:var(--color-rule)] pb-10">
+				<div class="flex flex-wrap items-center gap-3 mb-6 font-mono text-xs text-[color:var(--color-ink-mute)]">
+					<time class="text-[color:var(--color-accent)]">
 						{post.data.pubDate.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }).toUpperCase()}
 					</time>
-					<span class="w-1 h-1 rounded-full bg-gray-300"></span>
-					<span class="text-xs font-bold text-gray-400 uppercase tracking-widest">{post.data.author}</span>
+					<span class="h-px w-6 bg-[color:var(--color-rule)]"></span>
+					<span>{post.data.author}</span>
 				</div>
-				<h1 class="text-4xl md:text-5xl font-black tracking-tighter leading-[1.1] mb-5">
+				<h1 class="display text-5xl md:text-6xl mb-6">
 					{post.data.title}
 				</h1>
-				<p class="text-xl md:text-2xl text-gray-500 font-light leading-relaxed">
+				<p class="text-xl md:text-2xl text-[color:var(--color-ink-mute)] leading-relaxed">
 					{post.data.description}
 				</p>
 				<AudioPlayer audioSrc={audioSrc} title={post.data.title} />
@@ -56,19 +56,19 @@ const audioSrc = fs.existsSync(audioFile) ? `/audio/blog/${post.slug}.mp3` : und
 		margin-bottom: 1.5em !important;
 		line-height: 1.85 !important;
 		font-size: 1.0625rem !important;
-		color: #374151 !important;
+		color: var(--color-ink-soft) !important;
 		font-weight: 400 !important;
 	}
 
 	article.prose > p:first-of-type {
 		font-size: 1.15rem !important;
 		line-height: 1.8 !important;
-		color: #1f2937 !important;
+		color: var(--color-ink) !important;
 	}
 
 	article.prose strong {
-		font-weight: 700 !important;
-		color: #111827 !important;
+		font-weight: 600 !important;
+		color: var(--color-ink) !important;
 	}
 
 	article.prose em {
@@ -78,42 +78,45 @@ const audioSrc = fs.existsSync(audioFile) ? `/audio/blog/${post.slug}.mp3` : und
 	/* === Links === */
 	article.prose a {
 		text-decoration: underline !important;
-		text-decoration-color: rgb(147 51 234 / 0.3) !important;
+		text-decoration-color: rgb(184 84 44 / 0.35) !important;
 		text-underline-offset: 3px !important;
 		transition: text-decoration-color 0.2s ease !important;
+		color: var(--color-accent) !important;
 	}
 
 	article.prose a:hover {
-		text-decoration-color: rgb(147 51 234 / 0.8) !important;
+		text-decoration-color: rgb(184 84 44 / 0.85) !important;
 	}
 
 	/* === Headings === */
 	article.prose h2 {
-		font-size: 1.875rem !important;
-		font-weight: 900 !important;
+		font-family: var(--font-serif) !important;
+		font-size: 2.125rem !important;
+		font-weight: 500 !important;
 		margin-top: 2.5em !important;
 		margin-bottom: 0.75em !important;
-		letter-spacing: -0.03em !important;
-		color: #111827 !important;
+		letter-spacing: 0 !important;
+		color: var(--color-ink) !important;
 		line-height: 1.2 !important;
 	}
 
 	article.prose h3 {
-		font-size: 1.375rem !important;
-		font-weight: 800 !important;
+		font-family: var(--font-serif) !important;
+		font-size: 1.5rem !important;
+		font-weight: 500 !important;
 		margin-top: 2em !important;
 		margin-bottom: 0.6em !important;
-		letter-spacing: -0.02em !important;
-		color: #1f2937 !important;
+		letter-spacing: 0 !important;
+		color: var(--color-ink) !important;
 		line-height: 1.3 !important;
 	}
 
 	article.prose h4 {
 		font-size: 1.125rem !important;
-		font-weight: 700 !important;
+		font-weight: 600 !important;
 		margin-top: 1.75em !important;
 		margin-bottom: 0.5em !important;
-		color: #374151 !important;
+		color: var(--color-ink-soft) !important;
 	}
 
 	/* === Lists === */
@@ -131,7 +134,7 @@ const audioSrc = fs.existsSync(audioFile) ? `/audio/blog/${post.slug}.mp3` : und
 		margin: 0.35rem 0 !important;
 		line-height: 1.75 !important;
 		font-size: 1.0625rem !important;
-		color: #374151 !important;
+		color: var(--color-ink-soft) !important;
 	}
 
 	article.prose li > p {
@@ -151,7 +154,7 @@ const audioSrc = fs.existsSync(audioFile) ? `/audio/blog/${post.slug}.mp3` : und
 	}
 
 	article.prose input[type="checkbox"] {
-		accent-color: #7c3aed !important;
+		accent-color: var(--color-accent) !important;
 		margin-top: 0.25rem !important;
 		flex-shrink: 0 !important;
 	}
@@ -160,24 +163,24 @@ const audioSrc = fs.existsSync(audioFile) ? `/audio/blog/${post.slug}.mp3` : und
 	article.prose :not(pre) > code {
 		font-size: 0.875em !important;
 		font-weight: 500 !important;
-		color: #6d28d9 !important;
-		background: #f5f3ff !important;
+		color: var(--color-accent) !important;
+		background: var(--color-paper-deep) !important;
 		padding: 0.15em 0.4em !important;
 		border-radius: 0.3rem !important;
-		border: 1px solid #ede9fe !important;
+		border: 1px solid var(--color-rule) !important;
 	}
 
 	/* === Code: Blocks === */
 	article.prose pre {
-		background: #1e1b2e !important;
-		border: 1px solid rgba(139, 92, 246, 0.15) !important;
-		border-radius: 0.75rem !important;
+		background: var(--color-ink) !important;
+		border: 1px solid rgba(26, 26, 26, 0.2) !important;
+		border-radius: 0.25rem !important;
 		padding: 1.25rem 1.5rem !important;
 		margin: 1.5rem 0 2rem 0 !important;
 		overflow-x: auto !important;
 		font-size: 0.875rem !important;
 		line-height: 1.7 !important;
-		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+		box-shadow: none !important;
 	}
 
 	article.prose pre code {
@@ -192,16 +195,16 @@ const audioSrc = fs.existsSync(audioFile) ? `/audio/blog/${post.slug}.mp3` : und
 
 	/* === Blockquotes === */
 	article.prose blockquote {
-		border-left: 3px solid #7c3aed !important;
-		background: #faf5ff !important;
+		border-left: 3px solid var(--color-accent) !important;
+		background: var(--color-paper-deep) !important;
 		padding: 1rem 1.25rem !important;
 		margin: 1.5rem 0 2rem 0 !important;
-		border-radius: 0 0.5rem 0.5rem 0 !important;
+		border-radius: 0 !important;
 		font-style: normal !important;
 	}
 
 	article.prose blockquote p {
-		color: #4c1d95 !important;
+		color: var(--color-ink-soft) !important;
 		font-size: 1rem !important;
 		margin-bottom: 0.5em !important;
 	}
@@ -214,7 +217,9 @@ const audioSrc = fs.existsSync(audioFile) ? `/audio/blog/${post.slug}.mp3` : und
 	article.prose hr {
 		border: none !important;
 		height: 1px !important;
-		background: linear-gradient(to right, transparent, #d1d5db, transparent) !important;
+		background-image: linear-gradient(to right, var(--color-rule) 50%, transparent 50%) !important;
+		background-size: 6px 1px !important;
+		background-repeat: repeat-x !important;
 		margin: 3rem 0 !important;
 	}
 
@@ -225,30 +230,31 @@ const audioSrc = fs.existsSync(audioFile) ? `/audio/blog/${post.slug}.mp3` : und
 		border-spacing: 0 !important;
 		margin: 1.5rem 0 2rem 0 !important;
 		font-size: 0.9375rem !important;
-		border-radius: 0.75rem !important;
+		border-radius: 0 !important;
 		overflow: hidden !important;
-		border: 1px solid #e5e7eb !important;
+		border: 1px solid var(--color-rule) !important;
 	}
 
 	article.prose thead {
-		background: #f9fafb !important;
+		background: var(--color-paper-deep) !important;
 	}
 
 	article.prose th {
-		font-weight: 700 !important;
+		font-family: var(--font-mono) !important;
+		font-weight: 500 !important;
 		text-align: left !important;
 		padding: 0.75rem 1rem !important;
 		font-size: 0.8125rem !important;
 		text-transform: uppercase !important;
 		letter-spacing: 0.05em !important;
-		color: #6b7280 !important;
-		border-bottom: 2px solid #e5e7eb !important;
+		color: var(--color-ink-mute) !important;
+		border-bottom: 1px solid var(--color-rule) !important;
 	}
 
 	article.prose td {
 		padding: 0.75rem 1rem !important;
-		border-bottom: 1px solid #f3f4f6 !important;
-		color: #374151 !important;
+		border-bottom: 1px solid var(--color-rule) !important;
+		color: var(--color-ink-soft) !important;
 	}
 
 	article.prose tbody tr:last-child td {
@@ -256,14 +262,15 @@ const audioSrc = fs.existsSync(audioFile) ? `/audio/blog/${post.slug}.mp3` : und
 	}
 
 	article.prose tbody tr:hover {
-		background: #f9fafb !important;
+		background: rgb(237 230 214 / 0.5) !important;
 	}
 
 	/* === Images === */
 	article.prose img {
-		border-radius: 0.75rem !important;
+		border-radius: 0.25rem !important;
 		margin: 2rem 0 !important;
-		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06) !important;
+		border: 1px solid var(--color-rule) !important;
+		box-shadow: none !important;
 	}
 
 	/* === Responsive fine-tuning === */

@@ -9,12 +9,12 @@ import Layout from '../layouts/Layout.astro';
 	ogType="website"
 >
 	<section class="py-24 text-center">
-		<p class="text-xs font-black uppercase tracking-[0.3em] text-orange-500 mb-6">404</p>
-		<h1 class="text-5xl font-black tracking-tighter mb-6">Page not found</h1>
-		<p class="text-lg text-gray-500 max-w-xl mx-auto mb-10">
+		<p class="font-mono text-xs uppercase tracking-[0.18em] text-[color:var(--color-accent)] mb-6">404</p>
+		<h1 class="display text-5xl sm:text-6xl mb-6">Page not <span class="display-italic">found</span></h1>
+		<p class="text-lg text-[color:var(--color-ink-mute)] max-w-xl mx-auto mb-10">
 			The page you’re looking for doesn’t exist or may have moved.
 		</p>
-		<a href="/" class="px-8 py-3 bg-gray-900 text-white font-bold rounded-lg hover:bg-gray-800 transition shadow-lg shadow-gray-200">
+		<a href="/" class="inline-flex border border-[color:var(--color-ink)] bg-[color:var(--color-ink)] text-[color:var(--color-paper)] px-6 py-3 hover:bg-[color:var(--color-accent)] hover:border-[color:var(--color-accent)] transition-colors">
 			Return home
 		</a>
 	</section>

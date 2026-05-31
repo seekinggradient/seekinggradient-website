@@ -17,12 +17,12 @@ if (!audioSrc) return;
 ---
 
 <div class="not-prose my-6" id="tts-player">
-  <div class="flex items-center gap-4 rounded-xl border border-slate-200 bg-slate-50 px-5 py-4">
+  <div class="flex items-center gap-4 border border-[color:var(--color-rule)] bg-[color:var(--color-paper-deep)] px-5 py-4">
     <!-- Play / Pause button -->
     <button
       id="tts-toggle"
       aria-label="Play audio"
-      class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-purple-600 text-white shadow transition hover:bg-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2"
+      class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-[color:var(--color-ink)] text-[color:var(--color-paper)] transition hover:bg-[color:var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-accent)] focus:ring-offset-2"
     >
       <!-- Play icon -->
       <svg id="icon-play" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
@@ -36,13 +36,13 @@ if (!audioSrc) return;
 
     <!-- Label + progress -->
     <div class="flex min-w-0 flex-1 flex-col gap-1">
-      <span class="text-xs font-semibold uppercase tracking-widest text-purple-600">Listen</span>
+      <span class="font-mono text-xs uppercase tracking-[0.18em] text-[color:var(--color-accent)]">Listen</span>
       <!-- Progress bar -->
-      <div class="relative h-1.5 w-full overflow-hidden rounded-full bg-slate-200">
-        <div id="tts-progress" class="h-full rounded-full bg-purple-500 transition-all" style="width: 0%"></div>
+      <div class="relative h-1.5 w-full overflow-hidden rounded-full bg-[color:var(--color-rule)]">
+        <div id="tts-progress" class="h-full rounded-full bg-[color:var(--color-accent)] transition-all" style="width: 0%"></div>
       </div>
       <!-- Time display -->
-      <div class="flex justify-between text-xs text-slate-400">
+      <div class="flex justify-between font-mono text-xs text-[color:var(--color-ink-mute)]">
         <span id="tts-current">0:00</span>
         <span id="tts-duration">—</span>
       </div>

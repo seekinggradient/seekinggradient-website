@@ -23,7 +23,7 @@ function fmtPrice(n: number | null): string {
 
 /** Format a percentage with sign and color class */
 function fmtChange(n: number | null): { text: string; cls: string } {
-	if (n == null) return { text: '—', cls: 'text-gray-400' };
+	if (n == null) return { text: '—', cls: 'text-[color:var(--color-ink-mute)]' };
 	const sign = n >= 0 ? '+' : '';
 	const text = `${sign}${n.toFixed(2)}%`;
 	const cls = n >= 0 ? 'text-green-600' : 'text-red-500';
@@ -53,16 +53,16 @@ function fmtDate(iso: string | null): string {
 >
 	<div>
 		{/* Page Header */}
-		<section class="pb-12 border-b border-gray-100 mb-12">
-			<div class="inline-block px-4 py-1.5 mb-6 text-sm font-semibold tracking-wide text-white uppercase bg-gradient-to-r from-purple-500 to-orange-500 rounded-full">
+		<section class="pb-12 border-b border-[color:var(--color-rule)] mb-12">
+			<p class="font-mono text-xs uppercase tracking-[0.18em] text-[color:var(--color-accent)] mb-6">
 				Dashboard
-			</div>
-			<h1 class="text-5xl font-black tracking-tighter mb-4">What I'm Tracking</h1>
-			<p class="text-lg text-gray-500 font-light max-w-2xl leading-relaxed">
+			</p>
+			<h1 class="display text-5xl sm:text-6xl mb-5">What I'm <span class="display-italic">Tracking</span></h1>
+			<p class="text-lg text-[color:var(--color-ink-mute)] max-w-2xl leading-relaxed">
 				A snapshot of the markets, crypto, and tech news I'm following. Refreshed at each site build.
 			</p>
 			{generatedAt && (
-				<p class="mt-4 text-xs font-bold uppercase tracking-widest text-gray-400">
+				<p class="mt-4 font-mono text-xs text-[color:var(--color-ink-mute)]">
 					Last updated: {fmtDate(generatedAt)}
 				</p>
 			)}
@@ -73,28 +73,28 @@ function fmtDate(iso: string | null): string {
 			{/* ── Podcasts ── */}
 			{podcasts && (
 				<section>
-					<div class="flex items-center gap-4 mb-8">
-						<div class="h-px flex-1 bg-gray-100"></div>
-						<h2 class="text-xs font-black uppercase tracking-[0.3em] text-gray-400">Podcasts</h2>
-						<div class="h-px flex-1 bg-gray-100"></div>
+					<div class="grid grid-cols-[1fr_auto_1fr] items-center gap-4 mb-8">
+						<div class="editorial-rule h-px"></div>
+						<h2 class="font-mono text-xs uppercase tracking-[0.18em] text-[color:var(--color-ink-mute)]">Podcasts</h2>
+						<div class="editorial-rule h-px"></div>
 					</div>
 
 					<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 						{podcasts.hackerNews && (
-							<div class="bg-white border border-gray-100 rounded-xl p-6 shadow-sm">
-								<h3 class="text-sm font-black uppercase tracking-widest text-gray-400 mb-4">Hacker News</h3>
+							<div class="bg-[color:var(--color-paper-deep)] border border-[color:var(--color-rule)] p-6">
+								<h3 class="font-mono text-xs uppercase tracking-[0.18em] text-[color:var(--color-ink-mute)] mb-4">Hacker News</h3>
 								<audio src={podcasts.hackerNews} controls class="w-full h-8" />
 							</div>
 						)}
 						{podcasts.openclaw && (
-							<div class="bg-white border border-gray-100 rounded-xl p-6 shadow-sm">
-								<h3 class="text-sm font-black uppercase tracking-widest text-gray-400 mb-4">r/openclaw</h3>
+							<div class="bg-[color:var(--color-paper-deep)] border border-[color:var(--color-rule)] p-6">
+								<h3 class="font-mono text-xs uppercase tracking-[0.18em] text-[color:var(--color-ink-mute)] mb-4">r/openclaw</h3>
 								<audio src={podcasts.openclaw} controls class="w-full h-8" />
 							</div>
 						)}
 						{podcasts.worldnews && (
-							<div class="bg-white border border-gray-100 rounded-xl p-6 shadow-sm">
-								<h3 class="text-sm font-black uppercase tracking-widest text-gray-400 mb-4">r/worldnews</h3>
+							<div class="bg-[color:var(--color-paper-deep)] border border-[color:var(--color-rule)] p-6">
+								<h3 class="font-mono text-xs uppercase tracking-[0.18em] text-[color:var(--color-ink-mute)] mb-4">r/worldnews</h3>
 								<audio src={podcasts.worldnews} controls class="w-full h-8" />
 							</div>
 						)}
@@ -104,37 +104,37 @@ function fmtDate(iso: string | null): string {
 
 			{/* ── Markets & Stocks ── */}
 			<section>
-				<div class="flex items-center gap-4 mb-8">
-					<div class="h-px flex-1 bg-gray-100"></div>
-					<h2 class="text-xs font-black uppercase tracking-[0.3em] text-gray-400">Markets &amp; Stocks</h2>
-					<div class="h-px flex-1 bg-gray-100"></div>
+				<div class="grid grid-cols-[1fr_auto_1fr] items-center gap-4 mb-8">
+					<div class="editorial-rule h-px"></div>
+					<h2 class="font-mono text-xs uppercase tracking-[0.18em] text-[color:var(--color-ink-mute)]">Markets &amp; Stocks</h2>
+					<div class="editorial-rule h-px"></div>
 				</div>
 
 				{stocks.length === 0 ? (
-					<p class="text-gray-400 text-sm italic">No stock data available.</p>
+					<p class="text-[color:var(--color-ink-mute)] text-sm italic">No stock data available.</p>
 				) : (
 					<div class="overflow-x-auto">
 						<table class="w-full text-left">
 							<thead>
-								<tr class="border-b border-gray-100">
-									<th class="pb-3 text-xs font-black uppercase tracking-widest text-gray-400">Symbol</th>
-									<th class="pb-3 text-xs font-black uppercase tracking-widest text-gray-400 text-right">Price</th>
-									<th class="pb-3 text-xs font-black uppercase tracking-widest text-gray-400 text-right">Change</th>
+								<tr class="border-b border-[color:var(--color-rule)]">
+									<th class="pb-3 font-mono text-xs uppercase tracking-[0.18em] text-[color:var(--color-ink-mute)]">Symbol</th>
+									<th class="pb-3 font-mono text-xs uppercase tracking-[0.18em] text-[color:var(--color-ink-mute)] text-right">Price</th>
+									<th class="pb-3 font-mono text-xs uppercase tracking-[0.18em] text-[color:var(--color-ink-mute)] text-right">Change</th>
 								</tr>
 							</thead>
 							<tbody>
 								{stocks.map((s: any) => {
 									const change = fmtChange(s.change);
 									return (
-										<tr class="border-b border-gray-50">
+										<tr class="border-b border-[color:var(--color-rule)]">
 											<td class="py-4">
-												<span class="font-bold text-gray-900">{s.symbol}</span>
-												{s.name && <span class="ml-2 text-sm text-gray-400">{s.name}</span>}
+												<span class="font-semibold text-[color:var(--color-ink)]">{s.symbol}</span>
+												{s.name && <span class="ml-2 text-sm text-[color:var(--color-ink-mute)]">{s.name}</span>}
 											</td>
 											<td class="py-4 text-right tabular-nums">
 												{s.price != null
 													? fmtPrice(s.price)
-													: <span class="text-gray-400 italic text-sm">Unavailable</span>
+													: <span class="text-[color:var(--color-ink-mute)] italic text-sm">Unavailable</span>
 												}
 											</td>
 											<td class={`py-4 text-right font-semibold tabular-nums ${change.cls}`}>
@@ -151,32 +151,32 @@ function fmtDate(iso: string | null): string {
 
 			{/* ── Crypto ── */}
 			<section>
-				<div class="flex items-center gap-4 mb-8">
-					<div class="h-px flex-1 bg-gray-100"></div>
-					<h2 class="text-xs font-black uppercase tracking-[0.3em] text-gray-400">Crypto</h2>
-					<div class="h-px flex-1 bg-gray-100"></div>
+				<div class="grid grid-cols-[1fr_auto_1fr] items-center gap-4 mb-8">
+					<div class="editorial-rule h-px"></div>
+					<h2 class="font-mono text-xs uppercase tracking-[0.18em] text-[color:var(--color-ink-mute)]">Crypto</h2>
+					<div class="editorial-rule h-px"></div>
 				</div>
 
 				{crypto.length === 0 ? (
-					<p class="text-gray-400 text-sm italic">No crypto data available.</p>
+					<p class="text-[color:var(--color-ink-mute)] text-sm italic">No crypto data available.</p>
 				) : (
 					<div class="overflow-x-auto">
 						<table class="w-full text-left">
 							<thead>
-								<tr class="border-b border-gray-100">
-									<th class="pb-3 text-xs font-black uppercase tracking-widest text-gray-400">Asset</th>
-									<th class="pb-3 text-xs font-black uppercase tracking-widest text-gray-400 text-right">Price</th>
-									<th class="pb-3 text-xs font-black uppercase tracking-widest text-gray-400 text-right">24h</th>
+								<tr class="border-b border-[color:var(--color-rule)]">
+									<th class="pb-3 font-mono text-xs uppercase tracking-[0.18em] text-[color:var(--color-ink-mute)]">Asset</th>
+									<th class="pb-3 font-mono text-xs uppercase tracking-[0.18em] text-[color:var(--color-ink-mute)] text-right">Price</th>
+									<th class="pb-3 font-mono text-xs uppercase tracking-[0.18em] text-[color:var(--color-ink-mute)] text-right">24h</th>
 								</tr>
 							</thead>
 							<tbody>
 								{crypto.map((c: any) => {
 									const change = fmtChange(c.change24h);
 									return (
-										<tr class="border-b border-gray-50">
+										<tr class="border-b border-[color:var(--color-rule)]">
 											<td class="py-4">
-												<span class="font-bold text-gray-900">{c.symbol}</span>
-												<span class="ml-2 text-sm text-gray-400">{c.name}</span>
+												<span class="font-semibold text-[color:var(--color-ink)]">{c.symbol}</span>
+												<span class="ml-2 text-sm text-[color:var(--color-ink-mute)]">{c.name}</span>
 											</td>
 											<td class="py-4 text-right tabular-nums">{fmtPrice(c.price)}</td>
 											<td class={`py-4 text-right font-semibold tabular-nums ${change.cls}`}>{change.text}</td>
@@ -191,26 +191,26 @@ function fmtDate(iso: string | null): string {
 
 			{/* ── Hacker News ── */}
 			<section>
-				<div class="flex items-center gap-4 mb-8">
-					<div class="h-px flex-1 bg-gray-100"></div>
-					<h2 class="text-xs font-black uppercase tracking-[0.3em] text-gray-400">Hacker News</h2>
-					<div class="h-px flex-1 bg-gray-100"></div>
+				<div class="grid grid-cols-[1fr_auto_1fr] items-center gap-4 mb-8">
+					<div class="editorial-rule h-px"></div>
+					<h2 class="font-mono text-xs uppercase tracking-[0.18em] text-[color:var(--color-ink-mute)]">Hacker News</h2>
+					<div class="editorial-rule h-px"></div>
 				</div>
 
 				{hackerNews.length === 0 ? (
-					<p class="text-gray-400 text-sm italic">No Hacker News data available.</p>
+					<p class="text-[color:var(--color-ink-mute)] text-sm italic">No Hacker News data available.</p>
 				) : (
 					<ul class="space-y-6">
 						{hackerNews.map((story: any) => (
 							<li class="group">
 								<a href={story.url} target="_blank" rel="noopener noreferrer" class="block">
-									<h3 class="text-lg font-bold text-gray-900 group-hover:text-purple-600 transition-colors leading-snug">
+									<h3 class="text-lg font-semibold text-[color:var(--color-ink)] group-hover:text-[color:var(--color-accent)] transition-colors leading-snug">
 										{story.title}
 									</h3>
-									<div class="mt-1 flex items-center gap-3 text-xs font-bold text-gray-400 uppercase tracking-widest">
+									<div class="mt-1 flex items-center gap-3 font-mono text-xs text-[color:var(--color-ink-mute)]">
 										<span>{story.points} pts</span>
-										<span class="w-1 h-1 rounded-full bg-gray-300"></span>
-										<a href={story.hnUrl} target="_blank" rel="noopener noreferrer" class="hover:text-orange-500 transition-colors">
+										<span class="h-px w-4 bg-[color:var(--color-rule)]"></span>
+										<a href={story.hnUrl} target="_blank" rel="noopener noreferrer" class="hover:text-[color:var(--color-accent)] transition-colors">
 											{story.comments} comments
 										</a>
 									</div>
@@ -223,27 +223,27 @@ function fmtDate(iso: string | null): string {
 
 			{/* ── TechCrunch ── */}
 			<section>
-				<div class="flex items-center gap-4 mb-8">
-					<div class="h-px flex-1 bg-gray-100"></div>
-					<h2 class="text-xs font-black uppercase tracking-[0.3em] text-gray-400">TechCrunch</h2>
-					<div class="h-px flex-1 bg-gray-100"></div>
+				<div class="grid grid-cols-[1fr_auto_1fr] items-center gap-4 mb-8">
+					<div class="editorial-rule h-px"></div>
+					<h2 class="font-mono text-xs uppercase tracking-[0.18em] text-[color:var(--color-ink-mute)]">TechCrunch</h2>
+					<div class="editorial-rule h-px"></div>
 				</div>
 
 				{techCrunch.length === 0 ? (
-					<p class="text-gray-400 text-sm italic">No TechCrunch data available.</p>
+					<p class="text-[color:var(--color-ink-mute)] text-sm italic">No TechCrunch data available.</p>
 				) : (
 					<ul class="space-y-6">
 						{techCrunch.map((item: any) => (
 							<li class="group">
 								<a href={item.url} target="_blank" rel="noopener noreferrer" class="block">
-									<h3 class="text-lg font-bold text-gray-900 group-hover:text-purple-600 transition-colors leading-snug">
+									<h3 class="text-lg font-semibold text-[color:var(--color-ink)] group-hover:text-[color:var(--color-accent)] transition-colors leading-snug">
 										{item.title}
 									</h3>
-									<div class="mt-1 flex items-center gap-3 text-xs font-bold text-gray-400 uppercase tracking-widest">
+									<div class="mt-1 flex items-center gap-3 font-mono text-xs text-[color:var(--color-ink-mute)]">
 										{item.creator && (
 											<>
 												<span>{item.creator}</span>
-												<span class="w-1 h-1 rounded-full bg-gray-300"></span>
+												<span class="h-px w-4 bg-[color:var(--color-rule)]"></span>
 											</>
 										)}
 										{item.pubDate && (
@@ -259,14 +259,14 @@ function fmtDate(iso: string | null): string {
 
 			{/* ── Quick Take ── */}
 			<section>
-				<div class="flex items-center gap-4 mb-8">
-					<div class="h-px flex-1 bg-gray-100"></div>
-					<h2 class="text-xs font-black uppercase tracking-[0.3em] text-gray-400">Quick Take</h2>
-					<div class="h-px flex-1 bg-gray-100"></div>
+				<div class="grid grid-cols-[1fr_auto_1fr] items-center gap-4 mb-8">
+					<div class="editorial-rule h-px"></div>
+					<h2 class="font-mono text-xs uppercase tracking-[0.18em] text-[color:var(--color-ink-mute)]">Quick Take</h2>
+					<div class="editorial-rule h-px"></div>
 				</div>
 
-				<div class="bg-white border border-gray-100 rounded-xl p-8">
-					<p class="text-gray-900 font-medium leading-relaxed italic">
+				<div class="bg-[color:var(--color-paper-deep)] border border-[color:var(--color-rule)] p-8">
+					<p class="text-[color:var(--color-ink)] leading-relaxed italic">
 						{tracking.quickTake || "No quick take yet. This section will contain brief commentary on what's interesting in the data above."}
 					</p>
 				</div>
