@@ -1,0 +1,552 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MadeWeb GTM Strategy</title>
+  <meta name="description" content="A go-to-market and growth strategy for MadeWeb, a home for useful little web things made with AI." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #f6f1e8;
+      --paper-2: #fffaf0;
+      --ink: #171615;
+      --soft: #423d35;
+      --muted: #746c60;
+      --rule: #d8cfbb;
+      --teal: #08766f;
+      --coral: #c95b42;
+      --black: #111111;
+      --white: #fffdf8;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.65;
+    }
+
+    a { color: inherit; }
+
+    .shell {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .page {
+      border: 1px solid var(--rule);
+      background: var(--paper-2);
+    }
+
+    .hero {
+      padding: clamp(42px, 8vw, 96px) clamp(24px, 7vw, 72px);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .back-link,
+    .eyebrow {
+      font-family: "JetBrains Mono", monospace;
+      color: var(--teal);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    .back-link {
+      display: inline-flex;
+      gap: 8px;
+      margin-bottom: 42px;
+      text-decoration: none;
+    }
+
+    h1, h2, h3 {
+      margin: 0;
+      font-family: Fraunces, Georgia, serif;
+      line-height: 1.04;
+      letter-spacing: 0;
+    }
+
+    h1 {
+      max-width: 950px;
+      font-size: clamp(48px, 7vw, 92px);
+    }
+
+    h2 {
+      max-width: 880px;
+      font-size: clamp(34px, 4.5vw, 58px);
+    }
+
+    h3 { font-size: 27px; }
+
+    p, li {
+      color: var(--soft);
+      font-size: 18px;
+    }
+
+    .dek {
+      max-width: 780px;
+      margin: 24px 0 0;
+      color: var(--soft);
+      font-size: clamp(20px, 2.1vw, 25px);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(280px, .65fr);
+      gap: 36px;
+      align-items: end;
+    }
+
+    .position-card {
+      border: 1px solid var(--rule);
+      background: var(--white);
+      padding: 22px;
+    }
+
+    .position-card b {
+      display: block;
+      margin-bottom: 10px;
+      font-family: "JetBrains Mono", monospace;
+      color: var(--teal);
+      font-size: 11px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .section {
+      padding: clamp(34px, 6vw, 74px) clamp(24px, 7vw, 72px);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .section:last-child { border-bottom: 0; }
+
+    .section-lede {
+      max-width: 780px;
+      margin: 18px 0 0;
+      color: var(--soft);
+      font-size: 19px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 28px;
+    }
+
+    .grid.two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid.four {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .card {
+      border: 1px solid var(--rule);
+      background: var(--white);
+      padding: 20px;
+    }
+
+    .card b,
+    .metric b,
+    .phase b {
+      display: block;
+      margin-bottom: 9px;
+      font-family: "JetBrains Mono", monospace;
+      color: var(--teal);
+      font-size: 11px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .card span,
+    .metric span,
+    .phase span {
+      display: block;
+      color: var(--soft);
+      font-size: 15px;
+      line-height: 1.55;
+    }
+
+    .mockup {
+      margin-top: 30px;
+      border: 1px solid var(--rule);
+      background: var(--white);
+      padding: 14px;
+    }
+
+    .mockup img {
+      display: block;
+      width: 100%;
+      border: 1px solid var(--rule);
+    }
+
+    figcaption {
+      display: grid;
+      grid-template-columns: minmax(180px, .35fr) minmax(0, 1fr);
+      gap: 14px;
+      padding-top: 16px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    figcaption strong { color: var(--ink); }
+
+    details {
+      margin-top: 14px;
+      border-top: 1px solid var(--rule);
+      padding-top: 14px;
+    }
+
+    summary {
+      cursor: pointer;
+      font-family: "JetBrains Mono", monospace;
+      color: var(--teal);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    pre {
+      margin: 14px 0 0;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      border: 1px solid var(--rule);
+      background: var(--paper);
+      padding: 16px;
+      color: var(--soft);
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .quote {
+      margin: 30px 0 0;
+      border-left: 4px solid var(--teal);
+      padding: 6px 0 6px 22px;
+      max-width: 860px;
+      color: var(--ink);
+      font-family: Fraunces, Georgia, serif;
+      font-size: clamp(28px, 4vw, 48px);
+      line-height: 1.08;
+    }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 28px;
+    }
+
+    .phase {
+      border: 1px solid var(--rule);
+      background: var(--white);
+      padding: 20px;
+    }
+
+    .phase ul {
+      margin: 16px 0 0;
+      padding-left: 20px;
+    }
+
+    .phase li {
+      margin: 8px 0;
+      color: var(--soft);
+      font-size: 15px;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .metric {
+      border: 1px solid var(--rule);
+      background: var(--paper);
+      padding: 18px;
+    }
+
+    .metric strong {
+      display: block;
+      margin-bottom: 6px;
+      font-family: Fraunces, Georgia, serif;
+      font-size: 38px;
+      line-height: 1;
+    }
+
+    .pill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .pill-list span {
+      border: 1px solid var(--rule);
+      background: var(--white);
+      padding: 9px 12px;
+      color: var(--soft);
+      font-size: 14px;
+    }
+
+    .cta {
+      display: inline-flex;
+      margin-top: 28px;
+      background: var(--black);
+      color: var(--white);
+      padding: 13px 18px;
+      text-decoration: none;
+      font-weight: 800;
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid,
+      .grid,
+      .grid.two,
+      .grid.four,
+      .timeline,
+      .metrics,
+      figcaption {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .shell { padding: 12px; }
+      h1 { font-size: 40px; }
+      h2 { font-size: 33px; }
+      p, li { font-size: 16px; }
+      .section, .hero { padding-left: 20px; padding-right: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <article class="page">
+      <header class="hero">
+        <a class="back-link" href="/ideas/agent-native-html-artifacts/">← Back to artifact idea</a>
+        <div class="hero-grid">
+          <div>
+            <p class="eyebrow">MadeWeb GTM strategy</p>
+            <h1>A launch plan for a personal web shelf of live artifacts.</h1>
+            <p class="dek">MadeWeb should not enter the market as another AI website builder. It should introduce a lighter behavior: your AI made something useful, MadeWeb gives it a URL, a shelf, and a way to spread.</p>
+          </div>
+          <div class="position-card">
+            <b>Core promise</b>
+            <p>Prompt it, publish it, share it. A personal gallery of useful little webpages, tools, cards, widgets, and single-page apps.</p>
+          </div>
+        </div>
+      </header>
+
+      <section class="section">
+        <p class="eyebrow">Positioning</p>
+        <h2>The category is not “AI websites.” It is live artifacts.</h2>
+        <p class="section-lede">The strongest wedge is not that AI can make websites. Everyone is learning that. The sharper claim is that AI creates many small, useful, moment-specific things, and those things need a durable home.</p>
+        <p class="quote">For humans, it is a simple shareable page. For agents, it is a deployment target.</p>
+        <div class="grid">
+          <div class="card"><b>Human language</b><span>A home for the little web things you make with AI.</span></div>
+          <div class="card"><b>Product language</b><span>A personal web shelf for live artifacts: explainers, planners, calculators, reports, cards, widgets, and apps.</span></div>
+          <div class="card"><b>Developer language</b><span>An agent-native publishing surface for plain HTML artifacts with namespaces, versions, visibility, and API/CLI/MCP access.</span></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <p class="eyebrow">Landing page direction</p>
+        <h2>Lead with the namespace and the examples.</h2>
+        <p class="section-lede">The landing page should make the behavior obvious in one glance: claim a namespace, publish a useful thing, share a clean URL, and let others make their own.</p>
+        <figure class="mockup">
+          <img src="/images/ideas/madeweb-gtm/landing-page-mockup.png" alt="MadeWeb landing page mockup showing namespace claim, artifact cards, and example web things." />
+          <figcaption>
+            <strong>Landing page mockup</strong>
+            <span>The first screen sells a serious but lightweight product: a personal namespace, a concrete artifact URL, and examples that nontechnical users understand.</span>
+          </figcaption>
+          <details>
+            <summary>Generation prompt</summary>
+            <pre>Use case: ui-mockup
+Asset type: website section mockup for a product strategy page
+Primary request: Create a polished high-fidelity desktop landing page mockup for a product called MadeWeb. It is a home for little web things people make with AI. The mockup should feel serious but lightweight, like a modern publishing platform rather than a toy. Include a hero headline, a personal namespace example, a grid of artifact cards, and a clear CTA to claim a namespace.
+Scene/backdrop: Clean browser-like website screenshot on a warm off-white background, no device frame, no perspective tilt.
+Subject: MadeWeb landing page UI with top nav, hero, example cards, and creator namespace.
+Text requirements: Use only these exact visible words where text appears: "MadeWeb", "A home for the little web things you make with AI", "creator.madeweb.ai/mcp-explainer", "Claim your namespace", "Make one like this", "Trip guide", "Explainer", "Calculator", "Dashboard".
+Style: Sophisticated editorial SaaS, warm neutral background, black typography, subtle teal accents, crisp grid, 8px radius maximum, no purple gradients, no decorative orbs, no cartoon elements.
+Composition: Wide 16:9 landscape, full landing page above the fold with a hint of cards below. Make the product UI legible and modern.
+Avoid: logos that look like real existing brands, fake browser chrome clutter, illegible tiny text, distorted typography, excessive shadows, stock-photo people, mascots, dark mode.</pre>
+          </details>
+        </figure>
+      </section>
+
+      <section class="section">
+        <p class="eyebrow">Audience tracks</p>
+        <h2>Three audiences, one primitive.</h2>
+        <p class="section-lede">The same product can feel approachable to nontechnical users and inevitable to agent builders if the message changes by audience while the underlying primitive stays stable.</p>
+        <div class="grid">
+          <div class="card"><b>Everyday makers</b><span>“I asked AI for something useful, now I need a clean link.” Examples: trip companions, event pages, explainers, checklists, route planners, decision guides.</span></div>
+          <div class="card"><b>AI-native creators</b><span>“Stop losing useful AI outputs in chat. Put them on your MadeWeb shelf.” These users already make things in ChatGPT, Claude, Gemini, Cursor, Replit, and Lovable.</span></div>
+          <div class="card"><b>Agent builders</b><span>“Give your agent one obvious tool: publish_artifact.” They care about plain HTML, CLI/MCP/API access, versioning, visibility, and sandboxing.</span></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <p class="eyebrow">Product surface</p>
+        <h2>The shelf is the public identity layer.</h2>
+        <p class="section-lede">The profile should not feel like social media first. It should feel like a credible collection of working objects: some public, some unlisted, some private-link, all under a creator namespace.</p>
+        <figure class="mockup">
+          <img src="/images/ideas/madeweb-gtm/creator-shelf-mockup.png" alt="MadeWeb creator shelf mockup showing artifact cards, visibility labels, and a featured explainer." />
+          <figcaption>
+            <strong>Creator shelf mockup</strong>
+            <span>The shelf turns private-link utility into public authority over time. It gives creators a place to point people: creator.madeweb.ai/mcp-explainer.</span>
+          </figcaption>
+          <details>
+            <summary>Generation prompt</summary>
+            <pre>Use case: ui-mockup
+Asset type: creator profile/shelf mockup for a product strategy page
+Primary request: Create a polished high-fidelity UI mockup for a MadeWeb creator shelf page. It should show a personal namespace profile where someone collects and shares useful web artifacts made with AI. The design should feel credible, calm, lightweight, and useful for nontechnical people.
+Scene/backdrop: Clean desktop website screenshot on a warm off-white background, no browser frame, no device frame.
+Subject: A MadeWeb creator shelf/profile page with a left profile column, a timeline/grid of artifact cards, visibility labels, and one featured artifact card.
+Text requirements: Use only these exact visible words where text appears: "creator.madeweb.ai", "Creator shelf", "Useful web things", "MCP explainer", "Vegas trip companion", "Home search route", "Pricing calculator", "Private link", "Public", "Unlisted", "Make one like this", "Follow".
+Style: Sophisticated editorial SaaS, warm neutral, black typography, subtle teal and muted coral accents, sharp information hierarchy, cards 8px radius maximum, no purple gradients, no decorative blobs.
+Composition: Wide 16:9 landscape, profile on left, artifact grid/timeline on right, one large featured card and several smaller cards. Make it look like a serious personal publishing surface rather than social media clutter.
+Avoid: real personal names, fake brand logos, illegible small text, heavy shadows, cartoon mascots, phone mockups, dark mode.</pre>
+          </details>
+        </figure>
+      </section>
+
+      <section class="section">
+        <p class="eyebrow">Launch wedge</p>
+        <h2>Start with private-link useful artifacts.</h2>
+        <p class="section-lede">The first behavior to validate is not public profile culture. It is “I made a useful little thing and need to send it to someone.” Once those private and semi-private artifacts are useful, the public shelf becomes a natural second step.</p>
+        <div class="grid four">
+          <div class="card"><b>Trip guide</b><span>A page made for a spouse, friend group, or family weekend.</span></div>
+          <div class="card"><b>Explainer</b><span>A concept walkthrough that is easier to share than a chat transcript.</span></div>
+          <div class="card"><b>Calculator</b><span>A one-off tool for a pricing, mortgage, classroom, or planning decision.</span></div>
+          <div class="card"><b>Report</b><span>A lightweight interactive writeup with charts, filters, and notes.</span></div>
+        </div>
+        <div class="pill-list">
+          <span>Private link</span>
+          <span>Unlisted</span>
+          <span>Public shelf</span>
+          <span>Card view</span>
+          <span>Widget view</span>
+          <span>Version history</span>
+        </div>
+      </section>
+
+      <section class="section">
+        <p class="eyebrow">Growth loop</p>
+        <h2>Every shared artifact can create the next creator.</h2>
+        <p class="section-lede">The badge is useful, but the stronger loop is remix. A viewer should understand the artifact, trust the page, and immediately see the path to making their own version.</p>
+        <figure class="mockup">
+          <img src="/images/ideas/madeweb-gtm/growth-loop-mockup.png" alt="MadeWeb growth loop mockup showing prompt, publish, share, view, remix, and namespace claim steps." />
+          <figcaption>
+            <strong>Growth loop mockup</strong>
+            <span>The core loop: AI makes something useful, MadeWeb publishes it, someone views it, then clicks “Make one like this.”</span>
+          </figcaption>
+          <details>
+            <summary>Generation prompt</summary>
+            <pre>Use case: productivity-visual
+Asset type: growth strategy mockup for a product strategy page
+Primary request: Create a polished strategic diagram/mockup for MadeWeb showing the growth loop from AI creating a useful web thing to sharing, viewing, remixing, and claiming a namespace. It should look like a product strategy board or landing-page infographic, not a childish diagram.
+Scene/backdrop: Warm off-white canvas, crisp cards and arrows, no browser frame, no people.
+Subject: A growth loop with five connected cards: prompt, publish, share, view, remix. Include small UI fragments such as an artifact card, a namespace URL, a CTA button, and a badge.
+Text requirements: Use only these exact visible words where text appears: "MadeWeb growth loop", "Prompt", "Publish", "Share", "View", "Remix", "creator.madeweb.ai/trip-guide", "Make one like this", "Made with MadeWeb", "Claim your namespace".
+Style: Serious product strategy visual, editorial SaaS, warm neutral, black type, teal arrows/accent, muted coral secondary label, 8px radius maximum, clean hierarchy.
+Composition: Wide 16:9 landscape, loop centered, supporting mini UI cards around it, legible text.
+Avoid: purple gradients, decorative blobs, cartoons, mascots, dark mode, tiny illegible text, photorealistic people.</pre>
+          </details>
+        </figure>
+      </section>
+
+      <section class="section">
+        <p class="eyebrow">Channels</p>
+        <h2>Launch different doors into the same product.</h2>
+        <div class="grid two">
+          <div class="card"><b>Show HN</b><span>“Show HN: MadeWeb, an agent-native home for HTML artifacts.” Emphasize plain web files, no framework lock-in, stable URLs, version history, sandboxing, CLI/MCP, and one artifact with many surfaces.</span></div>
+          <div class="card"><b>Product Hunt</b><span>“Publish the useful little web things your AI makes.” Make this visual: creator shelves, artifact cards, remixing, examples, and claim-your-namespace.</span></div>
+          <div class="card"><b>AI creator circles</b><span>Post prompt-to-published demos on X, AI newsletters, AI Tinkerers, teacher communities, indie hacker groups, and creator forums.</span></div>
+          <div class="card"><b>MCP and agent builders</b><span>Lead with the tool surface: publish_artifact, update_artifact, list_artifacts, set_visibility, rollback_artifact, generate_card_view.</span></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <p class="eyebrow">Pricing hypothesis</p>
+        <h2>Price around artifacts, identity, and distribution.</h2>
+        <div class="grid">
+          <div class="card"><b>Free</b><span>10 public or unlisted artifacts, private-link sharing, MadeWeb badge, basic generated previews, public shelf.</span></div>
+          <div class="card"><b>Plus · $8-12/mo</b><span>More artifacts, custom domain, remove badge, private artifacts, version history, analytics, stronger cards/widgets.</span></div>
+          <div class="card"><b>Pro / Agent</b><span>CLI and MCP publishing, deploy tokens, API access, larger bundles, team namespaces, audit and rollback controls.</span></div>
+        </div>
+        <p class="section-lede">Do not bury API/MCP behind enterprise pricing. Agent builders are an early wedge, so give them a generous beta and charge once usage and collaboration become real.</p>
+      </section>
+
+      <section class="section">
+        <p class="eyebrow">90-day plan</p>
+        <h2>Validate usefulness before chasing profile culture.</h2>
+        <div class="timeline">
+          <div class="phase">
+            <b>First 30 days</b>
+            <span>Concierge beta with seed artifacts.</span>
+            <ul>
+              <li>50 seed artifacts, at least half private-link or unlisted.</li>
+              <li>10 examples with page, card, and widget variants.</li>
+              <li>10 agent builders publishing via CLI/MCP prototype.</li>
+              <li>20 nontechnical users publishing from prompts with help.</li>
+            </ul>
+          </div>
+          <div class="phase">
+            <b>First 60 days</b>
+            <span>Find the strongest wedge.</span>
+            <ul>
+              <li>Launch public creator shelves after private-link utility is proven.</li>
+              <li>Add “generate card view” as a signature feature.</li>
+              <li>Publish “the post becomes software” essay/demo.</li>
+              <li>Do Show HN with CLI/MCP demo.</li>
+            </ul>
+          </div>
+          <div class="phase">
+            <b>First 90 days</b>
+            <span>Turn usage into a repeatable loop.</span>
+            <ul>
+              <li>Product Hunt launch around the visual artifact shelf.</li>
+              <li>Open template and remix gallery.</li>
+              <li>Launch agent publishing beta as a named program.</li>
+              <li>Start paid conversion around custom domains and private artifacts.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="metrics">
+          <div class="metric"><strong>100</strong><b>Artifacts</b><span>30-day proof that people can publish useful things.</span></div>
+          <div class="metric"><strong>30</strong><b>Creators</b><span>Enough variety to see which use cases repeat.</span></div>
+          <div class="metric"><strong>10</strong><b>Organic shares</b><span>People shared without being prompted.</span></div>
+          <div class="metric"><strong>20%</strong><b>Loop signal</b><span>New signups coming from shared MadeWeb pages by day 60.</span></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <p class="eyebrow">Review questions</p>
+        <h2>The decisions to make before launch.</h2>
+        <div class="grid two">
+          <div class="card"><b>Brand promise</b><span>Is MadeWeb mainly “a home for little web things,” “a personal shelf for live artifacts,” or “a publishing target for agent-made HTML”?</span></div>
+          <div class="card"><b>First wedge</b><span>Which initial artifact type feels most naturally shareable: explainers, trip/planning pages, calculators, reports, or dashboards?</span></div>
+          <div class="card"><b>Access model</b><span>Should early users join a waitlist, reserve a namespace, or immediately publish with a soft invite gate?</span></div>
+          <div class="card"><b>Agent beta</b><span>Should CLI/MCP access be part of the first public story, or a quieter developer beta beneath the human-facing launch?</span></div>
+        </div>
+        <a class="cta" href="/ideas/agent-native-html-artifacts/">Return to the artifact idea</a>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

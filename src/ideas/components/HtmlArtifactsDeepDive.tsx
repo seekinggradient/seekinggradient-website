@@ -502,6 +502,29 @@ export function HtmlArtifactsDeepDive() {
         Deep dive — the artifact primitive
       </h2>
 
+      <div className="mb-12 border border-[color:var(--color-rule)] bg-[#fffaf0] p-5 sm:p-7">
+        <div className="grid gap-5 md:grid-cols-[0.65fr_0.35fr] md:items-end">
+          <div>
+            <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-accent)] mb-5">
+              Companion strategy
+            </p>
+            <h3 className="display text-3xl sm:text-4xl leading-tight">
+              MadeWeb GTM and growth strategy
+            </h3>
+            <p className="mt-3 text-[16px] leading-[1.75] text-[color:var(--color-ink-soft)]">
+              A richer companion page for the product positioning, launch plan, pricing hypothesis,
+              growth loops, and generated landing-page mockups.
+            </p>
+          </div>
+          <a
+            href="/ideas/agent-native-html-artifacts/gtm/index.html"
+            className="inline-flex justify-center bg-[color:var(--color-ink)] px-4 py-3 text-sm font-semibold text-[#fffaf0] transition-colors hover:bg-[color:var(--color-accent)]"
+          >
+            Open GTM strategy
+          </a>
+        </div>
+      </div>
+
       <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr] items-stretch mb-12">
         <div className="border border-[color:var(--color-rule)] bg-[#fffaf0] p-6 sm:p-7 flex flex-col justify-between">
           <div>
