@@ -513,7 +513,7 @@ export function HtmlArtifactsDeepDive() {
             </h3>
             <p className="mt-3 text-[16px] leading-[1.75] text-[color:var(--color-ink-soft)]">
               A richer companion page for product positioning, launch plan, pricing and packaging,
-              domain-name notes, growth loops, and modern generated product mockups.
+              domain-name notes, agent-first workflows, and modern generated product mockups.
             </p>
           </div>
           <a
