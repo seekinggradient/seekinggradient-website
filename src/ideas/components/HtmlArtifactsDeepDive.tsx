@@ -512,8 +512,8 @@ export function HtmlArtifactsDeepDive() {
               MadeWeb GTM and growth strategy
             </h3>
             <p className="mt-3 text-[16px] leading-[1.75] text-[color:var(--color-ink-soft)]">
-              A richer companion page for the product positioning, launch plan, pricing hypothesis,
-              growth loops, and generated landing-page mockups.
+              A richer companion page for product positioning, launch plan, pricing and packaging,
+              domain-name notes, growth loops, and modern generated product mockups.
             </p>
           </div>
           <a

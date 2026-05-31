@@ -152,6 +152,10 @@
       grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 
+    .grid.five {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+
     .card {
       border: 1px solid var(--rule);
       background: var(--white);
@@ -177,6 +181,65 @@
       color: var(--soft);
       font-size: 15px;
       line-height: 1.55;
+    }
+
+    .card strong {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--ink);
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .tier-table {
+      width: 100%;
+      margin-top: 28px;
+      border-collapse: collapse;
+      border: 1px solid var(--rule);
+      background: var(--white);
+    }
+
+    .tier-table th,
+    .tier-table td {
+      border-bottom: 1px solid var(--rule);
+      padding: 16px;
+      text-align: left;
+      vertical-align: top;
+      color: var(--soft);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .tier-table th {
+      font-family: "JetBrains Mono", monospace;
+      color: var(--teal);
+      font-size: 11px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .tier-table td:first-child {
+      color: var(--ink);
+      font-weight: 800;
+    }
+
+    .tier-table td:nth-child(2) {
+      color: var(--ink);
+      font-family: Fraunces, Georgia, serif;
+      font-size: 24px;
+      white-space: nowrap;
+    }
+
+    .note {
+      margin-top: 24px;
+      border: 1px solid var(--rule);
+      background: var(--paper);
+      padding: 22px;
+    }
+
+    .note p {
+      margin: 0;
+      font-size: 16px;
     }
 
     .mockup {
@@ -314,10 +377,16 @@
     }
 
     @media (max-width: 900px) {
+      .tier-table {
+        display: block;
+        overflow-x: auto;
+      }
+
       .hero-grid,
       .grid,
       .grid.two,
       .grid.four,
+      .grid.five,
       .timeline,
       .metrics,
       figcaption {
@@ -367,24 +436,18 @@
       <section class="section">
         <p class="eyebrow">Landing page direction</p>
         <h2>Lead with the namespace and the examples.</h2>
-        <p class="section-lede">The landing page should make the behavior obvious in one glance: claim a namespace, publish a useful thing, share a clean URL, and let others make their own.</p>
+        <p class="section-lede">The landing page should make the behavior obvious in one glance: claim a namespace, publish a useful thing, share a clean URL, and let others make their own. The visual language should feel more like a modern publishing product than a generic AI tool.</p>
         <figure class="mockup">
-          <img src="/images/ideas/madeweb-gtm/landing-page-mockup.png" alt="MadeWeb landing page mockup showing namespace claim, artifact cards, and example web things." />
+          <img src="/images/ideas/madeweb-gtm/landing-page-modern.png" alt="Modern MadeWeb landing page mockup showing namespace claim, page/card/widget tabs, and example artifact cards." />
           <figcaption>
-            <strong>Landing page mockup</strong>
-            <span>The first screen sells a serious but lightweight product: a personal namespace, a concrete artifact URL, and examples that nontechnical users understand.</span>
+            <strong>Modern landing page mockup</strong>
+            <span>The first screen has to prove the category: this is not a website builder, template gallery, or AI chat feature. It is where useful little web things get a URL and a public surface.</span>
           </figcaption>
           <details>
             <summary>Generation prompt</summary>
             <pre>Use case: ui-mockup
-Asset type: website section mockup for a product strategy page
-Primary request: Create a polished high-fidelity desktop landing page mockup for a product called MadeWeb. It is a home for little web things people make with AI. The mockup should feel serious but lightweight, like a modern publishing platform rather than a toy. Include a hero headline, a personal namespace example, a grid of artifact cards, and a clear CTA to claim a namespace.
-Scene/backdrop: Clean browser-like website screenshot on a warm off-white background, no device frame, no perspective tilt.
-Subject: MadeWeb landing page UI with top nav, hero, example cards, and creator namespace.
-Text requirements: Use only these exact visible words where text appears: "MadeWeb", "A home for the little web things you make with AI", "creator.madeweb.ai/mcp-explainer", "Claim your namespace", "Make one like this", "Trip guide", "Explainer", "Calculator", "Dashboard".
-Style: Sophisticated editorial SaaS, warm neutral background, black typography, subtle teal accents, crisp grid, 8px radius maximum, no purple gradients, no decorative orbs, no cartoon elements.
-Composition: Wide 16:9 landscape, full landing page above the fold with a hint of cards below. Make the product UI legible and modern.
-Avoid: logos that look like real existing brands, fake browser chrome clutter, illegible tiny text, distorted typography, excessive shadows, stock-photo people, mascots, dark mode.</pre>
+Asset type: modern SaaS landing page mockup, 16:9 landscape
+Primary request: Create a polished desktop landing page for a product called MadeWeb, a personal shelf for useful little web things made with AI. The page should look modern, refined, and product-real, not like a placeholder template. Show a namespace claim input, a large live artifact preview, and a row of artifact cards. The artifact preview should include tabs labeled Page, Card, Widget. Use only these readable labels: MadeWeb, A home for useful little web things, creator.madeweb.ai/mcp-explainer, Claim your namespace, Make one like this, Page, Card, Widget, Trip guide, Explainer, Calculator, Report. Use abstract text blocks for all other copy. Visual style: porcelain/off-white background, graphite typography, precise grid, subtle teal and blue accents, small coral status chips, modern product UI, crisp shadows, 8px radius maximum. Avoid purple gradients, decorative orbs, mascots, fake real logos, crypto aesthetics, gibberish text, real personal names, and dark mode.</pre>
           </details>
         </figure>
       </section>
@@ -405,22 +468,16 @@ Avoid: logos that look like real existing brands, fake browser chrome clutter, i
         <h2>The shelf is the public identity layer.</h2>
         <p class="section-lede">The profile should not feel like social media first. It should feel like a credible collection of working objects: some public, some unlisted, some private-link, all under a creator namespace.</p>
         <figure class="mockup">
-          <img src="/images/ideas/madeweb-gtm/creator-shelf-mockup.png" alt="MadeWeb creator shelf mockup showing artifact cards, visibility labels, and a featured explainer." />
+          <img src="/images/ideas/madeweb-gtm/creator-shelf-modern.png" alt="Modern MadeWeb creator shelf mockup showing a public namespace, artifact filters, live artifact cards, and visibility labels." />
           <figcaption>
-            <strong>Creator shelf mockup</strong>
-            <span>The shelf turns private-link utility into public authority over time. It gives creators a place to point people: creator.madeweb.ai/mcp-explainer.</span>
+            <strong>Modern creator shelf mockup</strong>
+            <span>The shelf should feel like a public software shelf, not a social profile. The cards need to imply live apps: maps, calculators, explainers, dashboards, and reports.</span>
           </figcaption>
           <details>
             <summary>Generation prompt</summary>
             <pre>Use case: ui-mockup
-Asset type: creator profile/shelf mockup for a product strategy page
-Primary request: Create a polished high-fidelity UI mockup for a MadeWeb creator shelf page. It should show a personal namespace profile where someone collects and shares useful web artifacts made with AI. The design should feel credible, calm, lightweight, and useful for nontechnical people.
-Scene/backdrop: Clean desktop website screenshot on a warm off-white background, no browser frame, no device frame.
-Subject: A MadeWeb creator shelf/profile page with a left profile column, a timeline/grid of artifact cards, visibility labels, and one featured artifact card.
-Text requirements: Use only these exact visible words where text appears: "creator.madeweb.ai", "Creator shelf", "Useful web things", "MCP explainer", "Vegas trip companion", "Home search route", "Pricing calculator", "Private link", "Public", "Unlisted", "Make one like this", "Follow".
-Style: Sophisticated editorial SaaS, warm neutral, black typography, subtle teal and muted coral accents, sharp information hierarchy, cards 8px radius maximum, no purple gradients, no decorative blobs.
-Composition: Wide 16:9 landscape, profile on left, artifact grid/timeline on right, one large featured card and several smaller cards. Make it look like a serious personal publishing surface rather than social media clutter.
-Avoid: real personal names, fake brand logos, illegible small text, heavy shadows, cartoon mascots, phone mockups, dark mode.</pre>
+Asset type: creator shelf profile UI, 16:9 landscape
+Primary request: Create a modern public profile page for MadeWeb showing a personal namespace shelf of live HTML artifacts. It should feel like a credible public software shelf, not social media and not a blog. Show a compact profile header, filter tabs, a masonry grid of artifact cards, and visible status chips. Cards should look like live mini apps: a route map, a calculator with sliders, an explainer diagram, a small analytics dashboard, and a report table. Use only these readable labels: creator.madeweb.ai, Public shelf, Useful web things, Public, Unlisted, Private link, MCP explainer, Home search route, Pricing calculator, Research report, Make one like this. Use abstract text blocks elsewhere. Visual style: modern, rich, polished, off-white canvas, graphite type, teal/blue accents, small coral privacy chip, crisp card hierarchy, subtle depth. Avoid oversized avatars, fake personal names, stock photos, gibberish text, AI sparkle motifs, purple gradients, and dark mode.</pre>
           </details>
         </figure>
       </section>
@@ -446,26 +503,38 @@ Avoid: real personal names, fake brand logos, illegible small text, heavy shadow
       </section>
 
       <section class="section">
-        <p class="eyebrow">Growth loop</p>
-        <h2>Every shared artifact can create the next creator.</h2>
-        <p class="section-lede">The badge is useful, but the stronger loop is remix. A viewer should understand the artifact, trust the page, and immediately see the path to making their own version.</p>
+        <p class="eyebrow">Modern product surfaces</p>
+        <h2>Show the real product, not just the strategy diagram.</h2>
+        <p class="section-lede">The biggest GTM unlock is visual clarity. MadeWeb needs to show one artifact becoming a full page, a card, a widget, a stable URL, a versioned workbench, and an agent-friendly publishing target.</p>
+        <div class="grid">
+          <div class="card"><b>Design feel</b><span>Raycast plus Notion public pages plus Vercel deploy dashboard, but warmer and more creator-friendly.</span></div>
+          <div class="card"><b>UI primitives</b><span>URL pills, segmented controls, visibility chips, version timelines, deploy logs, usage meters, compact analytics, and live mini-app cards.</span></div>
+          <div class="card"><b>Avoid</b><span>Generic AI gradients, oversized avatars, crypto aesthetics, vague dashboard cards, fake logos, and anything that makes the product feel like a toy.</span></div>
+        </div>
         <figure class="mockup">
-          <img src="/images/ideas/madeweb-gtm/growth-loop-mockup.png" alt="MadeWeb growth loop mockup showing prompt, publish, share, view, remix, and namespace claim steps." />
+          <img src="/images/ideas/madeweb-gtm/artifact-workbench-modern.png" alt="Modern MadeWeb artifact workbench mockup showing page, card, widget, preview tabs, visibility controls, version history, analytics, and source controls." />
           <figcaption>
-            <strong>Growth loop mockup</strong>
-            <span>The core loop: AI makes something useful, MadeWeb publishes it, someone views it, then clicks “Make one like this.”</span>
+            <strong>Artifact workbench mockup</strong>
+            <span>This is the product truth: one HTML artifact can have a full-page view, a card view, a widget view, version history, analytics, source controls, and a remix path.</span>
           </figcaption>
           <details>
             <summary>Generation prompt</summary>
-            <pre>Use case: productivity-visual
-Asset type: growth strategy mockup for a product strategy page
-Primary request: Create a polished strategic diagram/mockup for MadeWeb showing the growth loop from AI creating a useful web thing to sharing, viewing, remixing, and claiming a namespace. It should look like a product strategy board or landing-page infographic, not a childish diagram.
-Scene/backdrop: Warm off-white canvas, crisp cards and arrows, no browser frame, no people.
-Subject: A growth loop with five connected cards: prompt, publish, share, view, remix. Include small UI fragments such as an artifact card, a namespace URL, a CTA button, and a badge.
-Text requirements: Use only these exact visible words where text appears: "MadeWeb growth loop", "Prompt", "Publish", "Share", "View", "Remix", "creator.madeweb.ai/trip-guide", "Make one like this", "Made with MadeWeb", "Claim your namespace".
-Style: Serious product strategy visual, editorial SaaS, warm neutral, black type, teal arrows/accent, muted coral secondary label, 8px radius maximum, clean hierarchy.
-Composition: Wide 16:9 landscape, loop centered, supporting mini UI cards around it, legible text.
-Avoid: purple gradients, decorative blobs, cartoons, mascots, dark mode, tiny illegible text, photorealistic people.</pre>
+            <pre>Use case: ui-mockup
+Asset type: artifact detail workbench UI, 16:9 landscape
+Primary request: Create a MadeWeb artifact detail/workbench screen that demonstrates one artifact with many surfaces. The central area shows a live artifact preview. A segmented control switches between Page, Card, Widget, Preview. A right sidebar shows visibility, version history, analytics, source bundle, and a Make one like this action. Include a stable URL pill. Use only these readable labels: creator.madeweb.ai/home-search-route, Page, Card, Widget, Preview, Visibility, Private link, Version history, Analytics, Source, Make one like this, v7. Use abstract text blocks for other text. Visual style: modern publishing infrastructure, refined, crisp, serious but friendly, porcelain background, graphite type, teal and blue accents, compact controls, high information density. Avoid fake brand logos, real personal names, distorted text, excessive shadows, purple gradients, mascots, and dark mode.</pre>
+          </details>
+        </figure>
+        <figure class="mockup">
+          <img src="/images/ideas/madeweb-gtm/agent-publish-modern.png" alt="Modern MadeWeb agent publishing dashboard mockup showing publish_artifact, deploy status, URL, visibility, deploy token, CLI, MCP, API, and rollback." />
+          <figcaption>
+            <strong>Agent publish flow mockup</strong>
+            <span>The agent story should not feel like a separate developer product. It is the same publishing system, with one obvious tool call and one obvious returned URL.</span>
+          </figcaption>
+          <details>
+            <summary>Generation prompt</summary>
+            <pre>Use case: ui-mockup
+Asset type: agent publishing dashboard, 16:9 landscape
+Primary request: Create a modern MadeWeb dashboard showing an agent-native publish flow. Split the screen into a left command/agent panel and a right deploy result panel. The left panel shows a clean code-like tool call for publish_artifact. The right panel shows deploy progress, returned URL, visibility dropdown, deploy token status, and recent versions. Use only these readable labels: publish_artifact, artifact publish, creator.madeweb.ai/mcp-explainer, Published v7, Visibility, Public, Deploy token, CLI, MCP, API, Rollback. Use abstract code blocks and abstract text blocks elsewhere. Visual style: serious developer tool meets approachable publishing product, light mode, crisp UI, graphite text, teal success states, blue links, compact layout. Avoid terminal-only design, hacker stereotypes, crypto styling, purple gradients, fake real logos, gibberish text, and real personal names.</pre>
           </details>
         </figure>
       </section>
@@ -482,14 +551,82 @@ Avoid: purple gradients, decorative blobs, cartoons, mascots, dark mode, tiny il
       </section>
 
       <section class="section">
-        <p class="eyebrow">Pricing hypothesis</p>
-        <h2>Price around artifacts, identity, and distribution.</h2>
-        <div class="grid">
-          <div class="card"><b>Free</b><span>10 public or unlisted artifacts, private-link sharing, MadeWeb badge, basic generated previews, public shelf.</span></div>
-          <div class="card"><b>Plus · $8-12/mo</b><span>More artifacts, custom domain, remove badge, private artifacts, version history, analytics, stronger cards/widgets.</span></div>
-          <div class="card"><b>Pro / Agent</b><span>CLI and MCP publishing, deploy tokens, API access, larger bundles, team namespaces, audit and rollback controls.</span></div>
+        <p class="eyebrow">Pricing and packaging</p>
+        <h2>Charge for permanence, control, and scale.</h2>
+        <p class="section-lede">MadeWeb should not price like an AI generator. The value is publishing, hosting, identity, privacy, history, and agent workflow. The growth loop stays generous; the paid plans unlock control and higher-volume use.</p>
+        <table class="tier-table">
+          <thead>
+            <tr>
+              <th>Tier</th>
+              <th>Price</th>
+              <th>Best for</th>
+              <th>Included limits and features</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Free Shelf</td>
+              <td>$0</td>
+              <td>Curious users, shared demos, and the viral loop.</td>
+              <td>10 active artifacts, 250MB storage, 10GB bandwidth/month, one namespace, public/unlisted/private-link artifacts, MadeWeb badge, basic previews, public shelf, 7-day version history.</td>
+            </tr>
+            <tr>
+              <td>Plus</td>
+              <td>$9/mo</td>
+              <td>Everyday creators who want a real public home.</td>
+              <td>100 active artifacts, 2GB storage, 100GB bandwidth/month, true private artifacts, badge removal, custom cards/widgets, 90-day analytics, 90-day version history, one custom domain.</td>
+            </tr>
+            <tr>
+              <td>Builder</td>
+              <td>$19/mo</td>
+              <td>Technical users and agent builders.</td>
+              <td>500 artifacts, 10GB storage, 500GB bandwidth/month, CLI/MCP/API access, 10 deploy tokens, webhooks, rollback, source bundle download, 1-year version history, three custom domains.</td>
+            </tr>
+            <tr>
+              <td>Team</td>
+              <td>$59/mo</td>
+              <td>Small teams, agencies, labs, and shared projects.</td>
+              <td>2,000 artifacts, 50GB storage, 2TB bandwidth/month, five seats, shared namespaces, roles, audit log, 50 deploy tokens, team analytics, ten custom domains.</td>
+            </tr>
+            <tr>
+              <td>Platform</td>
+              <td>Custom</td>
+              <td>High-volume agent apps and enterprise use.</td>
+              <td>Custom bandwidth/storage, SSO, moderation support, dedicated limits, negotiated API volume, abuse-control workflows, and support.</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="grid four">
+          <div class="card"><b>What stays free</b><span>Basic publishing, basic namespace, public shelf, unlisted/private-link sharing with badge, basic cards, prompt/provenance display, and “Make one like this.”</span></div>
+          <div class="card"><b>What converts</b><span>Custom domains, badge removal, private artifacts, more artifacts, more bandwidth, version history, rollback, analytics, and API/MCP scale.</span></div>
+          <div class="card"><b>Founder pricing</b><span>Offer Founder Plus at $5/mo for the first 500 paid creators and Founder Builder at $12/mo for the first 250 builder accounts.</span></div>
+          <div class="card"><b>Do not overcharge early</b><span>Keep the first deploy token and light CLI/MCP beta access generous. Agent builders are a wedge, not just an enterprise upsell.</span></div>
         </div>
-        <p class="section-lede">Do not bury API/MCP behind enterprise pricing. Agent builders are an early wedge, so give them a generous beta and charge once usage and collaboration become real.</p>
+        <figure class="mockup">
+          <img src="/images/ideas/madeweb-gtm/pricing-page-modern.png" alt="Modern MadeWeb pricing page mockup showing Free Shelf, Plus, Builder, and Team plans with artifacts, storage, bandwidth, and feature checks." />
+          <figcaption>
+            <strong>Pricing page mockup</strong>
+            <span>The pricing page should make the model legible: artifacts, storage, bandwidth, domains, privacy, and agent access. The buyer should understand what they are paying for without decoding infrastructure.</span>
+          </figcaption>
+          <details>
+            <summary>Generation prompt</summary>
+            <pre>Use case: ui-mockup
+Asset type: SaaS pricing page section, 16:9 landscape
+Primary request: Create a modern pricing page section for MadeWeb. Show four pricing cards with clear usage limits and a creator/builder framing. Include small usage meters for artifacts, storage, and bandwidth. Use only these readable labels: Free Shelf, Plus, Builder, Team, $0, $9, $19, $59, Artifacts, Storage, Bandwidth, Custom domain, Private artifacts, CLI, MCP, API, Start free. Use abstract text blocks elsewhere. Visual style: polished modern SaaS pricing, trustworthy, lightweight, off-white background, graphite typography, teal primary action, subtle blue accents, compact comparison details, 8px radius maximum. Avoid fake testimonials, fake real logos, real personal names, distorted text, purple gradients, decorative blobs, and dark mode.</pre>
+          </details>
+        </figure>
+      </section>
+
+      <section class="section">
+        <p class="eyebrow">Cost controls</p>
+        <h2>Hosting arbitrary HTML needs generous limits and sharp guardrails.</h2>
+        <p class="section-lede">The service should feel effortless for normal personal use, but strict for automated volume, abuse, and deceptive content. That balance is what lets the free loop exist without turning hosting costs or trust-and-safety work into a surprise.</p>
+        <div class="grid four">
+          <div class="card"><b>Bundle caps</b><span>Start with per-artifact bundle limits: Free 10MB, Plus 50MB, Builder 150MB, Team 250MB.</span></div>
+          <div class="card"><b>Bandwidth caps</b><span>Warn at 80%, then throttle, archive, or upgrade at 100%. Make the limit visible before it becomes scary.</span></div>
+          <div class="card"><b>Safe static scope</b><span>Day one is HTML, CSS, JS, images, fonts, and JSON. No server-side code. WASM can come later behind tighter review.</span></div>
+          <div class="card"><b>Trust controls</b><span>Sandbox cards/widgets, set conservative CSP and permission policies, rate-limit previews, add abuse reporting, and quarantine phishing-like pages.</span></div>
+        </div>
       </section>
 
       <section class="section">
@@ -536,6 +673,28 @@ Avoid: purple gradients, decorative blobs, cartoons, mascots, dark mode, tiny il
       </section>
 
       <section class="section">
+        <p class="eyebrow">Name and domain notes</p>
+        <h2>Keep MadeWeb for now; buy WebShelf as the strongest alternate.</h2>
+        <p class="section-lede">The name has to work for someone saying “check out my explainer at creator.domain.com/mcp-explainer.” It should feel serious enough for public identity and light enough for everyday people who are just sharing something useful.</p>
+        <div class="grid two">
+          <div class="card"><b>MadeWeb</b><strong>Best working name</strong><span>Friendly, broad, memorable, and good for both nontechnical creators and agent builders. The only drawback is that it emphasizes creation more than the shelf/publishing behavior.</span></div>
+          <div class="card"><b>webshelf.ai · $49.99</b><strong>Best alternate</strong><span>Directly names the category: a personal shelf for useful web artifacts. creator.webshelf.ai/mcp-explainer feels excellent. Worth buying defensively if still available.</span></div>
+          <div class="card"><b>webshelf.com · $4,995</b><strong>Best authority domain</strong><span>The strongest version of the alternate brand, but expensive enough to wait for conviction unless the name starts to feel inevitable.</span></div>
+          <div class="card"><b>liveposts.com · $1,999</b><strong>Best .com fallback</strong><span>Memorable and consumer-friendly, but “posts” pulls the product toward content rather than live apps, widgets, and artifacts.</span></div>
+        </div>
+        <div class="grid five">
+          <div class="card"><b>Good but generic</b><span>shareweb.ai is friendly, though it sounds like generic web/file sharing.</span></div>
+          <div class="card"><b>Cheap experiments</b><span>liveposts.ai and postweb.app are affordable but less precise than WebShelf.</span></div>
+          <div class="card"><b>Developer subbrand</b><span>agentartifact.ai is accurate for docs or tooling, but too cold for the main consumer-facing brand.</span></div>
+          <div class="card"><b>Avoid agent-heavy names</b><span>agentspost, postwithagent, agenticweb, and similar names overfit to the implementation instead of the human behavior.</span></div>
+          <div class="card"><b>Avoid agency confusion</b><span>agencypost, agencyspace, and postwithagency sound like marketing agencies, not personal web publishing.</span></div>
+        </div>
+        <div class="note">
+          <p><strong>Recommendation:</strong> keep MadeWeb on the page, treat WebShelf as the best alternate to test, and avoid rebranding around “agent” unless the first product is deliberately developer-first.</p>
+        </div>
+      </section>
+
+      <section class="section">
         <p class="eyebrow">Review questions</p>
         <h2>The decisions to make before launch.</h2>
         <div class="grid two">
@@ -543,6 +702,8 @@ Avoid: purple gradients, decorative blobs, cartoons, mascots, dark mode, tiny il
           <div class="card"><b>First wedge</b><span>Which initial artifact type feels most naturally shareable: explainers, trip/planning pages, calculators, reports, or dashboards?</span></div>
           <div class="card"><b>Access model</b><span>Should early users join a waitlist, reserve a namespace, or immediately publish with a soft invite gate?</span></div>
           <div class="card"><b>Agent beta</b><span>Should CLI/MCP access be part of the first public story, or a quieter developer beta beneath the human-facing launch?</span></div>
+          <div class="card"><b>Value metric</b><span>Is the first paid conversion driven mostly by artifact count, bandwidth/storage, custom domains, private artifacts, or CLI/MCP volume?</span></div>
+          <div class="card"><b>Visual proof</b><span>Which mockup makes the product click fastest: the shelf, the workbench, the pricing page, or the agent publish flow?</span></div>
         </div>
         <a class="cta" href="/ideas/agent-native-html-artifacts/">Return to the artifact idea</a>
       </section>
