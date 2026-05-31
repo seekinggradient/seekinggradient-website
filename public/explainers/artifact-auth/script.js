@@ -32,7 +32,7 @@ Worker:
 Authorization: Bearer art_live_B7k...
 
 Token row:
-name = "Akshay MacBook"
+name = "Creator MacBook"
 scopes = ["artifact:read", "artifact:write"]
 expires_at = 2026-12-31
 revoked_at = null`,

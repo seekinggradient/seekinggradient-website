@@ -332,7 +332,7 @@ export const ideas: Idea[] = [
       {
         heading: 'What it does',
         body:
-          'A user claims a namespace such as akshay.example.com. A human or agent can publish an artifact with one command or MCP call: an index.html file, optional assets, optional metadata, and optional alternate views. The platform stores the artifact, versions it, serves it from a stable URL, and adds it to the user profile.\n\nThe key primitive is one artifact with multiple viewports. The full page is where someone uses the thing. The card is where they encounter it in a feed or profile. The widget is where it gets composed into another page. A plain text post is just the smallest version of the same idea.',
+          'A user claims a namespace such as creator.example.com. A human or agent can publish an artifact with one command or MCP call: an index.html file, optional assets, optional metadata, and optional alternate views. The platform stores the artifact, versions it, serves it from a stable URL, and adds it to the user profile.\n\nThe key primitive is one artifact with multiple viewports. The full page is where someone uses the thing. The card is where they encounter it in a feed or profile. The widget is where it gets composed into another page. A plain text post is just the smallest version of the same idea.',
       },
       {
         heading: 'Why it might work',

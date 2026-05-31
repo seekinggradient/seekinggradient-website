@@ -44,8 +44,8 @@ const mcpTools = `publish_artifact({
 
 // returns
 {
-  url: "https://akshay.example.com/home-search-open-houses",
-  cardUrl: "https://akshay.example.com/home-search-open-houses?view=card",
+  url: "https://creator.example.com/home-search-open-houses",
+  cardUrl: "https://creator.example.com/home-search-open-houses?view=card",
   version: "v7"
 }`;
 
@@ -56,7 +56,7 @@ $ artifact publish ./dist \\
     --visibility private-link
 
 Published v7
-https://akshay.example.com/home-search-open-houses`;
+https://creator.example.com/home-search-open-houses`;
 
 const corePackageSketch = `packages/
   artifact-core/       # validation, packaging, API client, manifests

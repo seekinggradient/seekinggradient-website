@@ -65,7 +65,7 @@ Cookie: session=sess_9pL...</code></pre>
   expires_at
   revoked_at</code></pre>
         <p>When the browser sends <code>session=sess_9pL...</code>, the Worker hashes the raw session value, looks for that hash in D1, checks expiration and revocation, and loads the user. The server stores the hash instead of the raw secret for the same reason password databases store password hashes: if the database leaks, you do not want attackers to get immediately usable session cookies.</p>
-        <p>Once the request has a user, you still have to check authorization. “This is Akshay” is not the same as “Akshay can edit this artifact.” That second question is a permission check.</p>
+        <p>Once the request has a user, you still have to check authorization. “This is the owner” is not the same as “the owner can edit this artifact.” That second question is a permission check.</p>
       </section>
 
       <section class="prose-section">
@@ -76,7 +76,7 @@ Cookie: session=sess_9pL...</code></pre>
           <div><b>Authorization</b><span>What may that caller do? Publish, read, change visibility, rollback, delete, invite?</span></div>
           <div><b>Credential</b><span>What proof did the caller present? A cookie, bearer token, share token, or OAuth access token.</span></div>
         </div>
-        <p>For this product, a write request should eventually read like a sentence: “This request is from deploy token <code>tok_123</code>, belonging to Akshay, scoped to <code>artifact:write</code>, attempting to publish to Akshay’s namespace.” Then your authorization code asks whether that sentence is allowed.</p>
+        <p>For this product, a write request should eventually read like a sentence: “This request is from deploy token <code>tok_123</code>, belonging to the owner, scoped to <code>artifact:write</code>, attempting to publish to the owner's namespace.” Then your authorization code asks whether that sentence is allowed.</p>
       </section>
 
       <section class="prose-section">
@@ -161,7 +161,7 @@ Authorization: Bearer art_live_B7k...</code></pre>
         <p>OAuth is often introduced as “login with Google,” which is a little misleading. OAuth 2.0 is mostly about authorization: letting one application access a resource on behalf of a user without giving that application the user’s password.</p>
         <p>The actors are:</p>
         <div class="definition-grid">
-          <div><b>Resource owner</b><span>The user. In our product, Akshay.</span></div>
+          <div><b>Resource owner</b><span>The user who owns the account or namespace.</span></div>
           <div><b>Client</b><span>The app asking for access, such as a hosted MCP client.</span></div>
           <div><b>Authorization server</b><span>The service that authenticates the user and issues tokens.</span></div>
           <div><b>Resource server</b><span>The API receiving the token, such as the artifact Worker API.</span></div>

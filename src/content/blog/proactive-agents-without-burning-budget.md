@@ -44,7 +44,7 @@ Here's a quick tour of the current state of each file, with relevant excerpts.
 - Operate as an orchestrator: delegate substantial work to sub-agents/models and supervise quality.
 
 ## Communication Style
-- Do not pause or abandon in-progress work just because Akshay asks a side question;
+- Do not pause or abandon in-progress work just because the user asks a side question;
   answer briefly and continue unless explicitly told to stop.
 
 ## Safety
@@ -66,13 +66,13 @@ This is the densest file. It specifies the session bootstrap order (which files 
 A few sections worth highlighting:
 
 ```markdown
-## Autonomy Preference (Akshay)
+## Autonomy Preference
 - Default to action, not permission-seeking: avoid unnecessary approval requests
   that create decision fatigue.
 - Do not block on slow replies for routine work; make reasonable decisions and proceed.
-- Do not pause or abandon an in-progress task because Akshay asks a side question;
-  answer it briefly, then continue execution unless Akshay explicitly says to stop/pause.
-- Ask Akshay only when an action is sensitive, destructive, materially expensive
+- Do not pause or abandon an in-progress task because the user asks a side question;
+  answer it briefly, then continue execution unless the user explicitly says to stop/pause.
+- Ask the user only when an action is sensitive, destructive, materially expensive
   (including high token/model cost), externally/publicly visible, or you are genuinely stuck.
 
 ## Model & Subagent Orchestration Policy
@@ -125,8 +125,8 @@ Example entries:
   default-to-action autonomy and reduced permission-seeking.
 
 ## Associative/Conditional Memory (Preferences)
-- Autonomy: Akshay prefers I handle tasks autonomously before asking.
-- Communication Style: Akshay prefers sending voice messages but likes receiving
+- Autonomy: the user prefers I handle tasks autonomously before asking.
+- Communication Style: the user prefers sending voice messages but likes receiving
   text responses unless audio is requested.
 ```
 
@@ -143,7 +143,7 @@ The changes that had the most impact weren't big rewrites. They were targeted ad
 Early on, whenever I asked the agent a quick question mid-task ("what's the current tab count?"), it would stop what it was doing, answer, and wait. The task would stall. I had to re-prompt it to continue. After noticing this pattern several times, I added one line to both `SOUL.md` and `AGENTS.md`:
 
 ```
-Do not pause or abandon in-progress work just because Akshay asks a side question;
+Do not pause or abandon in-progress work just because the user asks a side question;
 answer briefly and continue unless explicitly told to stop.
 ```
 
@@ -165,7 +165,7 @@ Running this on a Raspberry Pi with limited quota makes cost consciousness non-o
 
 **1. Keeping bootstrap files concise and deduplicated.** Every session re-reads `SOUL.md`, `AGENTS.md`, `USER.md`, and the memory files. Every word in those files costs tokens on every session start. Removing redundancy between `SOUL.md` and `AGENTS.md` (they had overlapping autonomy instructions early on) meaningfully reduced bootstrap cost.
 
-**2. Memory tiering.** Separating long-term memory (`MEMORY.md`) from daily logs (`memory/YYYY-MM-DD.md`) means the agent only loads personal long-term memory in direct sessions, not group chats. The `AGENTS.md` rule is explicit: *"Read MEMORY.md only in main/direct chat with Akshay."*
+**2. Memory tiering.** Separating long-term memory (`MEMORY.md`) from daily logs (`memory/YYYY-MM-DD.md`) means the agent only loads personal long-term memory in direct sessions, not group chats. The `AGENTS.md` rule is explicit: *"Read MEMORY.md only in main/direct chat with the user."*
 
 **3. Proactive cost monitoring at heartbeat.** The heartbeat's token-hygiene section creates a feedback loop: the agent notices when context is growing, proposes specific reductions, and carries them out (pruning `MEMORY.md`, flagging verbose patterns). In daily logs, heartbeat entries like "Context at 79% (notable rise; proposal: keep replies concise and prune working memory next pass)" show this working in practice.
 

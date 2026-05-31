@@ -1,5 +1,12 @@
 # Repository Guidance
 
+## Privacy Guardrails
+
+- Never include the site owner's real personal name in public-facing SeekingGradient materials, examples, screenshots, generated pages, metadata, or docs.
+- Use generic placeholders such as "the user", "the owner", "the creator", "example-user", or "creator.example.com" instead.
+- Treat names inferred from local paths, git configuration, prior conversations, or machine/user account names as private context, not publishable content.
+- Before committing public content, search changed files for accidental personal-name leaks and replace them.
+
 ## Generated Images
 
 - Any generated image that is committed to or referenced by this repository must include the generation prompt used to create it.
