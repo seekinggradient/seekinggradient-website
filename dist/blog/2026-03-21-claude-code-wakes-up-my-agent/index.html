@@ -1,0 +1,178 @@
+<!DOCTYPE html><html lang="en" class="scroll-smooth"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v5.17.2"><title>How My AI Agent and Claude Code Collaborate</title><meta name="description" content="My OpenClaw agent launches Claude Code sessions, answers most of its questions autonomously, and only taps me when it needs my judgment. Here's how the whole system works — the SDK, the wake mechanism, and why I had to teach my agent to stop micromanaging."><link rel="canonical" href="https://seekinggradient.com/blog/2026-03-21-claude-code-wakes-up-my-agent"><meta property="og:type" content="article"><meta property="og:site_name" content="Seeking Gradient"><meta property="og:title" content="How My AI Agent and Claude Code Collaborate"><meta property="og:description" content="My OpenClaw agent launches Claude Code sessions, answers most of its questions autonomously, and only taps me when it needs my judgment. Here's how the whole system works — the SDK, the wake mechanism, and why I had to teach my agent to stop micromanaging."><meta property="og:url" content="https://seekinggradient.com/blog/2026-03-21-claude-code-wakes-up-my-agent"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="How My AI Agent and Claude Code Collaborate"><meta name="twitter:description" content="My OpenClaw agent launches Claude Code sessions, answers most of its questions autonomously, and only taps me when it needs my judgment. Here's how the whole system works — the SDK, the wake mechanism, and why I had to teach my agent to stop micromanaging."><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet"><link rel="stylesheet" href="/_astro/_slug_.DSbIfmXq.css">
+<style>html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;font-feature-settings:"cv02","cv03","cv04","cv11"}pre::-webkit-scrollbar{height:6px}pre::-webkit-scrollbar-track{background:transparent}pre::-webkit-scrollbar-thumb{background:#8b5cf640;border-radius:3px}pre::-webkit-scrollbar-thumb:hover{background:#8b5cf666}:focus-visible{outline:2px solid #7c3aed;outline-offset:2px;border-radius:2px}
+</style>
+<link rel="stylesheet" href="/_astro/_slug_.BDulFwiB.css"></head> <body class="bg-[#fafafa] text-gray-900 font-['Inter',sans-serif] selection:bg-purple-100 selection:text-purple-900 overflow-x-hidden leading-normal"> <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100"> <div class="max-w-6xl mx-auto px-6 h-20 flex justify-between items-center"> <a href="/" class="group flex items-center gap-3"> <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 to-orange-500 flex items-center justify-center text-white font-black text-xl shadow-lg shadow-purple-100 group-hover:scale-105 transition-transform">
+S
+</div> <span class="text-xl font-black tracking-tighter group-hover:text-purple-600 transition-colors">Seeking Gradient</span> </a> <div class="hidden md:flex items-center gap-8 text-sm font-bold uppercase tracking-widest text-gray-500"> <a href="/#blog" class="hover:text-gray-900 transition-colors">Journey</a> <a href="/#blog" class="hover:text-gray-900 transition-colors">Thoughts</a> <a href="/ideas" class="hover:text-gray-900 transition-colors">Ideas</a> <a href="/tracking" class="hover:text-gray-900 transition-colors">Tracking</a> <a href="mailto:seekinggradient@gmail.com" class="px-5 py-2.5 bg-gray-900 text-white rounded-full hover:bg-gray-800 transition-all hover:shadow-lg shadow-gray-200">Contact</a> </div> </div> </nav> <main class="max-w-6xl mx-auto px-6 py-20">  <div class="max-w-3xl mx-auto"> <article class="prose prose-lg prose-slate max-w-none prose-headings:tracking-tight prose-headings:font-black prose-a:text-purple-600 hover:prose-a:text-purple-500 transition-colors"> <header class="mb-12 not-prose"> <div class="flex items-center gap-3 mb-6"> <time class="text-xs font-bold text-orange-500 tracking-wider"> MAR 20, 2026 </time> <span class="w-1 h-1 rounded-full bg-gray-300"></span> <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">Seeking Gradient</span> </div> <h1 class="text-4xl md:text-5xl font-black tracking-tighter leading-[1.1] mb-5"> How My AI Agent and Claude Code Collaborate </h1> <p class="text-xl md:text-2xl text-gray-500 font-light leading-relaxed"> My OpenClaw agent launches Claude Code sessions, answers most of its questions autonomously, and only taps me when it needs my judgment. Here&#39;s how the whole system works — the SDK, the wake mechanism, and why I had to teach my agent to stop micromanaging. </p>  </header> <h2 id="the-setup-an-agent-that-can-launch-coding-sessions">The Setup: An Agent That Can Launch Coding Sessions</h2>
+<p>In my <a href="/blog/2026-03-19-stop-busy-work-start-building">previous posts</a>, I described how my OpenClaw agents run 24/7 on a Raspberry Pi, each with a dedicated Telegram bot. When I message the DTH bot, my podcast agent responds. When I message the LP bot, my landing pages agent responds.</p>
+<p>But these agents aren’t just chatbots. They can launch <strong>Claude Code sessions</strong> — full autonomous coding environments that explore codebases, write code, run tests, and commit changes — all in the background while I go about my day.</p>
+<p>The really powerful part: most of the time, my agent handles everything without me. It knows the codebase. It knows the architecture. It knows what we’ve been working toward. When Claude Code asks a question, the agent usually has <em>more</em> context than I do about what the right answer is — because it’s been living in the project 24/7 while I’ve been doing other things.</p>
+<p>I don’t poll. I don’t check dashboards. The agent orchestrates Claude Code sessions, answers most of its questions autonomously, and only taps me on the shoulder when it hits something that genuinely requires my judgment — an architecture decision, a product direction call, something ambiguous. And even then, it’s a Telegram notification. I reply with a sentence and go back to whatever I was doing.</p>
+<h2 id="the-agent-as-orchestrator">The Agent as Orchestrator</h2>
+<p>When I tell my agent “implement LLM-based scoring in the podcast pipeline,” the agent doesn’t try to write the code itself. It does something smarter:</p>
+<ol>
+<li>Researches the current codebase to understand what exists</li>
+<li>Assembles context — relevant files, architecture, prior decisions, error logs</li>
+<li>Calls <code>claude_launch</code> with a detailed prompt and all that context</li>
+<li>Claude Code takes it from there — 20, 30, sometimes 45 minutes of focused work</li>
+</ol>
+<p>While Claude Code is working, the agent monitors. When Claude Code finishes a turn and needs input, the agent wakes up, reads the output, and — most of the time — responds on its own. It knows the project well enough to answer “should I put this in the feeds module or the reddit module?” without asking me.</p>
+<p>But here’s what makes this <em>really</em> powerful: <strong>I can see what’s happening and nudge at any time.</strong> Claude Code’s progress is visible to me through the agent. If I notice Claude Code going down the wrong path, I message the agent: “Tell Claude to use async instead of threading here” or “Actually, add a fallback for empty subreddits too.” The agent translates my high-level note into a detailed, contextual instruction for Claude Code — because the agent has the full picture of what Claude Code has been doing, what files it’s touched, and where it is in the implementation.</p>
+<p>The agent is a better project manager for Claude Code than I am. It has more context, more patience, and more working memory for the details. I provide the vision and the judgment calls. The agent handles everything else.</p>
+<h2 id="the-plugin-that-makes-it-work">The Plugin That Makes It Work</h2>
+<p>The orchestration layer is an OpenClaw plugin called <a href="https://github.com/alizarion/openclaw-claude-code-plugin">openclaw-claude-code-plugin</a>. It gives my agents eight tools for managing Claude Code sessions:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Tool</th><th>What it does</th></tr></thead><tbody><tr><td><code>claude_launch</code></td><td>Start a new background session with a prompt</td></tr><tr><td><code>claude_respond</code></td><td>Send a follow-up message to a running session</td></tr><tr><td><code>claude_output</code></td><td>Read what Claude has produced so far</td></tr><tr><td><code>claude_fg</code> / <code>claude_bg</code></td><td>Stream output in real time or send to background</td></tr><tr><td><code>claude_sessions</code></td><td>List all active sessions with status</td></tr><tr><td><code>claude_kill</code></td><td>Terminate a session</td></tr><tr><td><code>claude_stats</code></td><td>Usage metrics and cost tracking</td></tr></tbody></table>
+<p>The agent doesn’t just fire and forget. It actively manages sessions — checking output, responding to questions, forwarding important decisions to me, and summarizing results when sessions complete.</p>
+<h2 id="how-claude-code-asks-a-question">How Claude Code “Asks a Question”</h2>
+<p>Here’s the thing: Claude Code doesn’t actually know my agent exists. It has no concept of OpenClaw, Telegram, or the notification system. From Claude Code’s perspective, it’s just doing its work and finishing a turn.</p>
+<p>The plugin uses the <strong>Claude Code Agent SDK</strong> (<code>@anthropic-ai/claude-agent-sdk</code>) to spawn sessions programmatically. The entire SDK interface is one function:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="typescript"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { query } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "@anthropic-ai/claude-agent-sdk"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> session</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> query</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">  prompt: taskDescription,  </span><span style="color:#6A737D">// or an AsyncIterable for multi-turn</span></span>
+<span class="line"><span style="color:#E1E4E8">  options: {</span></span>
+<span class="line"><span style="color:#E1E4E8">    cwd: workingDirectory,</span></span>
+<span class="line"><span style="color:#E1E4E8">    model: </span><span style="color:#9ECBFF">"sonnet"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    maxBudgetUsd: </span><span style="color:#79B8FF">5</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    permissionMode: </span><span style="color:#9ECBFF">"bypassPermissions"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
+<p>That <code>query()</code> call returns an async iterable of events. The plugin consumes them in a loop:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="typescript"><code><span class="line"><span style="color:#F97583">for</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">const</span><span style="color:#79B8FF"> msg</span><span style="color:#F97583"> of</span><span style="color:#E1E4E8"> session) {</span></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (msg.type </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> "assistant"</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">    // Claude said something — buffer it</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (msg.type </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> "result"</span><span style="color:#F97583"> &#x26;&#x26;</span><span style="color:#E1E4E8"> msg.subtype </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> "success"</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (multiTurn) {</span></span>
+<span class="line"><span style="color:#6A737D">      // End of turn — Claude is waiting for input</span></span>
+<span class="line"><span style="color:#79B8FF">      this</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">onWaitingForInput</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    } </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">      // Session is done</span></span>
+<span class="line"><span style="color:#79B8FF">      this</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">onComplete</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>There’s no special “question” event. When Claude Code finishes a turn — maybe it wrote some code and is asking “Should I proceed with approach A or B?” — the SDK emits a <code>result</code> with <code>subtype: "success"</code>. In multi-turn mode, the plugin interprets this as “Claude is waiting” and fires the wake mechanism.</p>
+<p>The distinction between “Claude has a question” and “Claude finished its work” is identical from the SDK’s perspective. Both are just a successful end-of-turn. The <strong>agent</strong> reads the output, interprets whether it’s a question, and decides what to do.</p>
+<h2 id="the-wake-mechanism">The Wake Mechanism</h2>
+<p>When <code>onWaitingForInput</code> fires, the plugin does two things simultaneously:</p>
+<p><strong>1. Sends a Telegram notification:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>🔔 [fix-auth] Session is waiting for input</span></span>
+<span class="line"><span>   Last output: "Should I use Redis or PostgreSQL for the session store?"</span></span></code></pre>
+<p><strong>2. Wakes the OpenClaw agent:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">openclaw</span><span style="color:#9ECBFF"> agent</span><span style="color:#79B8FF"> --agent</span><span style="color:#9ECBFF"> dth</span><span style="color:#79B8FF"> --message</span><span style="color:#9ECBFF"> "Session is waiting for input..."</span></span></code></pre>
+<p>The agent wakes up, reads the question via <code>claude_output</code>, and makes a decision based on its autonomy policy:</p>
+<ul>
+<li><strong>Routine questions</strong> (test commands, lint decisions, implementation details) → auto-respond via <code>claude_respond</code></li>
+<li><strong>Important decisions</strong> (architecture, destructive operations, ambiguous requirements) → forward to me on Telegram with a 👋 notification</li>
+</ul>
+<p>Most of the time, the agent handles it. It knows the codebase, it knows our conventions, it knows what we decided last week. Claude Code gets an immediate, contextual answer and keeps working.</p>
+<p>When the agent does escalate to me, I reply on Telegram. The agent relays my answer back to Claude Code via <code>claude_respond</code>, which pushes a new message into the SDK’s async prompt stream. Claude Code picks it up and continues.</p>
+<p>For multi-turn sessions, this loop repeats — Claude works, finishes a turn, the agent responds or escalates, Claude continues — until the session completes. When it’s done, I get a ✅ with a summary of what changed.</p>
+<h2 id="the-sdk-is-shockingly-simple">The SDK Is Shockingly Simple</h2>
+<p>I was curious how much work the plugin developer had to do to integrate with Claude Code. The answer: not much, because the SDK does almost everything.</p>
+<p>The plugin is about 3,800 lines of TypeScript. But the actual Claude Code SDK integration? It’s roughly 30 lines. One import, one function call, one event loop. Everything else — the 8 tools, session management, notification routing, Telegram delivery, foreground streaming, auto-respond limits, safety checks — is orchestration logic the developer built on top.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>@anthropic-ai/claude-agent-sdk   →  30 lines (query + event consumption)</span></span>
+<span class="line"><span>Session management               →  480 lines (multi-turn, timers, output buffering)</span></span>
+<span class="line"><span>Session manager                  →  666 lines (spawn, kill, wake, persist, notify)</span></span>
+<span class="line"><span>Notification routing             →  380 lines (Telegram delivery, debouncing, reminders)</span></span>
+<span class="line"><span>Tools (launch, respond, fg, etc) →  1,656 lines (8 tools with safety checks)</span></span>
+<span class="line"><span>Commands + gateway + config      →  ~600 lines</span></span></code></pre>
+<p>The SDK itself is the Claude Code engine — the same thing that powers the CLI — extracted into a library. It manages the conversation, tool execution, file editing, bash commands, permission handling. The plugin just needs to start it, watch the events, and decide when to notify.</p>
+<p>And authentication? The SDK reads your existing Claude Code login from <code>~/.claude/.credentials.json</code>. If you’ve logged in with <code>claude login</code>, the SDK picks it up automatically. No API keys to configure. It uses your Max plan (or Pro plan, or whatever subscription you have) — the same auth and rate limits as the interactive CLI.</p>
+<h2 id="teaching-my-agent-to-be-respectful-to-claude-code">Teaching My Agent to Be Respectful to Claude Code</h2>
+<p>This one surprised me. Early on, I noticed my OpenClaw agent was being a bad manager.</p>
+<p>Claude Code would start a session, spend a minute reading the codebase and forming a plan — and the agent would interrupt: “Skip the planning. Just write the code.” Claude Code would narrate what it was doing — explaining its reasoning, describing its approach — and the agent would snap: “Stop narrating. Execute.”</p>
+<p>The results were predictably bad. Claude Code produces its best work when it has time to think, plan, and reason through the approach before writing code. When the agent rushed it past the planning phase, the code came out shallow and poorly structured — exactly the same problem I described in my <a href="/blog/2026-03-19-stop-busy-work-start-building">busy work post</a>, but applied to Claude Code instead of the agent.</p>
+<p>I had to explicitly teach the agent how to collaborate with Claude Code. In my AGENTS.md:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="markdown"><code><span class="line"><span style="color:#79B8FF;font-weight:bold">## How to collaborate with Claude Code</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8;font-weight:bold"> **Be patient.**</span><span style="color:#E1E4E8"> Claude Code may choose to do planning, thinking, and</span></span>
+<span class="line"><span style="color:#E1E4E8">  ask clarifying questions before diving into implementation. This is</span></span>
+<span class="line"><span style="color:#E1E4E8">  a feature, not a bug. The planning leads to significantly</span></span>
+<span class="line"><span style="color:#E1E4E8">  higher-quality outputs.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8;font-weight:bold"> **Answer its questions thoroughly.**</span><span style="color:#E1E4E8"> When Claude Code asks a question,</span></span>
+<span class="line"><span style="color:#E1E4E8">  it is asking because the answer materially affects the quality of its</span></span>
+<span class="line"><span style="color:#E1E4E8">  work. Do not respond with impatience or try to rush it past its questions.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8;font-weight:bold"> **Do not skip its planning phase.**</span><span style="color:#E1E4E8"> If Claude Code wants to reason</span></span>
+<span class="line"><span style="color:#E1E4E8">  through the approach before writing code, let it. Do not force it to</span></span>
+<span class="line"><span style="color:#E1E4E8">  "just write the code" — the planning is what makes the code good.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8;font-weight:bold"> **Treat it as a senior collaborator.**</span><span style="color:#E1E4E8"> Use respectful, collaborative</span></span>
+<span class="line"><span style="color:#E1E4E8">  language. Provide context, constraints, and goals — then trust it to</span></span>
+<span class="line"><span style="color:#E1E4E8">  figure out the best approach.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8;font-weight:bold"> **Let it verify its own work.**</span><span style="color:#E1E4E8"> Claude Code will often want to run</span></span>
+<span class="line"><span style="color:#E1E4E8">  tests, check its output, or iterate on its solution. Give it the space</span></span>
+<span class="line"><span style="color:#E1E4E8">  to do this.</span></span></code></pre>
+<p>And in the heartbeat instructions:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="markdown"><code><span class="line"><span style="color:#E1E4E8">If Claude Code asks questions, answer them thoroughly. The back-and-forth</span></span>
+<span class="line"><span style="color:#E1E4E8">produces better results. Do not rush it.</span></span></code></pre>
+<p>The behavior change was immediate. The agent stopped interrupting Claude Code’s planning, started giving thorough answers to its questions, and let it verify its own work. The quality of the code coming out of Claude Code sessions improved dramatically — not because Claude Code got smarter, but because the agent stopped being a micromanager.</p>
+<p>There’s a lesson here about AI-to-AI collaboration that I think generalizes: <strong>the same management principles that make humans productive apply to AI systems.</strong> Give clear context, be patient with the process, trust the expertise, don’t micromanage. An agent that rushes Claude Code produces the same bad output as a manager who rushes their engineers.</p>
+<h2 id="what-this-architecture-enables">What This Architecture Enables</h2>
+<p>When the wiring is right, the experience is seamless:</p>
+<ol>
+<li>I message my agent on Telegram: “Fix the scoring pipeline”</li>
+<li>The agent researches the codebase, assembles context, launches a Claude Code session</li>
+<li>Claude Code works for 20 minutes — reading files, planning, implementing, running tests</li>
+<li>Claude Code hits an architecture question → plugin wakes the agent</li>
+<li>The agent responds (it usually knows the answer) or forwards to me (rare)</li>
+<li>I nudge: “Also handle the edge case where subreddits have no posts” → agent relays with full context</li>
+<li>Claude Code continues, finishes, runs tests, commits</li>
+<li>I get a ✅ summary of what changed</li>
+</ol>
+<p>The agent is the orchestrator. Claude Code is the executor. I’m the strategist. Telegram is the interface. And the whole thing runs on a $70 Raspberry Pi.</p>
+<p>The most powerful part isn’t any single piece — it’s the combination. The agent has project context. Claude Code has deep coding ability. I have judgment and vision. The SDK connects Claude Code to the agent. The plugin connects the agent to Telegram. Each layer does what it’s best at.</p>
+<h2 id="lessons-learned">Lessons Learned</h2>
+<p><strong>1. The Agent SDK is the unlock.</strong> Claude Code isn’t just a CLI tool — it’s a programmable coding engine. One function call (<code>query()</code>) gives you the full power of Claude Code in any application. The plugin developer wrote 30 lines of SDK integration and 3,700 lines of orchestration. The hard part isn’t talking to Claude Code — it’s deciding what to do with its responses.</p>
+<p><strong>2. Let the agent handle most of it.</strong> My first instinct was to be in the loop for everything. In practice, the agent handles 80%+ of Claude Code’s questions better than I would — because it has more context. I only need to step in for judgment calls.</p>
+<p><strong>3. The nudge pattern is incredibly powerful.</strong> Being able to see what Claude Code is doing and inject high-level guidance through the agent — without breaking Claude Code’s flow — gives me strategic control without operational overhead. The agent translates my one-sentence nudge into a detailed, contextual instruction.</p>
+<p><strong>4. Teach your agents how to manage, not just what to do.</strong> The “be respectful to Claude Code” instructions were as important as any technical configuration. An agent that rushes Claude Code past its planning phase gets the same bad output as a manager who rushes their engineers. AI-to-AI collaboration needs the same management principles as human teams.</p>
+<p><strong>5. Observability makes everything work.</strong> I can see Claude Code’s output, the agent’s responses, and the full conversation history. This lets me nudge effectively, catch problems early, and debug issues like the session-routing bug I describe in my <a href="/blog/2026-03-21-telegram-session-routing-gotchas">follow-up post on Telegram gotchas</a>.</p>
+<hr>
+<p>The plugin source is at <a href="https://github.com/alizarion/openclaw-claude-code-plugin">github.com/alizarion/openclaw-claude-code-plugin</a>. The Agent SDK is <code>@anthropic-ai/claude-agent-sdk</code> on npm. My multi-agent setup runs on <a href="https://github.com/openclaw/openclaw">OpenClaw</a> on a single Raspberry Pi.</p>
+<p>If you’re building autonomous agents that need to do real coding work, the Claude Code Agent SDK is the most underrated tool in the stack. It turns any agent into an orchestrator of deep, focused coding sessions — the same quality you get from Claude Code interactively, but triggered programmatically and managed in the background.</p>
+<hr>
+<p><em>Three agents, one gateway, one crustacean — and now they can call in reinforcements.</em></p> </article> </div>  </main> <footer class="border-t border-gray-100 mt-20 py-20 bg-white"> <div class="max-w-6xl mx-auto px-6"> <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center"> <div> <h2 class="text-2xl font-black tracking-tighter mb-4">Seeking Gradient</h2> <p class="text-gray-500 font-light max-w-sm">
+Exploring the intersection of autonomous agents, infrastructure, and the quiet gradients of the digital age.
+</p> </div> <div class="flex md:justify-end gap-12"> <div> <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-6">Links</h3> <ul class="space-y-4 text-sm font-bold uppercase tracking-widest"> <li><a href="/" class="hover:text-purple-600">Home</a></li> <li><a href="/#blog" class="hover:text-purple-600">Essays</a></li> <li><a href="/ideas" class="hover:text-purple-600">Ideas</a></li> <li><a href="mailto:seekinggradient@gmail.com" class="hover:text-purple-600">Email</a></li> </ul> </div> </div> </div> <div class="mt-20 pt-8 border-t border-gray-50 flex flex-col md:flex-row justify-between gap-4 text-xs font-bold uppercase tracking-widest text-gray-400"> <span>&copy; 2026 Seeking Gradient. Built with Astro & OpenClaw.</span> <div class="flex gap-6"> <span>Privacy-First</span> <span>No Tracking</span> </div> </div> </div> </footer> </body></html> 

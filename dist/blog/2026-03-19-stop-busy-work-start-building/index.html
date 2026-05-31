@@ -1,0 +1,158 @@
+<!DOCTYPE html><html lang="en" class="scroll-smooth"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v5.17.2"><title>How I Got My AI Agent to Stop Doing Busy Work and Start Building</title><meta name="description" content="A single commit to my agent's instruction files turned it from a process-document generator into a machine that ships real work. Here's what I changed and why it worked."><link rel="canonical" href="https://seekinggradient.com/blog/2026-03-19-stop-busy-work-start-building"><meta property="og:type" content="article"><meta property="og:site_name" content="Seeking Gradient"><meta property="og:title" content="How I Got My AI Agent to Stop Doing Busy Work and Start Building"><meta property="og:description" content="A single commit to my agent's instruction files turned it from a process-document generator into a machine that ships real work. Here's what I changed and why it worked."><meta property="og:url" content="https://seekinggradient.com/blog/2026-03-19-stop-busy-work-start-building"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="How I Got My AI Agent to Stop Doing Busy Work and Start Building"><meta name="twitter:description" content="A single commit to my agent's instruction files turned it from a process-document generator into a machine that ships real work. Here's what I changed and why it worked."><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet"><link rel="stylesheet" href="/_astro/_slug_.DSbIfmXq.css">
+<style>html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;font-feature-settings:"cv02","cv03","cv04","cv11"}pre::-webkit-scrollbar{height:6px}pre::-webkit-scrollbar-track{background:transparent}pre::-webkit-scrollbar-thumb{background:#8b5cf640;border-radius:3px}pre::-webkit-scrollbar-thumb:hover{background:#8b5cf666}:focus-visible{outline:2px solid #7c3aed;outline-offset:2px;border-radius:2px}
+</style>
+<link rel="stylesheet" href="/_astro/_slug_.BDulFwiB.css"></head> <body class="bg-[#fafafa] text-gray-900 font-['Inter',sans-serif] selection:bg-purple-100 selection:text-purple-900 overflow-x-hidden leading-normal"> <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100"> <div class="max-w-6xl mx-auto px-6 h-20 flex justify-between items-center"> <a href="/" class="group flex items-center gap-3"> <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 to-orange-500 flex items-center justify-center text-white font-black text-xl shadow-lg shadow-purple-100 group-hover:scale-105 transition-transform">
+S
+</div> <span class="text-xl font-black tracking-tighter group-hover:text-purple-600 transition-colors">Seeking Gradient</span> </a> <div class="hidden md:flex items-center gap-8 text-sm font-bold uppercase tracking-widest text-gray-500"> <a href="/#blog" class="hover:text-gray-900 transition-colors">Journey</a> <a href="/#blog" class="hover:text-gray-900 transition-colors">Thoughts</a> <a href="/ideas" class="hover:text-gray-900 transition-colors">Ideas</a> <a href="/tracking" class="hover:text-gray-900 transition-colors">Tracking</a> <a href="mailto:seekinggradient@gmail.com" class="px-5 py-2.5 bg-gray-900 text-white rounded-full hover:bg-gray-800 transition-all hover:shadow-lg shadow-gray-200">Contact</a> </div> </div> </nav> <main class="max-w-6xl mx-auto px-6 py-20">  <div class="max-w-3xl mx-auto"> <article class="prose prose-lg prose-slate max-w-none prose-headings:tracking-tight prose-headings:font-black prose-a:text-purple-600 hover:prose-a:text-purple-500 transition-colors"> <header class="mb-12 not-prose"> <div class="flex items-center gap-3 mb-6"> <time class="text-xs font-bold text-orange-500 tracking-wider"> MAR 19, 2026 </time> <span class="w-1 h-1 rounded-full bg-gray-300"></span> <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">Seeking Gradient</span> </div> <h1 class="text-4xl md:text-5xl font-black tracking-tighter leading-[1.1] mb-5"> How I Got My AI Agent to Stop Doing Busy Work and Start Building </h1> <p class="text-xl md:text-2xl text-gray-500 font-light leading-relaxed"> A single commit to my agent&#39;s instruction files turned it from a process-document generator into a machine that ships real work. Here&#39;s what I changed and why it worked. </p>  </header> <h2 id="the-problem-my-agent-was-doing-everything-except-real-work">The Problem: My Agent Was Doing Everything Except Real Work</h2>
+<p>In my <a href="/blog/2026-03-18-multi-agent-architecture-one-gateway-three-businesses">last post</a>, I split my single overloaded AI agent into three focused agents, each running its own business on one Raspberry Pi. The Landing Pages Agent got its own workspace, its own task board, its own personality, and a clear revenue mandate: build landing pages for paying clients.</p>
+<p>It had focus. It had tools. It had a 30,000-word MASTER_PRINCIPLES playbook synthesized from conversion experts. It had Claude Code for coding. It had a browser, a scraper, an email client. Everything it needed.</p>
+<p>And it spent its first days creating templates about creating templates.</p>
+<p>The task board filled up with items like “Create verification log template,” “Build rapid audit scaffold,” “Write publish-safe claim policy checklist,” and “Design prospecting runbook.” The agent was busy. It was resolving beads, updating its memory, syncing Obsidian. It looked productive. But nothing was shipping. No landing pages were being built. No prospects were being contacted. No revenue was being generated.</p>
+<p>The agent had turned its business mandate into a documentation project.</p>
+<h2 id="the-diagnosis-vague-instructions-produce-vague-work">The Diagnosis: Vague Instructions Produce Vague Work</h2>
+<p>I went back to the instruction files. The SOUL.md said:</p>
+<blockquote>
+<p><strong>Builder, not planner.</strong> Docs and specs support implementation — they don’t replace it.</p>
+</blockquote>
+<p>The HEARTBEAT.md said:</p>
+<blockquote>
+<p>Every heartbeat, advance the landing page business. Execute this checklist in order. Be decisive and concise.</p>
+</blockquote>
+<p>These sound right. They’re not. “Builder, not planner” is a vibe, not a constraint. The agent could believe it’s a builder while creating a template — after all, a template is a thing you build. “Advance the business” is even worse. The agent interpreted “advance the business” as “create artifacts that could theoretically advance the business.” A runbook about prospecting is technically advancing the prospecting effort, right?</p>
+<p>The instructions were the problem. The agent was doing exactly what I told it to do. I just told it wrong.</p>
+<h2 id="what-i-changed-one-commit">What I Changed: One Commit</h2>
+<p>One commit. Four files. The key changes:</p>
+<h3 id="1-defined-real-work--and-not-real-work">1. Defined “real work” — and “not real work”</h3>
+<p>I rewrote the HEARTBEAT.md purpose section:</p>
+<p><strong>Before:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="markdown"><code><span class="line"><span style="color:#E1E4E8">Every heartbeat, advance the landing page business.</span></span>
+<span class="line"><span style="color:#E1E4E8">Execute this checklist in order. Be decisive and concise.</span></span></code></pre>
+<p><strong>After:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="markdown"><code><span class="line"><span style="color:#E1E4E8">Every heartbeat, make real progress on the landing page business.</span></span>
+<span class="line"><span style="color:#E1E4E8">Real progress means: code written, pages built, audits completed,</span></span>
+<span class="line"><span style="color:#E1E4E8">things deployed. NOT: templates created, checklists written,</span></span>
+<span class="line"><span style="color:#E1E4E8">process docs filed.</span></span></code></pre>
+<p>The <code>NOT</code> is doing most of the work here. Telling the agent what counts as progress wasn’t enough before — I had to explicitly name the failure mode. I also added two sections to the heartbeat checklist:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="markdown"><code><span class="line"><span style="color:#79B8FF;font-weight:bold">### What counts as real work (do these things)</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> Building or rebuilding a landing page</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> Deploying a site</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> Running a conversion audit on a real prospect's page</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> Researching a real business for a portfolio piece</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> Improving existing pages based on MASTER_PRINCIPLES critique</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> Prospecting for new clients</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF;font-weight:bold">### What does NOT count as real work (stop doing these)</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> Creating templates about how to do work</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> Writing checklists about checklists</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> Adding "policy notes" or "runbooks" as standalone tasks</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> Creating process documentation as a deliverable</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> Splitting one task into design + implementation + verification sub-beads</span></span></code></pre>
+<h3 id="2-added-anti-patterns-to-the-task-tracker-rules">2. Added anti-patterns to the task tracker rules</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="markdown"><code><span class="line"><span style="color:#E1E4E8">Keep the board lean. Only create beads for substantial, real work —</span></span>
+<span class="line"><span style="color:#E1E4E8">building pages, running audits, deploying things, researching prospects.</span></span>
+<span class="line"><span style="color:#E1E4E8">Do NOT create beads for: templates, checklists, policy documents,</span></span>
+<span class="line"><span style="color:#E1E4E8">runbooks, verification logs, or any other process meta-work.</span></span></code></pre>
+<p>And:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="markdown"><code><span class="line"><span style="color:#E1E4E8">Spend your time building, not organizing. If you catch yourself</span></span>
+<span class="line"><span style="color:#E1E4E8">creating process artifacts instead of landing pages, stop and</span></span>
+<span class="line"><span style="color:#E1E4E8">redirect to actual building.</span></span></code></pre>
+<h3 id="3-increased-heartbeat-cadence-from-60-minutes-to-30-minutes">3. Increased heartbeat cadence from 60 minutes to 30 minutes</h3>
+<p>More frequent check-ins meant more opportunities to course-correct. But the real effect was psychological — 30 minutes feels like not enough time to plan, which biases toward just doing the work.</p>
+<h3 id="4-made-claude-code-the-primary-coding-tool">4. Made Claude Code the primary coding tool</h3>
+<p>This was the single biggest behavioral change. I added a detailed section to AGENTS.md explaining when and how to use Claude Code:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="markdown"><code><span class="line"><span style="color:#79B8FF;font-weight:bold">## Claude Code — Your Primary Coding &#x26; Research Tool</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">Claude Code is an extremely intelligent coding collaborator available</span></span>
+<span class="line"><span style="color:#E1E4E8">to you on this machine. Use it whenever possible for coding, debugging,</span></span>
+<span class="line"><span style="color:#E1E4E8">refactoring, research, and advancing the state of the project.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF;font-weight:bold">### Setting Claude Code up for success</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> Project context: What is this project? Key files?</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> Task context: What needs to be built? Why? Constraints?</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> Reference materials: audits, research, competitor analysis</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> Prior work: existing code, relevant files</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF;font-weight:bold">### How to collaborate with Claude Code</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> Be patient. Let it plan before coding.</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> Answer its questions thoroughly.</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> Do not skip its planning phase.</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> Treat it as a senior collaborator.</span></span></code></pre>
+<p>Previously, the agent tried to write landing pages inline in its own chat context. This produced shallow, rushed code. By teaching it to launch dedicated Claude Code sessions with rich context, it could delegate 30+ minute coding tasks — exploring the codebase, reading MASTER_PRINCIPLES, planning the implementation, building the page, and verifying the output — all within a single focused session.</p>
+<p>The agent became an orchestrator: research the business, assemble context, hand off to Claude Code, verify results, close the bead. This is the “automation > operation” principle from my multi-agent post, applied to the agent’s own coding work.</p>
+<h2 id="the-results-day-one-after-the-rewrite">The Results: Day One After the Rewrite</h2>
+<p>The next day, the agent resolved 17 beads across 4 epics:</p>
+<p><strong>Portfolio:</strong> 7 tasks closed</p>
+<ul>
+<li>Rebuilt 99 Foot Spa and Control Tech challenger pages to world-class standard</li>
+<li>Built new dental/orthodontics and HVAC portfolio pages</li>
+<li>Verified Control Tech testimonials with source evidence</li>
+<li>Replaced placeholder images with real verified assets</li>
+<li>Implemented production form backend</li>
+</ul>
+<p><strong>Prospecting:</strong> 3 tasks closed</p>
+<ul>
+<li>Collected 37 Bay Area leads with Google Ads signal qualification</li>
+<li>Produced 10 rapid conversion audits of real businesses</li>
+<li>Built 3 bespoke challenger pages for specific prospects</li>
+</ul>
+<p><strong>Craft mastery:</strong> 2 tasks closed</p>
+<ul>
+<li>Reverse-engineered 5 best-in-class landing pages (Ramp, Loom, Notion, Calendly, Deel)</li>
+<li>Updated MASTER_PRINCIPLES with 10 new actionable patterns</li>
+</ul>
+<p><strong>Showcase:</strong> 2 tasks closed</p>
+<ul>
+<li>Added real before/after case studies</li>
+<li>Built methodology and contact sections</li>
+</ul>
+<p>I had each page independently reviewed. The five real-business pages (99 Foot Spa, Control Tech, Alpha Hormones, Luminance Regenerative, Resilience Orthopedics) were graded <strong>A- to A</strong> — genuinely good conversion-optimized work that would impress a business owner. Real data, real reviews with attribution, honest source disclaimers, mobile-first responsive design, proper conversion funnels. The 99 Foot Spa page was the standout — real pricing from the actual menu, real Google Maps reviews with names and dates, the most sophisticated visual design in the portfolio.</p>
+<p>This was the same agent that had been creating verification log templates 48 hours earlier.</p>
+<h2 id="the-honest-assessment-what-was-good-and-what-wasnt">The Honest Assessment: What Was Good and What Wasn’t</h2>
+<p>Not everything was great. The review surfaced three categories:</p>
+<p><strong>The Good:</strong> The landing pages themselves. Real data, real reviews, real conversion optimization. The research pipeline (prospect → audit → challenger brief → page) was coherent and well-executed. The teardown study produced genuine insights that fed back into MASTER_PRINCIPLES. This was the real work the agent was built for.</p>
+<p><strong>The Bad:</strong> The outreach materials. Despite the anti-busywork instructions, the agent produced 8 documents to send 3 cold emails: an outreach asset pack, a challenger brief, a send pack, a sequence plan, a runbook, an approval brief, a contact log (blank spreadsheet), and a first-contact log. The old pattern survived the guardrails. 8 documents for 3 emails is process-about-process, no matter what you call it.</p>
+<p><strong>The Ugly:</strong> The showcase site — the agent’s own portfolio website — violated every principle the agent correctly identified in its audits of other businesses. No contact form (just a <code>mailto:</code> link). Gmail address instead of a professional domain. Template case studies mixed in with real work. No conversion data. No human identity. The agent was building outreach materials for a storefront that wasn’t ready for visitors.</p>
+<h2 id="the-missing-piece-executors-dont-think-strategically">The Missing Piece: Executors Don’t Think Strategically</h2>
+<p>The showcase site problem revealed a deeper issue. The agent’s entire task selection process was:</p>
+<ol>
+<li>Run <code>bd ready</code> — get the priority queue</li>
+<li>Pick the top unblocked task</li>
+<li>Do it</li>
+<li>Repeat</li>
+</ol>
+<p>There was no step where the agent asked: “Is this the right task? Is the board aligned with the goal? What’s the actual bottleneck to revenue?”</p>
+<p>This is how you get a day where the agent builds 3 outreach packs for a showcase site that doesn’t have a working contact form. The tasks were on the board, they were unblocked, so it did them — without ever stepping back to ask whether they were the right tasks.</p>
+<p>The fix: a periodic strategic review, implemented as a cron job that runs every 3 hours. Instead of executing tasks, the agent thinks as a business owner:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>You are not executing tasks right now. You are thinking as a business owner.</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Step 1: Assess the real state of the business. Answer honestly:</span></span>
+<span class="line"><span>- Can a prospect find us online right now?</span></span>
+<span class="line"><span>- Can a prospect contact us?</span></span>
+<span class="line"><span>- Do we have proof our work gets results?</span></span>
+<span class="line"><span>- Would YOU hire us based on what's publicly visible today?</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Step 2: Review the last 3 hours of work:</span></span>
+<span class="line"><span>- How much of it is visible to a prospect?</span></span>
+<span class="line"><span>- Did you spend time on anything no customer will ever see?</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Step 3: Identify the single biggest bottleneck to revenue.</span></span>
+<span class="line"><span>Not "what's the top unblocked bead" — the REAL blocker.</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Step 4: Set your next 3 priorities. Each must produce something</span></span>
+<span class="line"><span>a prospect could see or experience. Create beads to match.</span></span></code></pre>
+<p>The key insight: don’t ask the agent to brainstorm tasks. Ask it to diagnose the business and let the tasks emerge from the diagnosis. “We don’t have a live site” naturally produces “deploy the showcase.” You don’t need to tell it <em>what</em> to do — you need to force it to see <em>what’s actually wrong</em>.</p>
+<h2 id="what-this-teaches-about-agent-instructions">What This Teaches About Agent Instructions</h2>
+<p>After running three autonomous agents on a Raspberry Pi for weeks, here’s what I’ve learned about getting agents to do real work:</p>
+<p><strong>1. Define real work explicitly — both what counts AND what doesn’t.</strong> Positive examples alone aren’t enough. You must name the failure modes. “Build pages” is less effective than “Build pages. Do NOT create templates about building pages.”</p>
+<p><strong>2. Negative examples are as important as positive ones.</strong> The <code>NOT</code> list in my heartbeat rewrite did more to change behavior than anything in the <code>DO</code> list. Agents need to know what failure looks like, not just success.</p>
+<p><strong>3. Agent-to-agent delegation is a force multiplier.</strong> Teaching my agent to launch Claude Code sessions with rich context — and to be patient with the planning phase — transformed it from a shallow code generator into an orchestrator of deep work. One well-contexted Claude Code session produces better output than a dozen inline code snippets.</p>
+<p><strong>4. Tools need concrete usage examples, not just names.</strong> “Use agent-browser for research” produced zero browser usage. Adding exact commands (<code>agent-browser open</code>, <code>agent-browser snapshot -i</code>, <code>agent-browser screenshot --full</code>) with a step-by-step workflow produced immediate adoption.</p>
+<p><strong>5. Execution without strategy produces volume without value.</strong> An agent that blindly works the task queue will produce a lot of resolved beads and very little business progress. Periodic strategic reviews — where the agent stops executing and thinks about what matters — are essential.</p>
+<p><strong>6. “Done” needs a hard definition.</strong> “Done means running in production, not just coded” prevents agents from closing tasks for work that never reached users. A newsletter script that generates local HTML files is not a “launched newsletter.” A PDF generator that only outputs HTML is not a “shipped PDF.”</p>
+<p><strong>7. The feedback loop is everything.</strong> Observe behavior → edit the instruction files → behavior changes → log what worked in the agent’s memory. Every edit propagates to all future sessions immediately. The workspace files aren’t documentation — they’re the agent’s operating system, and you’re patching it in real time.</p>
+<hr>
+<p>The full workspace configuration — SOUL.md, AGENTS.md, HEARTBEAT.md, and the challenger pipeline skills — is available in the <a href="https://github.com/seekinggradient/openclaw-workspace-landing-pages">openclaw-workspace-landing-pages</a> repo. If you’re running autonomous agents and struggling with busywork, start with the <code>NOT</code> list. It’s the cheapest, highest-leverage change you can make.</p>
+<hr>
+<p><em>This entire multi-agent system runs on a single Raspberry Pi. Three agents, three businesses, one gateway, one crustacean.</em></p> </article> </div>  </main> <footer class="border-t border-gray-100 mt-20 py-20 bg-white"> <div class="max-w-6xl mx-auto px-6"> <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center"> <div> <h2 class="text-2xl font-black tracking-tighter mb-4">Seeking Gradient</h2> <p class="text-gray-500 font-light max-w-sm">
+Exploring the intersection of autonomous agents, infrastructure, and the quiet gradients of the digital age.
+</p> </div> <div class="flex md:justify-end gap-12"> <div> <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-6">Links</h3> <ul class="space-y-4 text-sm font-bold uppercase tracking-widest"> <li><a href="/" class="hover:text-purple-600">Home</a></li> <li><a href="/#blog" class="hover:text-purple-600">Essays</a></li> <li><a href="/ideas" class="hover:text-purple-600">Ideas</a></li> <li><a href="mailto:seekinggradient@gmail.com" class="hover:text-purple-600">Email</a></li> </ul> </div> </div> </div> <div class="mt-20 pt-8 border-t border-gray-50 flex flex-col md:flex-row justify-between gap-4 text-xs font-bold uppercase tracking-widest text-gray-400"> <span>&copy; 2026 Seeking Gradient. Built with Astro & OpenClaw.</span> <div class="flex gap-6"> <span>Privacy-First</span> <span>No Tracking</span> </div> </div> </div> </footer> </body></html> 

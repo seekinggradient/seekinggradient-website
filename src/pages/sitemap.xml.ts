@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
+import { ideas } from '../ideas/data/ideas';
 
 const SITE_URL = 'https://seekinggradient.com';
 
@@ -9,6 +10,10 @@ export const GET: APIRoute = async () => {
   const urls = [
     '<url><loc>https://seekinggradient.com/</loc></url>',
     '<url><loc>https://seekinggradient.com/tracking</loc></url>',
+    '<url><loc>https://seekinggradient.com/ideas</loc></url>',
+    '<url><loc>https://seekinggradient.com/ideas/about</loc></url>',
+    '<url><loc>https://seekinggradient.com/ideas/mockups</loc></url>',
+    ...ideas.map((idea) => `<url><loc>${SITE_URL}/ideas/${idea.slug}</loc></url>`),
     ...posts.map((post) => {
       const loc = `${SITE_URL}/blog/${post.slug}`;
       const lastmod = post.data.pubDate.toISOString().split('T')[0];

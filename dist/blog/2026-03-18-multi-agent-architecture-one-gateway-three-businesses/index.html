@@ -1,0 +1,156 @@
+<!DOCTYPE html><html lang="en" class="scroll-smooth"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v5.17.2"><title>Multi-Agent Architecture: One Gateway, Three Businesses</title><meta name="description" content="How I split a single overwhelmed AI agent into three focused agents — each running its own business — on one Raspberry Pi."><link rel="canonical" href="https://seekinggradient.com/blog/2026-03-18-multi-agent-architecture-one-gateway-three-businesses"><meta property="og:type" content="article"><meta property="og:site_name" content="Seeking Gradient"><meta property="og:title" content="Multi-Agent Architecture: One Gateway, Three Businesses"><meta property="og:description" content="How I split a single overwhelmed AI agent into three focused agents — each running its own business — on one Raspberry Pi."><meta property="og:url" content="https://seekinggradient.com/blog/2026-03-18-multi-agent-architecture-one-gateway-three-businesses"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="Multi-Agent Architecture: One Gateway, Three Businesses"><meta name="twitter:description" content="How I split a single overwhelmed AI agent into three focused agents — each running its own business — on one Raspberry Pi."><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet"><link rel="stylesheet" href="/_astro/_slug_.DSbIfmXq.css">
+<style>html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;font-feature-settings:"cv02","cv03","cv04","cv11"}pre::-webkit-scrollbar{height:6px}pre::-webkit-scrollbar-track{background:transparent}pre::-webkit-scrollbar-thumb{background:#8b5cf640;border-radius:3px}pre::-webkit-scrollbar-thumb:hover{background:#8b5cf666}:focus-visible{outline:2px solid #7c3aed;outline-offset:2px;border-radius:2px}
+</style>
+<link rel="stylesheet" href="/_astro/_slug_.BDulFwiB.css"></head> <body class="bg-[#fafafa] text-gray-900 font-['Inter',sans-serif] selection:bg-purple-100 selection:text-purple-900 overflow-x-hidden leading-normal"> <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100"> <div class="max-w-6xl mx-auto px-6 h-20 flex justify-between items-center"> <a href="/" class="group flex items-center gap-3"> <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 to-orange-500 flex items-center justify-center text-white font-black text-xl shadow-lg shadow-purple-100 group-hover:scale-105 transition-transform">
+S
+</div> <span class="text-xl font-black tracking-tighter group-hover:text-purple-600 transition-colors">Seeking Gradient</span> </a> <div class="hidden md:flex items-center gap-8 text-sm font-bold uppercase tracking-widest text-gray-500"> <a href="/#blog" class="hover:text-gray-900 transition-colors">Journey</a> <a href="/#blog" class="hover:text-gray-900 transition-colors">Thoughts</a> <a href="/ideas" class="hover:text-gray-900 transition-colors">Ideas</a> <a href="/tracking" class="hover:text-gray-900 transition-colors">Tracking</a> <a href="mailto:seekinggradient@gmail.com" class="px-5 py-2.5 bg-gray-900 text-white rounded-full hover:bg-gray-800 transition-all hover:shadow-lg shadow-gray-200">Contact</a> </div> </div> </nav> <main class="max-w-6xl mx-auto px-6 py-20">  <div class="max-w-3xl mx-auto"> <article class="prose prose-lg prose-slate max-w-none prose-headings:tracking-tight prose-headings:font-black prose-a:text-purple-600 hover:prose-a:text-purple-500 transition-colors"> <header class="mb-12 not-prose"> <div class="flex items-center gap-3 mb-6"> <time class="text-xs font-bold text-orange-500 tracking-wider"> MAR 17, 2026 </time> <span class="w-1 h-1 rounded-full bg-gray-300"></span> <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">Seeking Gradient</span> </div> <h1 class="text-4xl md:text-5xl font-black tracking-tighter leading-[1.1] mb-5"> Multi-Agent Architecture: One Gateway, Three Businesses </h1> <p class="text-xl md:text-2xl text-gray-500 font-light leading-relaxed"> How I split a single overwhelmed AI agent into three focused agents — each running its own business — on one Raspberry Pi. </p>  </header> <h2 id="the-problem-with-one-agent-doing-everything">The Problem With One Agent Doing Everything</h2>
+<p>For the past several weeks, I’ve been running a single AI agent on my Raspberry Pi via <a href="https://github.com/openclaw/openclaw">OpenClaw</a>. It manages my Telegram messages, checks my email, tracks tasks, writes code, generates podcast episodes, builds landing pages, and handles whatever random request I throw at it throughout the day.</p>
+<p>On paper, this sounds great. In practice, it was failing.</p>
+<p>The agent was context-switching constantly. It would be halfway through building a landing page, then I’d ask it to check my email, then it would pick up a podcast task on the next heartbeat, then circle back to the landing page but forget where it left off. It produced a lot of plans and docs but struggled to follow through to production-grade implementation. The task board had 248 issues across 8+ epics in completely unrelated domains.</p>
+<p>Sound familiar? It’s the same problem humans have. When you try to do everything, you do nothing well.</p>
+<h2 id="the-insight-agents-need-focus-not-capability">The Insight: Agents Need Focus, Not Capability</h2>
+<p>The fix wasn’t making the agent smarter or giving it better tools. It already had plenty of both. The fix was <strong>focus</strong>.</p>
+<p>I decided to split my single agent into three, each with a single mission:</p>
+<ol>
+<li><strong>LP Agent</strong> — runs a landing page creation business</li>
+<li><strong>DTH Agent</strong> — runs the Debug the Hype podcast and media brand</li>
+<li><strong>SG Bot</strong> (main) — my personal assistant for everything else</li>
+</ol>
+<p>Each agent gets its own workspace, its own task board, its own memory, its own skills, and its own Telegram channel. They share the same Raspberry Pi, the same OpenClaw gateway, and the same Telegram bot infrastructure — but mentally, they’re completely isolated.</p>
+<p>The landing pages agent doesn’t know the podcast exists. The podcast agent doesn’t know about landing pages. And my personal assistant doesn’t try to proactively advance either business.</p>
+<h2 id="architecture-how-it-actually-works">Architecture: How It Actually Works</h2>
+<p>OpenClaw supports running multiple isolated agents within a single gateway process. Each agent is defined with:</p>
+<ul>
+<li>A <strong>workspace directory</strong> containing its personality (SOUL.md), operating manual (AGENTS.md), heartbeat instructions, memory files, and skills</li>
+<li>An <strong>agent state directory</strong> for auth and session data</li>
+<li><strong>Telegram routing</strong> via separate bot accounts (one BotFather bot per agent)</li>
+<li><strong>Bindings</strong> in the gateway config that map each bot account to its agent</li>
+</ul>
+<p>The gateway config looks something like this:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">  "agents"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">    "list"</span><span style="color:#E1E4E8">: [</span></span>
+<span class="line"><span style="color:#E1E4E8">      { </span><span style="color:#79B8FF">"id"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"main"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">"workspace"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"~/.openclaw/workspace"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">"model"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"..."</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">      { </span><span style="color:#79B8FF">"id"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"landing-pages"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">"workspace"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"~/.openclaw/workspace-landing-pages"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">"model"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"..."</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">      { </span><span style="color:#79B8FF">"id"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"dth"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">"workspace"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"~/.openclaw/workspace-dth"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">"model"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"..."</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">    ]</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#79B8FF">  "channels"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">    "telegram"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">      "accounts"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">        "main_bot"</span><span style="color:#E1E4E8">: { </span><span style="color:#79B8FF">"botToken"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"..."</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#79B8FF">        "lp_bot"</span><span style="color:#E1E4E8">: { </span><span style="color:#79B8FF">"botToken"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"..."</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#79B8FF">        "dth_bot"</span><span style="color:#E1E4E8">: { </span><span style="color:#79B8FF">"botToken"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"..."</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#79B8FF">  "bindings"</span><span style="color:#E1E4E8">: [</span></span>
+<span class="line"><span style="color:#E1E4E8">    { </span><span style="color:#79B8FF">"agentId"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"main"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">"match"</span><span style="color:#E1E4E8">: { </span><span style="color:#79B8FF">"channel"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"telegram"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">"accountId"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"main_bot"</span><span style="color:#E1E4E8"> } },</span></span>
+<span class="line"><span style="color:#E1E4E8">    { </span><span style="color:#79B8FF">"agentId"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"landing-pages"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">"match"</span><span style="color:#E1E4E8">: { </span><span style="color:#79B8FF">"channel"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"telegram"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">"accountId"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"lp_bot"</span><span style="color:#E1E4E8"> } },</span></span>
+<span class="line"><span style="color:#E1E4E8">    { </span><span style="color:#79B8FF">"agentId"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"dth"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">"match"</span><span style="color:#E1E4E8">: { </span><span style="color:#79B8FF">"channel"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"telegram"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">"accountId"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"dth_bot"</span><span style="color:#E1E4E8"> } }</span></span>
+<span class="line"><span style="color:#E1E4E8">  ]</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>Each agent has its own Telegram bot with a distinct name. When I message the LP bot, only the landing pages agent responds. When I message the DTH bot, only the podcast agent responds. My DMs with the original bot go to my personal assistant.</p>
+<h2 id="designing-agent-personalities">Designing Agent Personalities</h2>
+<p>This is where it gets interesting. Each agent has a SOUL.md that defines not just what it does, but who it is.</p>
+<h3 id="the-landing-pages-agent">The Landing Pages Agent</h3>
+<p>This agent’s identity is a world-class landing page strategist. Its mission is to <strong>generate revenue</strong> by building landing pages for paying clients. It proactively finds businesses wasting ad spend on bad pages, audits their sites, builds challenger pages, and manages a client pipeline.</p>
+<p>Key character traits I encoded:</p>
+<ul>
+<li><strong>Relentless.</strong> Doesn’t give up. Tries multiple approaches before reporting a blocker.</li>
+<li><strong>Endlessly curious.</strong> Actively seeks out the best landing page creators in the world, reverse-engineers their techniques, and feeds what it learns back into its own work.</li>
+<li><strong>Builder, not planner.</strong> Docs support implementation — they don’t replace it.</li>
+</ul>
+<p>It also has deep domain knowledge baked into its workspace: a 30,000-word MASTER_PRINCIPLES document synthesized from Hormozi, Malewicz, Neil Patel, and other experts. Its skills include a landing page expert workflow, a copy chief for headline generation, and a front-end design system.</p>
+<h3 id="the-debug-the-hype-agent">The Debug the Hype Agent</h3>
+<p>This agent is a <strong>systems engineer</strong> running a media brand. Debug the Hype is a daily AI-generated podcast network covering markets, global news, AI, Hacker News, and GitHub trends. But the podcast is just the starting point — the agent’s mission is to build it into a revenue-generating media company.</p>
+<p>The critical design choice here: <strong>this agent works through code, not manual execution.</strong> It doesn’t run CLI commands to generate episodes. It writes and maintains automated pipelines — system-level cron jobs, GitHub Actions, CI/CD — that produce episodes without any agent intervention. The agent’s job is to monitor, improve, and extend those systems.</p>
+<p>I explicitly told it:</p>
+<blockquote>
+<p>“If something requires your active input to happen every day, that’s a bug to fix, not a feature.”</p>
+</blockquote>
+<p>The agent also owns the newsletter, the website, distribution (Spotify, Apple Podcasts), and audience growth strategy.</p>
+<h3 id="the-personal-assistant">The Personal Assistant</h3>
+<p>The main agent got slimmed down dramatically. It lost all the landing page and podcast skills, all the project-specific task ownership, and the heavy proactive heartbeat. It’s now a reactive assistant — capable of building things when I ask, but not trying to advance businesses on its own. If I ask it about landing pages, it tells me to take it to the LP agent group.</p>
+<h2 id="the-memory-problem-and-continuity">The Memory Problem and Continuity</h2>
+<p>One of the hardest challenges with persistent agents is <strong>continuity across sessions</strong>. Every time a session starts, the agent wakes up with zero memory of previous conversations.</p>
+<p>I added a Continuity section to each agent’s SOUL.md:</p>
+<blockquote>
+<p>Every session, you wake up fresh. You have no memory of previous conversations. These workspace files — SOUL.md, AGENTS.md, MEMORY.md, your skills/ — ARE your memory. They are the only way you persist across sessions.</p>
+<p><strong>If you don’t write it down, you will forget it.</strong></p>
+</blockquote>
+<p>This forces the agents to externalize everything: insights go into MEMORY.md, task state goes into Beads (the task tracker), process improvements get written into skills, and anything I need to see goes into Obsidian.</p>
+<p>The skills directory is especially powerful. I told each agent that skills are <strong>living, breathing artifacts</strong> — not static docs installed once. They should create new skills as they discover repeatable processes and rewrite them as they learn better approaches. A skill written on day 1 should look different on day 30.</p>
+<h2 id="task-tracking-one-board-per-agent">Task Tracking: One Board Per Agent</h2>
+<p>Previously, all 248 tasks lived in a single Beads board. Now each agent has its own:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Agent</th><th>Prefix</th><th>Board</th></tr></thead><tbody><tr><td>LP Agent</td><td><code>lp-</code></td><td>Landing page business tasks</td></tr><tr><td>DTH Agent</td><td><code>dth-</code></td><td>Podcast and media tasks</td></tr><tr><td>SG Bot</td><td><code>sg-</code></td><td>Personal/misc tasks</td></tr></tbody></table>
+<p>Each agent only sees its own tasks when it runs <code>bd ready</code>. No cross-contamination.</p>
+<p>I seeded each board with a bootstrap task (“read your workspace files and orient yourself”) plus empty epics for distinct workstreams. The agents will decompose these into concrete tasks as they start working.</p>
+<p>For the LP agent:</p>
+<ul>
+<li>Portfolio &#x26; Client Delivery</li>
+<li>Client Acquisition &#x26; Pipeline</li>
+<li>Showcase Website</li>
+<li>Craft &#x26; Self-Improvement</li>
+</ul>
+<p>For the DTH agent:</p>
+<ul>
+<li>Automated Production Pipeline</li>
+<li>Distribution &#x26; Platform Presence</li>
+<li>Newsletter &#x26; Written Content</li>
+<li>Audience Growth &#x26; Revenue</li>
+</ul>
+<h2 id="what-i-learned-lessons-for-multi-agent-design">What I Learned: Lessons for Multi-Agent Design</h2>
+<h3 id="1-focus-beats-capability">1. Focus beats capability</h3>
+<p>A narrow agent with clear ownership outperforms a broad agent with more tools. The LP agent doesn’t need podcast skills. The DTH agent doesn’t need landing page expertise. Removing capabilities is as important as adding them.</p>
+<h3 id="2-agents-need-a-revenue-mandate">2. Agents need a revenue mandate</h3>
+<p>When I told the agents “your mission is to generate revenue,” their task decomposition changed dramatically compared to “your mission is to build a portfolio.” Revenue focuses the mind — even an artificial one.</p>
+<h3 id="3-speed-over-perfection-is-poison-for-agents">3. “Speed over perfection” is poison for agents</h3>
+<p>I had been telling my agent to prioritize speed for first drafts. This led to shallow, rushed work across every domain. Removing that instruction was one of the first changes I made. Agents don’t need to be told to go fast — they need to be told to be thorough.</p>
+<h3 id="4-automation--operation">4. Automation > operation</h3>
+<p>For the podcast agent, the key insight was that it should be an <strong>engineer</strong>, not an <strong>operator</strong>. It shouldn’t manually run episode generation every day. It should build automated pipelines and then monitor them. This changes the entire task structure from “generate today’s episodes” to “build a system that generates episodes automatically.”</p>
+<h3 id="5-write-everything-down">5. Write everything down</h3>
+<p>Agents forget everything between sessions. The only way an agent improves over time is through its workspace files. Making this explicit in the SOUL.md — “if you don’t write it down, you will forget it” — is essential. Memory management isn’t a nice-to-have; it’s the core mechanism for agent growth.</p>
+<h3 id="6-let-agents-create-their-own-structure">6. Let agents create their own structure</h3>
+<p>I initially created one mega-epic per agent that encompassed its entire mission. This felt wrong — the epic was basically the agent’s identity restated as a task. Instead, I created separate epics for distinct workstreams and let the agents decompose them. The bootstrap task says: “read your workspace files, then create your own tasks based on what you find.”</p>
+<h2 id="the-experiment">The Experiment</h2>
+<p>Between you and me, this is really an experiment: what does it look like when an agent runs 24/7 on a given business?</p>
+<p>The landing pages agent will wake up every hour, check its task board, and advance the business. It will prospect for clients, build pages, refine its craft, and try to generate revenue. The podcast agent will monitor its automated pipelines, grow the audience, build the newsletter, and find sponsorship opportunities.</p>
+<p>I’ll be watching to see:</p>
+<ul>
+<li>Do the agents actually follow through on complex, multi-step work?</li>
+<li>Does the focused context lead to deeper, higher-quality output?</li>
+<li>Can an agent meaningfully improve its own skills over time through the living-skills pattern?</li>
+<li>How long before one of them generates its first dollar of revenue?</li>
+</ul>
+<p>I’ll report back on what I find. If you’re running OpenClaw or thinking about multi-agent architectures, I hope this gives you a concrete reference point for how to structure it.</p>
+<p>The full workspace configuration — SOUL.md, AGENTS.md, HEARTBEAT.md, and the rest — is something I’m considering open-sourcing as a template. If that interests you, let me know.</p>
+<hr>
+<p><em>This entire multi-agent setup runs on a single Raspberry Pi. Three agents, three businesses, one gateway, one crustacean.</em></p> </article> </div>  </main> <footer class="border-t border-gray-100 mt-20 py-20 bg-white"> <div class="max-w-6xl mx-auto px-6"> <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center"> <div> <h2 class="text-2xl font-black tracking-tighter mb-4">Seeking Gradient</h2> <p class="text-gray-500 font-light max-w-sm">
+Exploring the intersection of autonomous agents, infrastructure, and the quiet gradients of the digital age.
+</p> </div> <div class="flex md:justify-end gap-12"> <div> <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-6">Links</h3> <ul class="space-y-4 text-sm font-bold uppercase tracking-widest"> <li><a href="/" class="hover:text-purple-600">Home</a></li> <li><a href="/#blog" class="hover:text-purple-600">Essays</a></li> <li><a href="/ideas" class="hover:text-purple-600">Ideas</a></li> <li><a href="mailto:seekinggradient@gmail.com" class="hover:text-purple-600">Email</a></li> </ul> </div> </div> </div> <div class="mt-20 pt-8 border-t border-gray-50 flex flex-col md:flex-row justify-between gap-4 text-xs font-bold uppercase tracking-widest text-gray-400"> <span>&copy; 2026 Seeking Gradient. Built with Astro & OpenClaw.</span> <div class="flex gap-6"> <span>Privacy-First</span> <span>No Tracking</span> </div> </div> </div> </footer> </body></html> 

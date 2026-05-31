@@ -11,6 +11,24 @@ npm run build    # production build → dist/
 npm run preview  # preview built site
 ```
 
+## Ideas Notebook
+
+The ideas notebook from `ideas-repository` now lives in this repo under:
+
+```txt
+src/ideas/
+```
+
+The public route is `/ideas`. To add or edit ideas, update:
+
+```txt
+src/ideas/data/ideas.ts
+```
+
+Images and diagrams used by the notebook live in `public/mockups/` and
+`public/diagrams/`. The notebook is mounted as a React island inside Astro, so
+the main site and ideas archive can deploy together from this single repo.
+
 ---
 
 ## Text-to-Speech (TTS) for Blog Posts

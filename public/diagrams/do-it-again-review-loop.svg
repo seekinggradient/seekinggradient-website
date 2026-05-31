@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="820" viewBox="0 0 1400 820" role="img" aria-labelledby="title desc">
+<title id="title">Again binary review network loop diagram</title>
+<desc id="desc">A system diagram showing how experience logs become binary repeat-intent votes, aggregate again rates, and cross-category recommendations.</desc>
+<defs>
+  <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+    <path d="M0,0 L0,6 L9,3 z" fill="#3b3a36"/>
+  </marker>
+</defs>
+<style>
+  .bg{fill:#f6f2ea}.panel{fill:#fffaf0;stroke:#d9d2bf;stroke-width:2}.dark{fill:#1a1a1a}.soft{fill:#ede6d6}.yes{fill:#708767}.no{fill:#b8542c}.teal{fill:#2f5f5b}.gold{fill:#d89c4a}.line{stroke:#3b3a36;stroke-width:2.5;fill:none;marker-end:url(#arrow)}.dash{stroke-dasharray:8 8}.t{font-family:Inter,Arial,sans-serif;fill:#1a1a1a}.h{font-family:Georgia,serif;font-size:35px}.m{font-size:19px;font-weight:700}.s{font-size:15px;fill:#3b3a36}.mono{font-family:monospace;font-size:13px;fill:#6b6862}.white{fill:#fffaf0}
+</style>
+<rect class="bg" width="1400" height="820"/>
+<text x="70" y="72" class="t h">The repeat-intent review loop</text>
+<text x="72" y="105" class="t s">A category-neutral rating primitive turns restaurants, movies, trips, hotels, and shows into one comparable taste graph.</text>
+
+<rect x="80" y="168" width="232" height="148" rx="26" class="panel"/>
+<text x="118" y="218" class="t m">Experience</text>
+<text x="118" y="252" class="t s">Restaurant, movie, trip,</text>
+<text x="118" y="278" class="t s">hotel, show, class</text>
+
+<rect x="404" y="150" width="270" height="184" rx="28" class="dark"/>
+<text x="444" y="205" class="t m white">One adapted prompt</text>
+<text x="444" y="242" class="t s white">Would you eat here again?</text>
+<text x="444" y="268" class="t s white">Would you watch this again?</text>
+<text x="444" y="294" class="t s white">Would you stay here again?</text>
+
+<rect x="770" y="118" width="208" height="116" rx="26" class="yes"/>
+<text x="835" y="168" class="t m white">YES</text>
+<text x="814" y="200" class="t s white">do it again</text>
+
+<rect x="770" y="278" width="208" height="116" rx="26" class="no"/>
+<text x="842" y="328" class="t m white">NO</text>
+<text x="814" y="360" class="t s white">once was enough</text>
+
+<rect x="1080" y="168" width="240" height="170" rx="28" class="panel"/>
+<text x="1120" y="220" class="t m">Optional context</text>
+<text x="1120" y="255" class="t s">Short note</text>
+<text x="1120" y="283" class="t s">Price and occasion</text>
+<text x="1120" y="311" class="t s">Photos, tags, people</text>
+
+<rect x="100" y="488" width="290" height="170" rx="30" class="panel"/>
+<text x="140" y="540" class="t m">Again rate</text>
+<text x="140" y="575" class="t s">Public aggregate plus friend</text>
+<text x="140" y="602" class="t s">and cohort-specific views.</text>
+<rect x="140" y="628" width="188" height="18" rx="9" class="soft"/>
+<rect x="140" y="628" width="134" height="18" rx="9" class="yes"/>
+
+<rect x="520" y="488" width="300" height="170" rx="30" class="panel"/>
+<text x="560" y="540" class="t m">Personal taste graph</text>
+<text x="560" y="575" class="t s">A private or social record of</text>
+<text x="560" y="602" class="t s">what you would repeat.</text>
+<circle cx="585" cy="632" r="12" class="yes"/><circle cx="630" cy="632" r="12" class="gold"/><circle cx="675" cy="632" r="12" class="teal"/><circle cx="720" cy="632" r="12" class="no"/>
+
+<rect x="950" y="488" width="310" height="170" rx="30" class="panel"/>
+<text x="990" y="540" class="t m">Search and recommendations</text>
+<text x="990" y="575" class="t s">Find things people like you</text>
+<text x="990" y="602" class="t s">would actually do again.</text>
+<text x="990" y="640" class="t mono">"worth repeating nearby"</text>
+
+<path class="line" d="M312 242 C350 242 366 242 404 242"/>
+<path class="line" d="M674 242 C720 176 735 176 770 176"/>
+<path class="line" d="M674 242 C720 336 735 336 770 336"/>
+<path class="line" d="M978 176 C1030 176 1038 220 1080 220"/>
+<path class="line" d="M978 336 C1030 336 1038 300 1080 300"/>
+<path class="line" d="M1200 338 C1200 420 1080 438 1080 488"/>
+<path class="line" d="M874 394 C874 455 675 450 675 488"/>
+<path class="line" d="M770 336 C610 420 252 420 245 488"/>
+<path class="line" d="M390 573 C438 573 472 573 520 573"/>
+<path class="line" d="M820 573 C872 573 898 573 950 573"/>
+<path class="line dash" d="M1105 488 C1040 410 980 410 900 394"/>
+
+<rect x="78" y="708" width="1244" height="52" rx="18" class="soft"/>
+<text x="118" y="741" class="t mono">Core bet: replace ambiguous stars with a yes/no behavioral signal that works across the whole map of lived experiences.</text>
+</svg>

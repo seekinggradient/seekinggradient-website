@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="820" viewBox="0 0 1400 820" role="img" aria-labelledby="title desc">
+<title id="title">Portable memory plugin architecture</title>
+<desc id="desc">Harness-specific plugins connect Claude Code, Codex, OpenClaw and other clients to one portable memory service through MCP and API adapters.</desc>
+<style>
+  .bg{fill:#f6f2ea}.panel{fill:#fffaf0;stroke:#d9d2bf;stroke-width:2}.core{fill:#1a1a1a}.accent{fill:#b8542c}.soft{fill:#ede6d6}.line{stroke:#3b3a36;stroke-width:2.5;fill:none;marker-end:url(#arrow)}
+  .dash{stroke-dasharray:8 8}.t{font-family:Inter,Arial,sans-serif;fill:#1a1a1a}.h{font-family:Georgia,serif;font-size:36px}.m{font-size:19px;font-weight:700}.s{font-size:15px;fill:#3b3a36}.mono{font-family:monospace;font-size:13px;fill:#6b6862}.white{fill:#fffaf0}
+</style>
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#3b3a36"/></marker></defs>
+<rect class="bg" width="1400" height="820"/>
+<text x="70" y="72" class="t h">Portable Memory Layer: plugin-first architecture</text>
+<text x="72" y="105" class="t s">Plugins are thin adapters. The durable product is one memory service with provenance, recall, workspaces, and connectors.</text>
+
+<rect x="70" y="155" width="310" height="430" rx="26" class="panel"/>
+<text x="105" y="205" class="t m">Agent harnesses</text>
+<rect x="105" y="235" width="220" height="54" rx="14" class="soft"/><text x="128" y="268" class="t s">Claude Code</text>
+<rect x="105" y="305" width="220" height="54" rx="14" class="soft"/><text x="128" y="338" class="t s">Codex CLI / App</text>
+<rect x="105" y="375" width="220" height="54" rx="14" class="soft"/><text x="128" y="408" class="t s">OpenClaw</text>
+<rect x="105" y="445" width="220" height="54" rx="14" class="soft"/><text x="128" y="478" class="t s">Other harnesses</text>
+<text x="105" y="535" class="t mono">User stays in preferred tool</text>
+
+<rect x="485" y="135" width="370" height="510" rx="30" class="panel"/>
+<text x="525" y="186" class="t m">Memory plugin adapter</text>
+<text x="525" y="217" class="t s">One plugin per harness surface</text>
+<rect x="525" y="250" width="280" height="58" rx="14" class="soft"/><text x="550" y="284" class="t s">Skills / commands</text>
+<rect x="525" y="325" width="280" height="58" rx="14" class="soft"/><text x="550" y="359" class="t s">MCP tools: save/search/recall</text>
+<rect x="525" y="400" width="280" height="58" rx="14" class="soft"/><text x="550" y="434" class="t s">Lifecycle hooks</text>
+<rect x="525" y="475" width="280" height="58" rx="14" class="soft"/><text x="550" y="509" class="t s">Auth + workspace routing</text>
+<text x="525" y="575" class="t mono">Adapter teaches when/how to remember</text>
+
+<rect x="960" y="150" width="350" height="440" rx="32" class="core"/>
+<text x="1000" y="205" class="t m white">Portable memory service</text>
+<rect x="1000" y="240" width="260" height="52" rx="14" fill="#fffaf0"/><text x="1025" y="272" class="t s">Workspace graph</text>
+<rect x="1000" y="310" width="260" height="52" rx="14" fill="#fffaf0"/><text x="1025" y="342" class="t s">Memory store + embeddings</text>
+<rect x="1000" y="380" width="260" height="52" rx="14" fill="#fffaf0"/><text x="1025" y="412" class="t s">Provenance + confidence</text>
+<rect x="1000" y="450" width="260" height="52" rx="14" fill="#fffaf0"/><text x="1025" y="482" class="t s">Retrieval policy</text>
+<rect x="1000" y="520" width="260" height="52" rx="14" fill="#fffaf0"/><text x="1025" y="552" class="t s">Privacy / retention controls</text>
+
+<path class="line" d="M380 370 C430 370 440 390 485 390"/>
+<path class="line" d="M855 390 C900 390 910 370 960 370"/>
+<path class="line dash" d="M1135 590 C1135 690 215 690 215 590"/>
+<text x="540" y="700" class="t s">Recall comes back as context, not as a separate chat product</text>
+
+<rect x="955" y="650" width="355" height="98" rx="22" class="panel"/>
+<text x="990" y="690" class="t m">External sources</text>
+<text x="990" y="723" class="t s">Email · calendar · docs · transcripts · web</text>
+<path class="line" d="M1132 650 L1132 592"/>
+</svg>

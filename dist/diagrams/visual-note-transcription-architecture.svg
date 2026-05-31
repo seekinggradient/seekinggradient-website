@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="820" viewBox="0 0 1400 820" role="img" aria-labelledby="title desc">
+<title id="title">Visual note transcription pipeline architecture</title>
+<desc id="desc">Architecture diagram for a handwritten-note transcription system that renders pages, detects patches, uses OCR and vision models, reconstructs Markdown, and stores source links.</desc>
+<style>
+  .bg{fill:#f6f2ea}.panel{fill:#fffaf0;stroke:#d9d2bf;stroke-width:2}.core{fill:#1a1a1a}.accent{fill:#b8542c}.soft{fill:#ede6d6}.line{stroke:#3b3a36;stroke-width:2.5;fill:none;marker-end:url(#arrow)}.dash{stroke-dasharray:8 8}.t{font-family:Inter,Arial,sans-serif;fill:#1a1a1a}.h{font-family:Georgia,serif;font-size:35px}.m{font-size:19px;font-weight:700}.s{font-size:15px;fill:#3b3a36}.mono{font-family:monospace;font-size:13px;fill:#6b6862}.white{fill:#fffaf0}
+</style>
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#3b3a36"/></marker></defs>
+<rect class="bg" width="1400" height="820"/>
+<text x="70" y="72" class="t h">Visual transcription pipeline: patch-first architecture</text>
+<text x="72" y="105" class="t s">Treat handwriting as visual reconstruction, not a single OCR pass. Cheap tools handle easy regions; models escalate only where needed.</text>
+
+<rect x="70" y="155" width="250" height="470" rx="26" class="panel"/>
+<text x="105" y="204" class="t m">Inputs</text>
+<rect x="105" y="238" width="180" height="56" rx="14" class="soft"/><text x="126" y="272" class="t s">PDF upload</text>
+<rect x="105" y="314" width="180" height="56" rx="14" class="soft"/><text x="126" y="348" class="t s">Phone scans</text>
+<rect x="105" y="390" width="180" height="56" rx="14" class="soft"/><text x="126" y="424" class="t s">Whiteboards</text>
+<rect x="105" y="466" width="180" height="56" rx="14" class="soft"/><text x="126" y="500" class="t s">Notebook pages</text>
+<text x="105" y="570" class="t mono">Embedded text is a hint</text>
+
+<rect x="405" y="130" width="315" height="520" rx="30" class="panel"/>
+<text x="445" y="182" class="t m">Page processing</text>
+<text x="445" y="212" class="t s">High-DPI render + layout map</text>
+<rect x="445" y="250" width="230" height="52" rx="14" class="soft"/><text x="466" y="282" class="t s">Render page images</text>
+<rect x="445" y="322" width="230" height="52" rx="14" class="soft"/><text x="466" y="354" class="t s">Detect headings / bullets</text>
+<rect x="445" y="394" width="230" height="52" rx="14" class="soft"/><text x="466" y="426" class="t s">Crop meaningful patches</text>
+<rect x="445" y="466" width="230" height="52" rx="14" class="soft"/><text x="466" y="498" class="t s">Attach coordinates</text>
+<rect x="445" y="538" width="230" height="52" rx="14" class="soft"/><text x="466" y="570" class="t s">Score difficulty</text>
+<text x="445" y="620" class="t mono">Patch map preserves topology</text>
+
+<rect x="805" y="130" width="305" height="520" rx="30" class="core"/>
+<text x="845" y="182" class="t m white">Transcription engine</text>
+<text x="845" y="212" class="t s white">Tiered model routing</text>
+<rect x="845" y="250" width="220" height="52" rx="14" fill="#fffaf0"/><text x="866" y="282" class="t s">OCR weak hints</text>
+<rect x="845" y="322" width="220" height="52" rx="14" fill="#fffaf0"/><text x="866" y="354" class="t s">Small vision model</text>
+<rect x="845" y="394" width="220" height="52" rx="14" fill="#fffaf0"/><text x="866" y="426" class="t s">Escalation model</text>
+<rect x="845" y="466" width="220" height="52" rx="14" fill="#fffaf0"/><text x="866" y="498" class="t s">Uncertainty markers</text>
+<rect x="845" y="538" width="220" height="52" rx="14" fill="#fffaf0"/><text x="866" y="570" class="t s">Patch transcript JSON</text>
+
+<rect x="1190" y="155" width="140" height="470" rx="26" class="panel"/>
+<text x="1218" y="205" class="t m">Outputs</text>
+<rect x="1218" y="238" width="84" height="56" rx="14" class="soft"/><text x="1238" y="272" class="t s">MD</text>
+<rect x="1218" y="314" width="84" height="56" rx="14" class="soft"/><text x="1238" y="348" class="t s">QA</text>
+<rect x="1218" y="390" width="84" height="56" rx="14" class="soft"/><text x="1232" y="424" class="t s">Tasks</text>
+<rect x="1218" y="466" width="84" height="56" rx="14" class="soft"/><text x="1235" y="500" class="t s">Links</text>
+<text x="1210" y="570" class="t mono">Source</text>
+<text x="1210" y="590" class="t mono">coordinates</text>
+
+<path class="line" d="M320 390 C360 390 365 390 405 390"/>
+<path class="line" d="M720 390 C760 390 765 390 805 390"/>
+<path class="line" d="M1110 390 C1145 390 1152 390 1190 390"/>
+
+<rect x="405" y="705" width="705" height="62" rx="18" class="panel"/>
+<text x="435" y="743" class="t s">Reviewer corrections update user-specific handwriting vocabulary and abbreviation hints.</text>
+<path class="line dash" d="M1188 515 C1040 700 655 690 555 650"/>
+</svg>

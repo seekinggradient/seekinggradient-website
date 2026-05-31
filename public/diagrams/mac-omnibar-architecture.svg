@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="860" viewBox="0 0 1400 860" role="img" aria-labelledby="title desc">
+<title id="title">Mac omnibar for agents — architecture</title>
+<desc id="desc">A native Mac shell hosts the input panel, screen context collector, and side panel. A local helper daemon talks through an adapter layer to one of several agent harnesses.</desc>
+<style>
+  .bg{fill:#f6f2ea}
+  .panel{fill:#fffaf0;stroke:#d9d2bf;stroke-width:2}
+  .core{fill:#1a1a1a}
+  .accent{fill:#b8542c}
+  .soft{fill:#ede6d6}
+  .line{stroke:#3b3a36;stroke-width:2.5;fill:none;marker-end:url(#arrow)}
+  .dash{stroke-dasharray:8 8}
+  .t{font-family:Inter,Arial,sans-serif;fill:#1a1a1a}
+  .h{font-family:Georgia,serif;font-size:34px}
+  .m{font-size:18px;font-weight:700}
+  .s{font-size:14px;fill:#3b3a36}
+  .mono{font-family:monospace;font-size:12px;fill:#6b6862}
+  .white{fill:#fffaf0}
+</style>
+<defs>
+  <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#3b3a36"/></marker>
+</defs>
+<rect class="bg" width="1400" height="860"/>
+<text x="60" y="62" class="t h">Mac omnibar for agents — system architecture</text>
+<text x="62" y="92" class="t s">Native SwiftUI shell + local helper daemon. Adapters keep the bar harness-agnostic.</text>
+
+<!-- LEFT: Mac native shell -->
+<rect x="60" y="140" width="380" height="610" rx="24" class="panel"/>
+<text x="92" y="186" class="t m">Native Mac shell (SwiftUI + AppKit)</text>
+<text x="92" y="208" class="t s">Sandboxed app, menu bar item, login item</text>
+
+<rect x="92" y="232" width="320" height="64" rx="12" class="soft"/>
+<text x="112" y="258" class="t s">Global hotkey (KeyboardShortcuts)</text>
+<text x="112" y="280" class="t mono">user-rebindable · recorder in settings</text>
+
+<rect x="92" y="312" width="320" height="86" rx="12" class="soft"/>
+<text x="112" y="338" class="t s">Omnibar NSPanel</text>
+<text x="112" y="358" class="t mono">borderless · .statusBar level · nonactivating</text>
+<text x="112" y="378" class="t mono">canBecomeKey=true · canBecomeMain=false</text>
+
+<rect x="92" y="414" width="320" height="86" rx="12" class="soft"/>
+<text x="112" y="440" class="t s">Screen context collector</text>
+<text x="112" y="460" class="t mono">ScreenCaptureKit one-shot active window</text>
+<text x="112" y="480" class="t mono">AXUIElement: focused element + selection</text>
+
+<rect x="92" y="516" width="320" height="74" rx="12" class="soft"/>
+<text x="112" y="542" class="t s">Streaming response view</text>
+<text x="112" y="562" class="t mono">NSHostingView · markdown · tool calls inline</text>
+
+<rect x="92" y="606" width="320" height="74" rx="12" class="soft"/>
+<text x="112" y="632" class="t s">Side panel + transcript</text>
+<text x="112" y="652" class="t mono">tear-off NSWindow · history search</text>
+
+<text x="92" y="712" class="t mono">XPC to helper daemon for long-lived work</text>
+
+<!-- MIDDLE: Helper daemon -->
+<rect x="500" y="140" width="360" height="610" rx="24" class="panel"/>
+<text x="532" y="186" class="t m">Local helper daemon (LaunchAgent)</text>
+<text x="532" y="208" class="t s">Lives past panel dismissal · holds streams</text>
+
+<rect x="532" y="232" width="296" height="68" rx="12" class="soft"/>
+<text x="552" y="258" class="t s">Session manager</text>
+<text x="552" y="280" class="t mono">AgentSession lifecycle · cancel · resume</text>
+
+<rect x="532" y="316" width="296" height="68" rx="12" class="soft"/>
+<text x="552" y="342" class="t s">Adapter registry</text>
+<text x="552" y="364" class="t mono">OpenClaw · Claude Code · Codex · HTTP</text>
+
+<rect x="532" y="400" width="296" height="68" rx="12" class="soft"/>
+<text x="552" y="426" class="t s">Context broker</text>
+<text x="552" y="448" class="t mono">screenshot + ax-tree + selection bundle</text>
+
+<rect x="532" y="484" width="296" height="68" rx="12" class="soft"/>
+<text x="552" y="510" class="t s">MCP client (optional sources/tools)</text>
+<text x="552" y="532" class="t mono">stdio · streamable HTTP</text>
+
+<rect x="532" y="568" width="296" height="68" rx="12" class="soft"/>
+<text x="552" y="594" class="t s">Secrets · Keychain</text>
+<text x="552" y="616" class="t mono">per-adapter keys · per-workspace scopes</text>
+
+<rect x="532" y="652" width="296" height="68" rx="12" class="soft"/>
+<text x="552" y="678" class="t s">Transcript store (SQLite)</text>
+<text x="552" y="700" class="t mono">local-first · optional encrypted sync</text>
+
+<!-- RIGHT: Harnesses -->
+<rect x="920" y="140" width="420" height="610" rx="24" class="core"/>
+<text x="952" y="186" class="t m white">Agent harnesses (pluggable backends)</text>
+<text x="952" y="208" class="t s" fill="#ede6d6">One adapter per backend, normalized session</text>
+
+<rect x="952" y="232" width="356" height="68" rx="12" fill="#fffaf0"/>
+<text x="972" y="258" class="t s">OpenClaw Gateway</text>
+<text x="972" y="280" class="t mono">HTTP + WebSocket · local or remote</text>
+
+<rect x="952" y="316" width="356" height="68" rx="12" fill="#fffaf0"/>
+<text x="972" y="342" class="t s">Claude Code (plugin / MCP)</text>
+<text x="972" y="364" class="t mono">stdio MCP server · skill surface</text>
+
+<rect x="952" y="400" width="356" height="68" rx="12" fill="#fffaf0"/>
+<text x="972" y="426" class="t s">Codex CLI (plugin)</text>
+<text x="972" y="448" class="t mono">stdio bridge · tool exposure</text>
+
+<rect x="952" y="484" width="356" height="68" rx="12" fill="#fffaf0"/>
+<text x="972" y="510" class="t s">Generic HTTP / WebSocket agent</text>
+<text x="972" y="532" class="t mono">bring-your-own endpoint + auth</text>
+
+<rect x="952" y="568" width="356" height="68" rx="12" fill="#fffaf0"/>
+<text x="972" y="594" class="t s">Model API direct (fallback)</text>
+<text x="972" y="616" class="t mono">no tools · keys in Keychain</text>
+
+<text x="952" y="700" class="t s" fill="#ede6d6">Bar stays thin. Intelligence lives downstream.</text>
+<text x="952" y="722" class="t s" fill="#ede6d6">Adapters are versioned and replaceable.</text>
+
+<!-- Arrows -->
+<path class="line" d="M440 470 C470 470 470 470 500 470"/>
+<path class="line" d="M860 470 C890 470 890 470 920 470"/>
+<path class="line dash" d="M250 750 C250 800 1130 800 1130 750"/>
+<text x="540" y="795" class="t s">Transcripts and memories can flow back as durable context</text>
+</svg>

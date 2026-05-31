@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="780" viewBox="0 0 1400 780" role="img" aria-labelledby="title desc">
+<title id="title">Mac omnibar for agents — event flow</title>
+<desc id="desc">A keyboard shortcut summons the panel, optionally captures context, dispatches to an agent adapter, streams response, and persists transcript or memory.</desc>
+<style>
+  .bg{fill:#f6f2ea}
+  .panel{fill:#fffaf0;stroke:#d9d2bf;stroke-width:2}
+  .core{fill:#1a1a1a}
+  .accent{fill:#b8542c}
+  .soft{fill:#ede6d6}
+  .line{stroke:#3b3a36;stroke-width:2.5;fill:none;marker-end:url(#arrow)}
+  .dash{stroke-dasharray:8 8}
+  .t{font-family:Inter,Arial,sans-serif;fill:#1a1a1a}
+  .h{font-family:Georgia,serif;font-size:34px}
+  .m{font-size:18px;font-weight:700}
+  .s{font-size:14px;fill:#3b3a36}
+  .mono{font-family:monospace;font-size:12px;fill:#6b6862}
+  .white{fill:#fffaf0}
+</style>
+<defs>
+  <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#3b3a36"/></marker>
+</defs>
+<rect class="bg" width="1400" height="780"/>
+<text x="60" y="62" class="t h">Mac omnibar for agents — request lifecycle</text>
+<text x="62" y="92" class="t s">One round trip from hotkey to transcript. The dotted path is opt-in capture.</text>
+
+<!-- Row 1: input flow -->
+<rect x="60" y="150" width="220" height="110" rx="16" class="panel"/>
+<text x="84" y="190" class="t m">1. Hotkey</text>
+<text x="84" y="216" class="t s">⌘⇧Space (rebindable)</text>
+<text x="84" y="238" class="t mono">KeyboardShortcuts handler</text>
+
+<rect x="320" y="150" width="220" height="110" rx="16" class="panel"/>
+<text x="344" y="190" class="t m">2. Panel</text>
+<text x="344" y="216" class="t s">NSPanel becomes key</text>
+<text x="344" y="238" class="t mono">caret in TextField · cmd palette mode</text>
+
+<rect x="580" y="150" width="240" height="110" rx="16" class="panel"/>
+<text x="604" y="190" class="t m">3. Optional context</text>
+<text x="604" y="216" class="t s">Modifier or "/screen" verb</text>
+<text x="604" y="238" class="t mono">SCScreenshotManager + AX selection</text>
+
+<rect x="860" y="150" width="240" height="110" rx="16" class="panel"/>
+<text x="884" y="190" class="t m">4. Dispatch</text>
+<text x="884" y="216" class="t s">Helper daemon picks adapter</text>
+<text x="884" y="238" class="t mono">AgentSession.send(message, context)</text>
+
+<rect x="1140" y="150" width="220" height="110" rx="16" class="core"/>
+<text x="1164" y="190" class="t m white">5. Harness</text>
+<text x="1164" y="216" class="t s" fill="#ede6d6">OpenClaw / Claude / Codex</text>
+<text x="1164" y="238" class="t mono" fill="#bdb8a8">tools run remotely</text>
+
+<!-- Row 2: response flow -->
+<rect x="1140" y="370" width="220" height="110" rx="16" class="panel"/>
+<text x="1164" y="410" class="t m">6. Stream</text>
+<text x="1164" y="436" class="t s">tokens + tool events</text>
+<text x="1164" y="458" class="t mono">async sequence back to daemon</text>
+
+<rect x="860" y="370" width="240" height="110" rx="16" class="panel"/>
+<text x="884" y="410" class="t m">7. Render</text>
+<text x="884" y="436" class="t s">Inline in NSPanel</text>
+<text x="884" y="458" class="t mono">incremental markdown + citations</text>
+
+<rect x="580" y="370" width="240" height="110" rx="16" class="panel"/>
+<text x="604" y="410" class="t m">8. Action or tear-off</text>
+<text x="604" y="436" class="t s">side panel / file write / app open</text>
+<text x="604" y="458" class="t mono">long-form work moves out of bar</text>
+
+<rect x="320" y="370" width="220" height="110" rx="16" class="panel"/>
+<text x="344" y="410" class="t m">9. Persist</text>
+<text x="344" y="436" class="t s">transcript + provenance</text>
+<text x="344" y="458" class="t mono">SQLite · optional memory writeback</text>
+
+<rect x="60" y="370" width="220" height="110" rx="16" class="panel"/>
+<text x="84" y="410" class="t m">10. Dismiss</text>
+<text x="84" y="436" class="t s">Esc hides panel</text>
+<text x="84" y="458" class="t mono">session stays warm in daemon</text>
+
+<!-- Row 3: durable surfaces -->
+<rect x="60" y="560" width="500" height="140" rx="20" class="panel"/>
+<text x="92" y="600" class="t m">Side panel (durable surface)</text>
+<text x="92" y="626" class="t s">Tear-off NSWindow for long-running work, drafts, plans, transcripts.</text>
+<text x="92" y="654" class="t mono">User stays in their original app · bar disappears</text>
+<text x="92" y="682" class="t mono">Side panel keeps streaming · supports pinning</text>
+
+<rect x="600" y="560" width="500" height="140" rx="20" class="panel"/>
+<text x="632" y="600" class="t m">Memory + transcript store</text>
+<text x="632" y="626" class="t s">Local SQLite first. Optional connector to a portable memory layer.</text>
+<text x="632" y="654" class="t mono">candidate memories: facts, preferences, project state</text>
+<text x="632" y="682" class="t mono">user reviews before promotion to long-term store</text>
+
+<rect x="1140" y="560" width="220" height="140" rx="20" class="panel"/>
+<text x="1164" y="600" class="t m">Telemetry</text>
+<text x="1164" y="626" class="t s">opt-in, local-first</text>
+<text x="1164" y="654" class="t mono">latency · cancel rate</text>
+<text x="1164" y="676" class="t mono">capture/no-capture mix</text>
+
+<!-- Arrows -->
+<path class="line" d="M280 205 L320 205"/>
+<path class="line" d="M540 205 L580 205"/>
+<path class="line" d="M820 205 L860 205"/>
+<path class="line" d="M1100 205 L1140 205"/>
+<path class="line" d="M1250 260 C1250 320 1250 320 1250 370"/>
+<path class="line" d="M1140 425 L1100 425"/>
+<path class="line" d="M860 425 L820 425"/>
+<path class="line" d="M580 425 L540 425"/>
+<path class="line" d="M320 425 L280 425"/>
+<path class="line dash" d="M700 480 L700 560"/>
+<path class="line dash" d="M420 480 L420 560"/>
+</svg>

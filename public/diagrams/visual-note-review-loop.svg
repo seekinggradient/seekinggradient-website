@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="820" viewBox="0 0 1400 820" role="img" aria-labelledby="title desc">
+<title id="title">Visual note transcription review and escalation loop</title>
+<desc id="desc">Flow diagram showing how easy text stays cheap, ambiguous handwriting escalates, and human corrections feed a handwriting profile.</desc>
+<style>
+  .bg{fill:#f6f2ea}.panel{fill:#fffaf0;stroke:#d9d2bf;stroke-width:2}.dark{fill:#1a1a1a}.soft{fill:#ede6d6}.accent{fill:#b8542c}.green{fill:#6f7f67}.line{stroke:#3b3a36;stroke-width:2.5;fill:none;marker-end:url(#arrow)}.dash{stroke-dasharray:8 8}.t{font-family:Inter,Arial,sans-serif;fill:#1a1a1a}.h{font-family:Georgia,serif;font-size:35px}.m{font-size:19px;font-weight:700}.s{font-size:15px;fill:#3b3a36}.mono{font-family:monospace;font-size:13px;fill:#6b6862}.white{fill:#fffaf0}
+</style>
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#3b3a36"/></marker></defs>
+<rect class="bg" width="1400" height="820"/>
+<text x="70" y="72" class="t h">Review loop: confidence, escalation, and learning</text>
+<text x="72" y="105" class="t s">The system is honest about uncertainty. It routes only hard patches to expensive models or humans, then learns from corrections.</text>
+
+<rect x="80" y="180" width="210" height="120" rx="24" class="panel"/>
+<text x="116" y="225" class="t m">Patch</text>
+<text x="116" y="258" class="t s">Image crop + OCR hint</text>
+<text x="116" y="282" class="t mono">x,y,w,h,page</text>
+
+<rect x="380" y="160" width="260" height="160" rx="26" class="panel"/>
+<text x="420" y="212" class="t m">Difficulty score</text>
+<text x="420" y="246" class="t s">Legibility, density, OCR</text>
+<rect x="420" y="272" width="180" height="18" rx="9" class="soft"/>
+<rect x="420" y="272" width="110" height="18" rx="9" class="accent"/>
+
+<rect x="735" y="110" width="240" height="110" rx="24" class="panel"/>
+<text x="770" y="154" class="t m">OCR-only</text>
+<text x="770" y="188" class="t s">Printed / easy text</text>
+
+<rect x="735" y="270" width="240" height="110" rx="24" class="panel"/>
+<text x="770" y="314" class="t m">Small vision</text>
+<text x="770" y="348" class="t s">Most handwriting</text>
+
+<rect x="735" y="430" width="240" height="110" rx="24" class="panel"/>
+<text x="770" y="474" class="t m">Strong model</text>
+<text x="770" y="508" class="t s">Dense / diagram-heavy</text>
+
+<rect x="735" y="600" width="240" height="110" rx="24" class="dark"/>
+<text x="770" y="642" class="t m white">Human review</text>
+<text x="770" y="678" class="t s white">Only unresolved spans</text>
+
+<rect x="1080" y="185" width="240" height="190" rx="28" class="panel"/>
+<text x="1120" y="238" class="t m">Patch transcript</text>
+<text x="1120" y="273" class="t s">Text + structure</text>
+<text x="1120" y="302" class="t s">Confidence</text>
+<text x="1120" y="331" class="t s">Uncertainty markers</text>
+
+<rect x="1080" y="470" width="240" height="150" rx="28" class="panel"/>
+<text x="1120" y="522" class="t m">Handwriting profile</text>
+<text x="1120" y="556" class="t s">Recurring terms</text>
+<text x="1120" y="585" class="t s">Abbreviations</text>
+
+<path class="line" d="M290 240 C330 240 340 240 380 240"/>
+<path class="line" d="M640 240 C685 165 695 165 735 165"/>
+<path class="line" d="M640 240 C685 325 695 325 735 325"/>
+<path class="line" d="M640 240 C685 485 695 485 735 485"/>
+<path class="line" d="M640 240 C685 655 695 655 735 655"/>
+<path class="line" d="M975 165 C1025 165 1030 245 1080 245"/>
+<path class="line" d="M975 325 C1025 325 1030 285 1080 285"/>
+<path class="line" d="M975 485 C1025 485 1030 330 1080 330"/>
+<path class="line" d="M975 690 C1040 690 1040 560 1080 560"/>
+<path class="line dash" d="M1080 560 C930 780 610 780 450 320"/>
+
+<rect x="80" y="520" width="470" height="150" rx="28" class="panel"/>
+<text x="120" y="570" class="t m">Review surface</text>
+<text x="120" y="608" class="t s">Show source crop beside proposed text. Accept, edit, or mark unreadable.</text>
+<text x="120" y="640" class="t mono">Correction: "initially 50?" -> "nightly job?"</text>
+</svg>

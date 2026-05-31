@@ -1,0 +1,62 @@
+<svg width="1400" height="820" viewBox="0 0 1400 820" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1400" height="820" fill="#f7f1e4"/>
+  <style>
+    .title{font:700 34px Georgia,serif;fill:#241f18}.label{font:700 17px ui-monospace,monospace;letter-spacing:.08em;fill:#2f2a22}.body{font:15px Georgia,serif;fill:#5d5448}.tiny{font:12px ui-monospace,monospace;fill:#7b6d5d}.box{fill:#fffaf0;stroke:#d7c7ae;stroke-width:2}.accent{fill:#8f4d2d}.line{stroke:#8f4d2d;stroke-width:3;marker-end:url(#arrow)}.muted{stroke:#d7c7ae;stroke-width:2;stroke-dasharray:8 8}.warn{fill:#fff3d1;stroke:#d09b42;stroke-width:2}
+  </style>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#8f4d2d"/></marker>
+  </defs>
+  <text x="70" y="82" class="title">Context capture pipeline</text>
+  <text x="70" y="116" class="body">Per-request screen context: explicit, inspectable, minimized before dispatch.</text>
+
+  <rect x="70" y="170" width="250" height="145" rx="22" class="box"/>
+  <text x="100" y="215" class="label">1. User asks</text>
+  <text x="100" y="248" class="body">Hotkey opens the bar.</text>
+  <text x="100" y="274" class="body">User toggles “include</text>
+  <text x="100" y="300" class="body">screen context”.</text>
+
+  <rect x="390" y="170" width="260" height="145" rx="22" class="warn"/>
+  <text x="420" y="215" class="label">2. Permission gate</text>
+  <text x="420" y="248" class="body">Request Screen Recording</text>
+  <text x="420" y="274" class="body">or Accessibility only when</text>
+  <text x="420" y="300" class="body">the feature is invoked.</text>
+
+  <rect x="720" y="150" width="260" height="185" rx="22" class="box"/>
+  <text x="750" y="195" class="label">3. Collect signals</text>
+  <text x="750" y="230" class="body">ScreenCaptureKit PNG</text>
+  <text x="750" y="256" class="body">AX selected text</text>
+  <text x="750" y="282" class="body">Focused app + window</text>
+  <text x="750" y="308" class="body">Optional clipboard fallback</text>
+
+  <rect x="1050" y="170" width="280" height="145" rx="22" class="box"/>
+  <text x="1080" y="215" class="label">4. Preview bundle</text>
+  <text x="1080" y="248" class="body">Show thumbnail + text</text>
+  <text x="1080" y="274" class="body">chips before sending.</text>
+  <text x="1080" y="300" class="body">Let user remove items.</text>
+
+  <path d="M320 242 H380" class="line"/><path d="M650 242 H710" class="line"/><path d="M980 242 H1040" class="line"/>
+
+  <rect x="170" y="455" width="280" height="155" rx="22" class="box"/>
+  <text x="200" y="500" class="label">5. Redact + resize</text>
+  <text x="200" y="535" class="body">Downscale image, cap bytes,</text>
+  <text x="200" y="561" class="body">strip metadata, optional</text>
+  <text x="200" y="587" class="body">local OCR/redaction pass.</text>
+
+  <rect x="560" y="455" width="280" height="155" rx="22" class="box"/>
+  <text x="590" y="500" class="label">6. ContextBundle</text>
+  <text x="590" y="535" class="body">Normalize to one envelope:</text>
+  <text x="590" y="561" class="tiny">screenshotPng, selectedText,</text>
+  <text x="590" y="587" class="tiny">axTree, activeApp, consentId</text>
+
+  <rect x="950" y="455" width="280" height="155" rx="22" class="box"/>
+  <text x="980" y="500" class="label">7. Adapter dispatch</text>
+  <text x="980" y="535" class="body">OpenClaw, Claude Code,</text>
+  <text x="980" y="561" class="body">Codex, or generic local</text>
+  <text x="980" y="587" class="body">agent endpoint.</text>
+
+  <path d="M1190 315 C1190 390 310 360 310 445" class="line"/>
+  <path d="M450 532 H550" class="line"/><path d="M840 532 H940" class="line"/>
+
+  <line x1="70" y1="690" x2="1330" y2="690" class="muted"/>
+  <text x="70" y="735" class="tiny">Privacy invariant: no background screen scraping. Every capture has a user gesture, visible preview, and a bounded payload.</text>
+</svg>
