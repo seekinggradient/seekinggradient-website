@@ -312,6 +312,84 @@ export const ideas: Idea[] = [
       },
     ],
   },
+  {
+    slug: 'agent-native-html-artifacts',
+    number: 'N° 009',
+    title: 'An agent-native home for HTML artifacts',
+    tagline: 'A personal web host where agents can deploy beautiful single-page apps, cards, widgets, and profile timelines.',
+    domain: 'Web infrastructure · Publishing',
+    status: 'sketch',
+    year: '2026',
+    tags: ['HTML', 'agents', 'static hosting', 'personal web', 'widgets'],
+    summary:
+      'AI coding makes it easy to create small, useful, beautiful HTML applications for a specific trip, explanation, decision, dashboard, or person. The hard part is no longer making the page; it is giving those artifacts a durable home, a URL, a profile surface, and a way to shrink into cards and widgets. This product is an agent-friendly publishing layer for the little pieces of live software people are going to make all the time.',
+    sections: [
+      {
+        heading: 'The friction',
+        body:
+          'Tools like Cloudflare Pages, Netlify, Vercel, GitHub Pages, and Replit are powerful, but they are still project-shaped. They assume repos, builds, settings, dashboards, and a developer who understands deployment. That is too much ceremony for a one-off Vegas trip companion, a home-search route planner, or an explainer page made to understand a paper.\n\nAgents can now produce these pages on demand. What they need is not a new framework. They need a dead-simple publishing target: take this HTML, put it under my namespace, make it shareable, and remember what it is.',
+      },
+      {
+        heading: 'What it does',
+        body:
+          'A user claims a namespace such as akshay.example.com. A human or agent can publish an artifact with one command or MCP call: an index.html file, optional assets, optional metadata, and optional alternate views. The platform stores the artifact, versions it, serves it from a stable URL, and adds it to the user profile.\n\nThe key primitive is one artifact with multiple viewports. The full page is where someone uses the thing. The card is where they encounter it in a feed or profile. The widget is where it gets composed into another page. A plain text post is just the smallest version of the same idea.',
+      },
+      {
+        heading: 'Why it might work',
+        body:
+          'The supply of tiny personal web apps is about to change. Before AI, making a custom trip app or single-purpose explainer was too expensive for most moments. With agents, the cost can fall low enough that people make software the way they write notes or send screenshots.\n\nThat turns hosting into a product surface again. The winning service may not be the most powerful static host; it may be the one that understands artifact identity, small-app sharing, version history, privacy scopes, and agent-native deployment better than anyone else.',
+      },
+      {
+        heading: 'Plain web in the middle',
+        body:
+          'The product should be opinionated around packaging, permissions, discovery, and composition, not around how the artifact is built. The core contract should stay boring: index.html, optional assets, optional manifest.json. Agents are already good at generating flexible HTML, CSS, and JavaScript, so the platform should avoid inventing a new language or forcing a framework.\n\nCards and widgets can be normal HTML files rendered in smaller sandboxed iframes. If no card view exists, the platform can generate a preview. If the agent wants a better card, it can ship card.html. The artifact should still mostly work if downloaded and opened somewhere else.',
+      },
+      {
+        heading: 'Open questions',
+        body:
+          'What is the smallest artifact manifest that is useful without becoming an SDK? How should random HTML be sandboxed so it is powerful enough to feel like software but safe enough to browse in a feed? Should the first wedge be private/share-link deployments for individuals, public profile timelines, or agent integrations for builders?\n\nThe deeper question is cultural: if people start publishing little tools as casually as posts, what does the personal web become? Profiles might stop being only archives of thoughts and become shelves of working objects: planners, explainers, calculators, simulations, maps, games, and reports.',
+      },
+    ],
+  },
+  {
+    slug: 'prediction-market-mispricing-engine',
+    number: 'N° 010',
+    title: 'A live mispricing engine for sports prediction markets',
+    tagline: 'A research system that compares Kalshi-style event prices against live sportsbook consensus before risking capital.',
+    domain: 'Trading research · Prediction markets',
+    status: 'exploring',
+    year: '2026',
+    tags: ['prediction markets', 'sports', 'odds', 'trading', 'risk'],
+    summary:
+      'Live sports prediction markets can overreact to early game state, thin liquidity, or stale order books. The idea is not to out-predict sportsbooks from scratch. It is to build a disciplined mispricing engine that compares executable event-contract prices against de-vigged sportsbook consensus, estimates fees and slippage, paper-trades every signal, and only considers real orders when the edge survives a risk buffer.',
+    sections: [
+      {
+        heading: 'The friction',
+        body:
+          'Prediction-market prices feel like probabilities, but they are also order books: thin liquidity, spreads, stale bids, panic fills, and participant psychology all show up in the number. In live sports, a small early deficit can make one side look dramatically worse even when there is enough time for the game to mean-revert.\n\nThe motivating observation came from a basketball game where one team was down only a few possessions early, yet the market priced them around a 30 percent chance to win. Buying that side and selling after the game tightened was profitable. The question is whether that was a repeatable dislocation or just one lucky read.\n\nThe tempting move is to buy the apparently cheap side by intuition. That can work once, but it is not a strategy until it answers the harder question: was the contract actually mispriced after fees, spread, slippage, latency, and the risk of a late collapse?',
+      },
+      {
+        heading: 'What it does',
+        body:
+          'The system watches live event contracts, sportsbook moneylines, and game state at the same time. Sportsbook odds become a reference probability after removing vig. Kalshi-style order books provide the actual executable bid or ask, not just a displayed midpoint. The engine then calculates a net edge: fair probability minus executable price minus fees, expected exit cost, spread, slippage, and an uncertainty buffer.\n\nThe first version should be an alerting and paper-trading product. When the gap is large enough, the user sees the fair price, contract price, recommended limit, risk cap, exit plan, and the historical bucket this signal resembles. Every skipped signal, unfilled order, fill, exit, and final result goes into a journal so the strategy can be replayed honestly.\n\nThe product should be explicit about the difference between arbitrage and positive expected value. True arbitrage would lock in profit across venues at the same time. This is usually not that. It is a live relative-value strategy: if sportsbooks imply 42 percent after vig removal and Kalshi is executable at 30 percent, the system has found a candidate edge. It still has to survive transaction costs and fill reality.',
+      },
+      {
+        heading: 'Why it might work',
+        body:
+          'Sportsbooks and sharper live markets are sophisticated, liquid, and fast. A small builder is unlikely to beat them by having a better basketball model. But prediction markets can still be less efficient in specific moments: after scoring runs, during fast state changes, in thin markets, or when participants overreact to a headline score instead of possession, time remaining, and pregame strength.\n\nThe edge, if it exists, is cross-market discipline. A contract at 30 percent is interesting only if sportsbook consensus and the model say it should be closer to 40 or 45 percent. A contract at 94 percent is not automatically good just because the team is likely to win; the remaining upside may be too small for the tail risk.\n\nThis is also why the system should optimize for expected value rather than win rate. Buying 94-cent contracts might win frequently and still lose money if one collapse wipes out many small gains. The most attractive trades are often lower-probability entries with enough convexity to sell after convergence, not late-game certainty trades with pennies of upside.',
+      },
+      {
+        heading: 'Product shape',
+        body:
+          'The MVP is a live research dashboard. It ingests sportsbook odds from an API, de-vigs and aggregates them, joins them to game state, watches prediction-market order books, and produces paper-trade alerts with a clear net-edge calculation. The first automation should be logging, not execution.\n\nThe page that matters most is the trade journal. It should show every signal, including the ones not taken: Kalshi bid/ask, reference fair, book dispersion, edge after costs, order recommendation, fill assumption, exit rule, result, and notes. The dashboard should make it emotionally easy to skip trades. The product is not a dopamine machine; it is a discipline machine.\n\nA later version can place small limit orders under strict risk rules and auto-exit when edge disappears. But the research sequence should stay boring: build adapters, paper trade, replay history, measure calibration, trade tiny, then scale only signal classes that survive real fills.',
+      },
+      {
+        heading: 'Open questions',
+        body:
+          'Which reference markets are sharp enough and fast enough to trust? Does sportsbook consensus lead prediction-market prices by enough seconds to matter, or does the edge vanish once latency and fills are realistic? Are early-game overreactions more exploitable than late-game dislocations, or does late-game tail risk erase the small wins?\n\nWhich provider tier is enough for the MVP? The Odds API is cheap and simple, but polling plus credit limits may be too slow for live late-game trading. Odds-API.io offers transparent WebSocket pricing, but the useful bookmaker set depends on plan. OpticOdds may have the best product shape for this use case, but quote-based pricing could push it out of hobby range. Sportradar probabilities would be ideal in theory, but likely enterprise-priced.\n\nThe responsible test is paper trading first. The system should prove that a signal class is positive expected value after costs before it gets permission to trade real money. The goal is not to win every trade; it is to avoid confusing frequent small wins with a strategy that survives the rare large loss.',
+      },
+    ],
+  },
 ];
 
 export const ideaBySlug = (slug: string) => ideas.find((i) => i.slug === slug);

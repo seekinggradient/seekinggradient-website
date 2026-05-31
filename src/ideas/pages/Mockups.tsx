@@ -24,6 +24,16 @@ const mockups = [
     src: '/mockups/specific/do-it-again-reviews.jpg',
     note: 'Experience page, cross-category search, and personal taste graph for reviews based on repeat intent.',
   },
+  {
+    title: 'Agent-native HTML artifacts',
+    src: '/mockups/specific/agent-native-artifact-feed.png',
+    note: 'A profile timeline of deployed HTML pages, cards, widgets, and private-link artifacts as one personal web surface.',
+  },
+  {
+    title: 'Prediction-market mispricing engine',
+    src: '/mockups/specific/prediction-market-mispricing.png',
+    note: 'A live edge watchlist, disciplined trade-decision surface, and post-trade journal for sports event-contract research.',
+  },
 ];
 
 const diagrams = [
@@ -52,6 +62,11 @@ const diagrams = [
     src: '/diagrams/do-it-again-review-loop.svg',
     note: 'A category-neutral yes/no vote becomes an again rate, a personal taste graph, and a recommendation signal.',
   },
+  {
+    title: 'Prediction-market mispricing architecture',
+    src: '/mockups/specific/prediction-market-architecture.png',
+    note: 'Sportsbook odds, game state, Kalshi-style order books, fair probability, edge/risk logic, execution, and backtesting.',
+  },
 ];
 
 export function Mockups() {
@@ -65,14 +80,14 @@ export function Mockups() {
           Mockups and system sketches.
         </h1>
         <p className="text-lg sm:text-xl leading-8 text-[color:var(--color-ink-soft)] max-w-2xl">
-          Initial visual boards for the eight ideas, plus architecture diagrams for the more systems-heavy concepts. These are exploratory artifacts: useful for taste, framing, and product direction — not final UI specs.
+          Initial visual boards for the ten ideas, plus architecture diagrams for the more systems-heavy concepts. These are exploratory artifacts: useful for taste, framing, and product direction — not final UI specs.
         </p>
       </div>
 
       <section className="mb-20">
         <div className="flex items-baseline justify-between gap-6 mb-8">
           <h2 className="display text-4xl sm:text-5xl">Product mockup boards</h2>
-          <span className="font-mono text-xs text-[color:var(--color-ink-mute)]">5 boards · 8 ideas</span>
+          <span className="font-mono text-xs text-[color:var(--color-ink-mute)]">7 boards · 10 ideas</span>
         </div>
         <div className="grid gap-10">
           {mockups.map((item) => (
