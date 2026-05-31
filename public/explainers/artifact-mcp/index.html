@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MCP for Agent-Native Artifacts</title>
+  <meta name="description" content="A senior-engineer style walkthrough of how MCP works, stdio versus remote MCP servers, and why an agent-native HTML artifact host should offer CLI, MCP, and REST API surfaces." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../artifact-auth/styles.css?v=20260531-mcp" />
+</head>
+<body>
+  <main class="article-shell">
+    <article class="post">
+      <header class="post-hero">
+        <p class="eyebrow">MCP from first principles</p>
+        <h1>How I’d explain MCP to an engineer who already understands APIs.</h1>
+        <p class="dek">MCP is not magic, and it is not a replacement for your product API. It is a standard way for agent hosts to discover tools, understand their schemas, ask for user consent, and call those tools over a predictable protocol.</p>
+      </header>
+
+      <section class="prose-section">
+        <h2>0. The shortest useful definition</h2>
+        <p>MCP, the Model Context Protocol, is a protocol for connecting an AI client to external context and capabilities. In ordinary engineering language: it lets an agent ask, “what can I do here?”, receive a list of typed operations, and then call those operations through a standard message format.</p>
+        <p>The important word is <strong>protocol</strong>. MCP is not “the database,” “the auth system,” or “the deployment service.” It is the agreement between an agent host and a tool server about how to initialize a session, negotiate capabilities, list tools, call tools, and return results.</p>
+        <p>For the artifact host, the underlying product capability is still simple: publish HTML artifacts, list versions, update visibility, fetch metadata, and maybe create share links. MCP is one nice way to expose those capabilities to agents.</p>
+      </section>
+
+      <section class="prose-section">
+        <h2>1. First separate the actors</h2>
+        <p>MCP conversations get confusing when “client,” “server,” “host,” “model,” and “tool” are blended together. Keep the actors separate:</p>
+        <div class="definition-grid">
+          <div><b>User</b><span>The human asking for work to be done.</span></div>
+          <div><b>Agent host</b><span>The application running the agent experience, such as a coding assistant or desktop app.</span></div>
+          <div><b>MCP client</b><span>The protocol component inside the host that talks MCP.</span></div>
+          <div><b>MCP server</b><span>The process or hosted service that exposes tools, resources, and prompts.</span></div>
+          <div><b>Tool</b><span>A callable operation, such as <code>publish_artifact</code> or <code>list_artifacts</code>.</span></div>
+          <div><b>Product API</b><span>The normal backend API that actually performs durable product work.</span></div>
+        </div>
+        <p>In our product, the MCP server should not contain all business logic. It should be a well-behaved adapter over the same artifact publishing core used by the CLI and REST API.</p>
+      </section>
+
+      <section class="prose-section">
+        <h2>2. MCP messages are JSON-RPC messages</h2>
+        <p>The wire format is JSON-RPC. That means the protocol has requests, responses, and notifications. A request has an <code>id</code>, a <code>method</code>, and optional <code>params</code>. A response uses the same <code>id</code> so the caller can match it to the request. A notification has no <code>id</code> because nobody is expected to answer it.</p>
+        <pre><code>{
+  "jsonrpc": "2.0",
+  "id": 2,
+  "method": "tools/call",
+  "params": {
+    "name": "publish_artifact",
+    "arguments": {
+      "path": "./dist",
+      "slug": "weekend-trip-map",
+      "visibility": "private-link"
+    }
+  }
+}</code></pre>
+        <p>This is the first demystifying point: MCP is not a model-specific incantation. It is structured messages moving between a client and server. The agent host decides when to call a tool; MCP defines how that call is represented.</p>
+      </section>
+
+      <section class="prose-section">
+        <h2>3. The lifecycle is initialize, operate, shut down</h2>
+        <p>An MCP session has a lifecycle. The client starts by sending <code>initialize</code>. The server answers with the protocol version it supports, the capabilities it offers, and implementation information. Then the client sends an <code>initialized</code> notification. After that, normal work begins.</p>
+        <pre><code>1. client -> server: initialize
+2. server -> client: initialize result
+3. client -> server: initialized notification
+4. client -> server: tools/list
+5. client -> server: tools/call</code></pre>
+        <p>This handshake matters because MCP is intentionally modular. A server can support tools without resources. Another can support resources without prompts. Another can support logging, completion, or notifications. The initialization phase is where both sides agree on what is actually available.</p>
+        <div class="callout">
+          <h3>Think “device enumeration,” not “random HTTP docs”</h3>
+          <p>If you come from systems work, MCP feels a little like enumerating a device or negotiating protocol features. The host asks what the server supports. The server describes capabilities. The host only uses what was negotiated.</p>
+        </div>
+      </section>
+
+      <section class="prose-section">
+        <h2>4. Tools are the part people usually mean by “MCP”</h2>
+        <p>MCP servers can expose several kinds of things, but tools are the most agent-action-shaped. A tool has a name, a description, and an input schema. The host can show those tools to the model and, depending on its safety policy, allow the model to request calls.</p>
+        <pre><code>{
+  "name": "publish_artifact",
+  "title": "Publish HTML artifact",
+  "description": "Package and publish a single-page HTML artifact.",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "path": { "type": "string" },
+      "slug": { "type": "string" },
+      "visibility": {
+        "type": "string",
+        "enum": ["private", "private-link", "unlisted", "public"]
+      }
+    },
+    "required": ["path", "slug"]
+  }
+}</code></pre>
+        <p>That schema is the big product-design win. A generic agent does not need to scrape your docs and guess the shape of an HTTP request. It can ask the MCP server for the available tools, read the schema, fill arguments, and let the host mediate execution.</p>
+      </section>
+
+      <section class="prose-section">
+        <h2>5. Resources and prompts are different from tools</h2>
+        <p>Tools do things. Resources expose context. Prompts expose reusable prompt templates. You do not need all three on day one, but it helps to know why they exist.</p>
+        <div class="comparison-table" aria-label="MCP feature comparison">
+          <div><b>Tools</b><span>Callable operations. Publish, delete, list, create share link, render preview.</span></div>
+          <div><b>Resources</b><span>Readable context. Artifact metadata, deployment logs, manifests, profile feed entries.</span></div>
+          <div><b>Prompts</b><span>Reusable workflows. “Turn this folder into a polished artifact manifest.”</span></div>
+          <div><b>Client features</b><span>Capabilities the host can provide back to the server, such as roots, sampling, or elicitation.</span></div>
+        </div>
+        <p>For the first artifact MCP server, I would start with tools and maybe a small set of resources. Prompts can come later once the product has repeated workflows worth packaging.</p>
+      </section>
+
+      <section class="prose-section">
+        <h2>6. stdio MCP means “the host launches a local process”</h2>
+        <p>In stdio transport, the agent host starts the MCP server as a child process. The host writes JSON-RPC messages to the server’s standard input. The server writes JSON-RPC messages to standard output. Logs go to standard error. That last detail matters: stdout is protocol traffic, so printing random logs to stdout can break the connection.</p>
+        <pre><code>Agent host
+  launches
+    artifact-mcp --stdio
+
+Host stdin  -> server receives JSON-RPC
+Server stdout -> host receives JSON-RPC
+Server stderr -> logs/debug output</code></pre>
+        <p>The useful intuition: stdio MCP is local, simple, and excellent for tools that need local filesystem access. If the user asks an agent to publish <code>./dist</code>, a local MCP server can read that folder, validate files, package assets, and call the artifact API.</p>
+        <p>The security boundary is also local. The user installed or configured the server. The host launches it. Credentials should come from the local environment, config file, OS keychain, or the same auth store the CLI uses. This is why the MCP spec says HTTP auth rules are for HTTP transports, while stdio implementations should retrieve credentials from the environment or a custom strategy.</p>
+      </section>
+
+      <section class="prose-section">
+        <h2>7. Remote MCP means “the server is a hosted network service”</h2>
+        <p>Remote MCP uses Streamable HTTP. The MCP server runs as an independent service, potentially serving many users and many clients. The client sends JSON-RPC messages with HTTP POST to a single MCP endpoint, such as <code>https://artifact.example.com/mcp</code>. The server can return ordinary JSON, or use Server-Sent Events when it needs streaming, notifications, or resumability.</p>
+        <pre><code>Hosted agent client
+  POST /mcp       -> JSON-RPC request
+  GET /mcp        -> optional SSE stream
+  MCP-Session-Id  -> optional stateful session handle
+  Authorization   -> OAuth access token for protected servers</code></pre>
+        <p>Remote MCP is the right fit when the agent client is itself hosted, when the tool does not need local files, or when you want a service users can connect without installing a local binary. It also brings the normal problems of hosted software: authentication, tenant isolation, rate limits, logs, abuse prevention, and upgrade compatibility.</p>
+        <p>For the artifact host, remote MCP might eventually expose account-level operations: list artifacts, inspect deployment status, generate private links, change visibility, or publish from a fetched bundle. But anything that starts with “read my local folder” is naturally a local stdio job.</p>
+      </section>
+
+      <section class="prose-section">
+        <h2>8. stdio vs remote is mostly about where the trust boundary lives</h2>
+        <div class="definition-grid">
+          <div><b>stdio</b><span>Local child process. Great for filesystem access, local credentials, and developer workflows.</span></div>
+          <div><b>Remote</b><span>Hosted HTTP service. Great for cloud access, multi-client connectivity, and no-install onboarding.</span></div>
+          <div><b>stdio auth</b><span>Usually config, environment, OS keychain, or CLI login state.</span></div>
+          <div><b>Remote auth</b><span>Usually OAuth-style authorization and access tokens.</span></div>
+          <div><b>stdio scaling</b><span>One local process per configured host/user environment.</span></div>
+          <div><b>Remote scaling</b><span>Shared service concerns: sessions, tenants, observability, rate limits.</span></div>
+        </div>
+        <p>A useful rule: if the tool needs local machine affordances, start stdio. If the tool is a cloud account integration that many agent hosts should connect to directly, design remote MCP.</p>
+      </section>
+
+      <section class="prose-section">
+        <h2>9. What should this product build first?</h2>
+        <p>For the agent-native artifact host, I would build in this order:</p>
+        <ol>
+          <li><strong>REST API:</strong> the durable product contract for publishing, versions, metadata, and visibility.</li>
+          <li><strong>Shared core package:</strong> packaging, manifest validation, file walking, hashing, upload planning, and API client logic.</li>
+          <li><strong>CLI:</strong> a human-operable shell around the core package.</li>
+          <li><strong>Local stdio MCP:</strong> an agent-operable shell around the same core package.</li>
+          <li><strong>Remote MCP:</strong> later, once hosted agents need delegated account access without local installation.</li>
+        </ol>
+        <pre><code>artifact-core
+  packageArtifact()
+  validateManifest()
+  createUploadPlan()
+  callArtifactApi()
+
+artifact-cli
+  artifact publish ./dist
+
+artifact-mcp-stdio
+  publish_artifact({ path: "./dist", slug: "trip-map" })
+
+artifact-worker-api
+  POST /api/artifacts
+  POST /api/artifacts/:id/versions</code></pre>
+        <p>This avoids the trap of building three products. CLI and MCP should be thin interfaces over the same implementation. The REST API remains the source of durable server behavior.</p>
+      </section>
+
+      <section class="prose-section">
+        <h2>10. Why not just give the agent a REST API?</h2>
+        <p>You should have a REST API. The question is whether REST alone is the right interface for agents.</p>
+        <p>REST is a backend contract. It is excellent for stable product operations. But an agent needs more than an endpoint URL. It needs to discover what operations exist, understand argument schemas, know which calls are dangerous, receive user-mediated credentials, stream progress, and fit into the host’s tool approval UI.</p>
+        <div class="definition-grid">
+          <div><b>REST API</b><span>Best as the canonical product backend. Durable, testable, language-neutral, good for web apps and SDKs.</span></div>
+          <div><b>CLI</b><span>Best for humans and scripts. Great ergonomics, local file access, terminal output, CI usage, and debugging.</span></div>
+          <div><b>MCP</b><span>Best for agent hosts. Discovery, typed tool schemas, capability negotiation, consent surfaces, and cross-client interoperability.</span></div>
+          <div><b>SDK</b><span>Best for application developers embedding the product into their own codebases.</span></div>
+        </div>
+        <p>If you only provide REST, every agent integration has to rediscover your API shape from docs or examples. It has to decide how to authenticate, which endpoints correspond to user intent, which arguments are required, and whether the action needs confirmation. That can work, but it is brittle.</p>
+        <p>MCP turns “please read our docs and improvise an HTTP call” into “here are the tools this server exposes, here are the schemas, here is the negotiated session, here is the host-mediated call path.” The agent still may call a REST API under the hood; it just does so through a safer, more inspectable tool layer.</p>
+      </section>
+
+      <section class="prose-section">
+        <h2>11. Why have CLI and MCP?</h2>
+        <p>CLI and MCP overlap, but they serve different operators.</p>
+        <p>The CLI is for a person at a terminal, a shell script, or CI. It should have good help text, readable errors, login/logout commands, and composable flags. If something goes wrong, the user can run it again, inspect files, pass <code>--verbose</code>, or pipe output somewhere.</p>
+        <p>MCP is for an agent host. Its job is to make the operation legible to the model and the host: available tools, argument schemas, tool descriptions, safety metadata, progress, and structured results. A person may never type the tool call directly.</p>
+        <div class="callout">
+          <h3>The product answer</h3>
+          <p>Build one publishing engine, then expose it three ways: REST for the backend contract, CLI for humans and automation, MCP for agents. Do not fork the business logic.</p>
+        </div>
+      </section>
+
+      <section class="prose-section">
+        <h2>12. The deployment shape I would use</h2>
+        <p>For day one, ship a local stdio MCP server with the CLI package:</p>
+        <pre><code>npm install -g artifact
+
+artifact login
+
+# agent host config points to:
+artifact mcp --stdio</code></pre>
+        <p>That server uses the same local auth state as the CLI. The agent can publish local folders because the process runs on the user’s machine. The hosted Worker API still performs server-side authorization and storage.</p>
+        <p>Later, ship a remote MCP endpoint:</p>
+        <pre><code>https://artifact.example.com/mcp</code></pre>
+        <p>That endpoint uses Streamable HTTP, OAuth authorization, strict origin checks, tenant-aware logging, rate limits, and explicit scopes such as <code>artifact:read</code> and <code>artifact:write</code>. It is useful for hosted agent platforms and account-level operations, but it should not replace the local path for local file publishing.</p>
+      </section>
+
+      <section class="prose-section">
+        <h2>13. The mental model to keep</h2>
+        <p>MCP is a tool bus for agents. REST is your product API. The CLI is your human and automation interface. The clean architecture is not choosing one; it is making sure each interface is a thin layer over the same core capabilities.</p>
+        <p>For this product, the primitives become nicely aligned:</p>
+        <ol>
+          <li>The user or agent creates HTML.</li>
+          <li>The shared core validates and packages it.</li>
+          <li>The CLI or MCP server submits it to the REST API.</li>
+          <li>The Worker authorizes the request and stores the artifact.</li>
+          <li>The profile/feed/card surfaces make the artifact visible.</li>
+        </ol>
+        <p>That is the whole idea: agents are excellent at generating useful little pieces of software. MCP gives those agents a clean, typed, host-aware way to hand those pieces to the publishing system.</p>
+      </section>
+
+      <section class="prose-section">
+        <h2>Good next sources</h2>
+        <div class="sources-list">
+          <a href="https://modelcontextprotocol.io/specification/2025-11-25/basic" target="_blank" rel="noreferrer">MCP spec: overview</a>
+          <a href="https://modelcontextprotocol.io/specification/2025-11-25/basic/lifecycle" target="_blank" rel="noreferrer">MCP spec: lifecycle</a>
+          <a href="https://modelcontextprotocol.io/specification/2025-11-25/basic/transports" target="_blank" rel="noreferrer">MCP spec: transports</a>
+          <a href="https://modelcontextprotocol.io/specification/2025-11-25/server/tools" target="_blank" rel="noreferrer">MCP spec: tools</a>
+          <a href="https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization" target="_blank" rel="noreferrer">MCP spec: authorization</a>
+        </div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>
