@@ -4,301 +4,268 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Auth for Agent-Native Artifacts</title>
-  <meta name="description" content="A plain-language interactive explainer for sessions, deploy tokens, private links, and MCP auth in an agent-native HTML artifact host." />
+  <meta name="description" content="A senior-engineer style walkthrough of cookies, sessions, tokens, OAuth, OIDC, PKCE, private links, and MCP auth for an agent-native HTML artifact host." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <main class="shell">
-    <section class="cookie-primer" aria-labelledby="cookie-primer-title">
-      <div class="primer-copy">
-        <p class="eyebrow">Start here · Cookies from zero</p>
-        <h1 id="cookie-primer-title">A cookie is a tiny note a website asks your browser to remember.</h1>
-        <p class="lede">The browser stores that note for a specific site and automatically sends it back on later requests to that site. That one behavior is why cookies are so useful for login.</p>
-      </div>
+  <main class="article-shell">
+    <article class="post">
+      <header class="post-hero">
+        <p class="eyebrow">Auth from first principles</p>
+        <h1>How I’d explain auth to a junior engineer building an agent-native HTML host.</h1>
+        <p class="dek">Start with the browser. Then add sessions. Then add tools. Only after that do OAuth, OIDC, PKCE, and MCP start to feel like reasonable answers instead of a bag of acronyms.</p>
+      </header>
 
-      <div class="cookie-demo" aria-label="Cookie request response example">
-        <div class="demo-card">
-          <span>1 · Server response</span>
-          <pre>HTTP/1.1 200 OK
-Set-Cookie: session=sess_9pL...
-  HttpOnly; Secure; SameSite=Lax</pre>
-        </div>
-        <div class="demo-arrow" aria-hidden="true">→</div>
-        <div class="demo-card">
-          <span>2 · Later browser request</span>
-          <pre>GET /dashboard
+      <section class="prose-section">
+        <h2>0. The whole problem in one sentence</h2>
+        <p>Authentication systems answer two questions over and over: <strong>who is making this request?</strong> and <strong>what are they allowed to do?</strong></p>
+        <p>For the artifact-hosting product, the callers are not only humans in browsers. They are also CLIs, local MCP servers, hosted agent platforms, and people opening private share links. The mistake would be to use one credential shape for all of them. A browser session is excellent for the dashboard. A deploy token is better for a CLI. A share token is useful for private links. OAuth is the right tool when some other app needs delegated access on behalf of a user.</p>
+      </section>
+
+      <section class="prose-section">
+        <h2>1. Cookies: the browser’s memory for a site</h2>
+        <p>A cookie is a small piece of data a server asks the browser to store. The important part is not that it is small. The important part is that the browser automatically sends matching cookies back to the same site on later requests.</p>
+        <p>Suppose the server responds with this:</p>
+        <pre><code>HTTP/1.1 200 OK
+Set-Cookie: session=sess_9pL...; HttpOnly; Secure; SameSite=Lax</code></pre>
+        <p>The browser stores the cookie. Later, when the browser requests the dashboard, it sends:</p>
+        <pre><code>GET /dashboard
 Host: example.com
-Cookie: session=sess_9pL...</pre>
-        </div>
-      </div>
+Cookie: session=sess_9pL...</code></pre>
+        <p>Your JavaScript did not manually attach that cookie. The browser did it because the request matched the cookie’s rules.</p>
 
-      <div class="cookie-grid">
-        <article>
-          <b>What is stored?</b>
-          <p>Usually a random opaque ID, not the whole user record. The server maps that ID to a session row.</p>
-        </article>
-        <article>
-          <b>Who sends it?</b>
-          <p>The browser. Your JavaScript does not have to attach it manually; matching cookies ride along automatically.</p>
-        </article>
-        <article>
-          <b>What does matching mean?</b>
-          <p>The cookie has rules: domain, path, expiration, Secure, HttpOnly, and SameSite decide when it is sent.</p>
-        </article>
-        <article>
-          <b>Why auth uses cookies</b>
-          <p>After login, the browser can prove “same browser session as before” on every dashboard request.</p>
-        </article>
-      </div>
-
-      <div class="cookie-flags">
-        <div><b>Domain</b><span>Which host can receive it. Host-only cookies are narrower; domain cookies can include subdomains.</span></div>
-        <div><b>Path</b><span>Which URL paths receive it. A cookie for /dashboard is not sent everywhere.</span></div>
-        <div><b>Expires / Max-Age</b><span>How long it survives. Without this, it is usually a session cookie.</span></div>
-        <div><b>HttpOnly</b><span>JavaScript cannot read it. This helps if a page has an XSS bug.</span></div>
-        <div><b>Secure</b><span>Only sent over HTTPS. Auth cookies should always use this.</span></div>
-        <div><b>SameSite</b><span>Controls cross-site sending. This is a major defense against CSRF.</span></div>
-      </div>
-
-      <div class="cookie-warning">
-        <h2>Cookies are automatic. That is the superpower and the danger.</h2>
-        <p>If you visit another site, that site might try to cause your browser to submit a form to the app where you are logged in. Because cookies are automatic, your browser might include your session cookie. That attack is called CSRF: cross-site request forgery. SameSite cookies and CSRF tokens help stop it.</p>
-      </div>
-    </section>
-
-    <section class="workspace" aria-labelledby="page-title">
-      <aside class="lesson-rail">
-        <p class="eyebrow">Interactive explainer</p>
-        <h1 id="page-title">Auth, from cookies to OAuth to MCP.</h1>
-        <p class="lede">A technical walkthrough for the artifact host: sessions, bearer tokens, scopes, OAuth, OIDC, PKCE, private links, local MCP, and remote MCP.</p>
-        <nav class="flow-tabs" aria-label="Auth flows">
-          <button class="flow-tab active" data-flow="session" type="button">Browser session</button>
-          <button class="flow-tab" data-flow="cli" type="button">CLI deploy token</button>
-          <button class="flow-tab" data-flow="mcp" type="button">Local MCP</button>
-          <button class="flow-tab" data-flow="share" type="button">Private link</button>
-          <button class="flow-tab" data-flow="remote" type="button">Remote MCP later</button>
-        </nav>
-      </aside>
-
-      <section class="stage" aria-live="polite">
-        <div class="stage-topline">
-          <span id="flowKind">Human login</span>
-          <strong id="flowTitle">Browser session</strong>
+        <div class="callout">
+          <h3>What is actually in the cookie?</h3>
+          <p>For login, usually a random session ID. Not the user’s whole profile. Not their password. Not “user_id=123” if you can avoid it. The cookie should be an opaque, high-entropy secret that the server can look up.</p>
         </div>
 
-        <div class="diagram" id="diagram" role="img" aria-label="Authentication flow diagram"></div>
+        <p>Cookies have attributes that decide when they are sent and how exposed they are:</p>
+        <div class="definition-grid">
+          <div><b>Domain</b><span>Which host receives it. A host-only cookie is narrower than one shared across subdomains.</span></div>
+          <div><b>Path</b><span>Which URL paths receive it. A cookie scoped to <code>/dashboard</code> is not sent everywhere.</span></div>
+          <div><b>Expires / Max-Age</b><span>How long it lasts. Without this, it is usually a session cookie.</span></div>
+          <div><b>HttpOnly</b><span>JavaScript cannot read it. This helps if a page has an XSS bug.</span></div>
+          <div><b>Secure</b><span>Only sent over HTTPS. Auth cookies should always use this.</span></div>
+          <div><b>SameSite</b><span>Controls cross-site sending. This is one major CSRF defense.</span></div>
+        </div>
+        <p>The superpower of cookies is also the danger: they are automatic. If you are logged into a site, and another site tricks your browser into submitting a form to it, the browser may include your cookies. That attack is called <strong>CSRF</strong>, cross-site request forgery. SameSite cookies help. CSRF tokens help. But the root intuition is simple: cookie auth rides along with browser requests automatically, so write endpoints need extra care.</p>
+      </section>
 
-        <div class="explainer-grid">
-          <article class="explain-panel">
-            <h2 id="plainTitle">What is happening?</h2>
-            <p id="plainText">The user signs in once. The server gives the browser a random session cookie. The browser automatically sends that cookie back on future dashboard requests.</p>
-          </article>
-          <article class="request-panel">
-            <div class="panel-label">Request check</div>
-            <pre id="requestBox"></pre>
-          </article>
+      <section class="prose-section">
+        <h2>2. A session is the server-side meaning of a cookie</h2>
+        <p>A cookie by itself is just a value. A session is what your server thinks that value means.</p>
+        <p>A simple session table might look like this:</p>
+        <pre><code>sessions
+  id_hash
+  user_id
+  created_at
+  expires_at
+  revoked_at</code></pre>
+        <p>When the browser sends <code>session=sess_9pL...</code>, the Worker hashes the raw session value, looks for that hash in D1, checks expiration and revocation, and loads the user. The server stores the hash instead of the raw secret for the same reason password databases store password hashes: if the database leaks, you do not want attackers to get immediately usable session cookies.</p>
+        <p>Once the request has a user, you still have to check authorization. “This is Akshay” is not the same as “Akshay can edit this artifact.” That second question is a permission check.</p>
+      </section>
+
+      <section class="prose-section">
+        <h2>3. Authentication is identity. Authorization is permission.</h2>
+        <p>These words are annoyingly similar, but the distinction matters constantly.</p>
+        <div class="definition-grid three">
+          <div><b>Authentication</b><span>Who is making the request? A logged-in user, a CLI token, a hosted agent, a private-link viewer?</span></div>
+          <div><b>Authorization</b><span>What may that caller do? Publish, read, change visibility, rollback, delete, invite?</span></div>
+          <div><b>Credential</b><span>What proof did the caller present? A cookie, bearer token, share token, or OAuth access token.</span></div>
+        </div>
+        <p>For this product, a write request should eventually read like a sentence: “This request is from deploy token <code>tok_123</code>, belonging to Akshay, scoped to <code>artifact:write</code>, attempting to publish to Akshay’s namespace.” Then your authorization code asks whether that sentence is allowed.</p>
+      </section>
+
+      <section class="prose-section">
+        <h2>4. Non-browser tools should not use browser cookies</h2>
+        <p>A CLI is not a browser. A local MCP server is not a browser. They should not scrape, copy, or reuse the dashboard cookie. Instead, they should use a token designed for API access.</p>
+        <p>The login flow can still begin in the browser:</p>
+        <ol>
+          <li>The user runs <code>artifact login</code>.</li>
+          <li>The CLI opens a browser to the normal login page.</li>
+          <li>The user signs in and approves the device.</li>
+          <li>The server mints a scoped deploy token.</li>
+          <li>The CLI stores the raw token in the OS keychain.</li>
+          <li>The server stores only a hash of the token in D1.</li>
+        </ol>
+        <p>From then on, the CLI publishes like this:</p>
+        <pre><code>POST /api/deploy
+Authorization: Bearer art_live_B7k...</code></pre>
+        <p>A bearer token is called that because whoever “bears” it can use it. Possession is enough. That is powerful and dangerous. The token needs a name, scopes, expiration, revocation, and ideally a visible “last used” timestamp in the dashboard.</p>
+      </section>
+
+      <section class="prose-section">
+        <h2>5. Local MCP can reuse the CLI’s trust model</h2>
+        <p>The first MCP server should be local over stdio. That means it runs on the user’s machine, launched by Codex, Claude Desktop, or another agent client. This matters because the local MCP server can read local files and package the HTML artifact before upload.</p>
+        <p>The shape is:</p>
+        <pre><code>Agent client -> local MCP server -> artifact-core -> hosted Worker API</code></pre>
+        <p>The local MCP server can reuse the CLI token because it has the same trust boundary: the user installed a local tool and granted it the ability to publish. The shared implementation should live below both shells:</p>
+        <pre><code>packages/
+  artifact-core   # packaging, manifest validation, API client
+  artifact-cli    # terminal wrapper
+  artifact-mcp    # MCP tool wrapper
+  artifact-worker # Cloudflare API</code></pre>
+        <p>This keeps the mental model clean. CLI and MCP are not two separate auth systems. They are two interfaces to the same publishing core.</p>
+      </section>
+
+      <section class="prose-section">
+        <h2>6. Private links are bearer tokens in the URL</h2>
+        <p>Private link and unlisted are easy to confuse. They are not the same thing.</p>
+        <div class="definition-grid four">
+          <div><b>Private</b><span>Requires the owner to be logged in.</span></div>
+          <div><b>Private link</b><span>Requires possession of a secret share URL.</span></div>
+          <div><b>Unlisted</b><span>Normal URL works, but it does not appear in profile/search.</span></div>
+          <div><b>Public</b><span>Normal URL and discoverable.</span></div>
+        </div>
+        <p>Unlisted is about discovery. Private link is about access. A private link might look like <code>/share/sh_8Vq3...</code>. The Worker hashes that share token, checks whether it is valid, and serves the artifact if it is.</p>
+        <p>Because the token is in the URL, it can leak through screenshots, chat history, browser history, server logs, or referrer headers if you are careless. That does not mean private links are bad. They are incredibly useful. But they are best for “anyone with this link may view,” not “only my spouse may view.” For that, require login and an access control list.</p>
+      </section>
+
+      <section class="prose-section">
+        <h2>7. OAuth is for delegated access</h2>
+        <p>OAuth is often introduced as “login with Google,” which is a little misleading. OAuth 2.0 is mostly about authorization: letting one application access a resource on behalf of a user without giving that application the user’s password.</p>
+        <p>The actors are:</p>
+        <div class="definition-grid">
+          <div><b>Resource owner</b><span>The user. In our product, Akshay.</span></div>
+          <div><b>Client</b><span>The app asking for access, such as a hosted MCP client.</span></div>
+          <div><b>Authorization server</b><span>The service that authenticates the user and issues tokens.</span></div>
+          <div><b>Resource server</b><span>The API receiving the token, such as the artifact Worker API.</span></div>
+          <div><b>Scope</b><span>A permission string like <code>artifact:write</code>.</span></div>
+          <div><b>Access token</b><span>The short-lived credential the client presents to the API.</span></div>
+        </div>
+        <p>OpenID Connect, or OIDC, adds identity on top of OAuth. OAuth says “this client may access this thing.” OIDC adds “and here is who the user is.” That is where ID tokens and profile claims come from.</p>
+      </section>
+
+      <section class="prose-section">
+        <h2>8. PKCE is the proof that protects the code exchange</h2>
+        <p>The modern OAuth flow for public clients is Authorization Code with PKCE. “Public client” means a client that cannot safely keep a secret. A native app, browser app, CLI, or agent client cannot hide a client secret from the environment it runs in.</p>
+        <p>PKCE stands for Proof Key for Code Exchange, pronounced “pixy.” It protects against an attacker stealing the temporary authorization code and redeeming it first.</p>
+        <ol>
+          <li>The client creates a random <code>code_verifier</code>.</li>
+          <li>It sends a derived <code>code_challenge</code> when starting the login flow.</li>
+          <li>The user approves access.</li>
+          <li>The authorization server returns a short-lived authorization code.</li>
+          <li>The client exchanges the code plus the original <code>code_verifier</code>.</li>
+          <li>The server checks that the verifier matches the earlier challenge.</li>
+          <li>If it matches, the server returns tokens.</li>
+        </ol>
+        <p>The key idea: the authorization code is not enough. The client must also prove it is the same client that started the flow.</p>
+      </section>
+
+      <section class="prose-section">
+        <h2>9. Remote MCP is where OAuth becomes necessary</h2>
+        <p>A local MCP server can use the CLI token because it runs on the user’s machine. A remote MCP server is different. It may serve many users, run outside the user’s machine, and be invoked by hosted agent clients. That is delegated access, so OAuth is the right family of tools.</p>
+        <p>A reasonable later architecture looks like this:</p>
+        <ol>
+          <li>The hosted agent client asks to connect the artifact MCP server.</li>
+          <li>The user is redirected to the artifact host’s authorization page.</li>
+          <li>The user approves scopes like <code>artifact:read</code> and <code>artifact:write</code>.</li>
+          <li>The client receives an access token through Authorization Code + PKCE.</li>
+          <li>The remote MCP calls the artifact API with that access token.</li>
+          <li>The API validates issuer, audience, expiration, and scopes before doing anything.</li>
+        </ol>
+        <p>This is not necessary for the first local MCP. It is the correct shape once hosted agents need to act on behalf of users.</p>
+      </section>
+
+      <section class="workspace" aria-labelledby="flow-title">
+        <aside class="lesson-rail">
+          <p class="eyebrow">Flow reference</p>
+          <h2 id="flow-title">The same model, as request flows.</h2>
+          <p class="lede">Use this as a quick visual check after the prose. Each tab shows the credential, where it comes from, and what the server verifies.</p>
+          <nav class="flow-tabs" aria-label="Auth flows">
+            <button class="flow-tab active" data-flow="session" type="button">Browser session</button>
+            <button class="flow-tab" data-flow="cli" type="button">CLI deploy token</button>
+            <button class="flow-tab" data-flow="mcp" type="button">Local MCP</button>
+            <button class="flow-tab" data-flow="share" type="button">Private link</button>
+            <button class="flow-tab" data-flow="remote" type="button">Remote MCP later</button>
+          </nav>
+        </aside>
+
+        <section class="stage" aria-live="polite">
+          <div class="stage-topline">
+            <span id="flowKind">Human login</span>
+            <strong id="flowTitle">Browser session</strong>
+          </div>
+          <div class="diagram" id="diagram" role="img" aria-label="Authentication flow diagram"></div>
+          <div class="explainer-grid">
+            <article class="explain-panel">
+              <h2 id="plainTitle">What is happening?</h2>
+              <p id="plainText">The user signs in once. The server gives the browser a random session cookie. The browser automatically sends that cookie back on future dashboard requests.</p>
+            </article>
+            <article class="request-panel">
+              <div class="panel-label">Request check</div>
+              <pre id="requestBox"></pre>
+            </article>
+          </div>
+        </section>
+      </section>
+
+      <section class="prose-section">
+        <h2>10. Token jobs: do not mix these up</h2>
+        <div class="token-board">
+          <div><b>Session cookie</b><span>Browser login state. HttpOnly, Secure, SameSite.</span></div>
+          <div><b>Bearer token</b><span>Whoever holds it can use it. Sent in the Authorization header.</span></div>
+          <div><b>Deploy token</b><span>A bearer token for CLI/local MCP publishing. Store only a hash server-side.</span></div>
+          <div><b>Access token</b><span>A usually short-lived OAuth API token with audience and scopes.</span></div>
+          <div><b>ID token</b><span>OIDC identity claims for the client. Not usually your API authorization primitive.</span></div>
+          <div><b>Refresh token</b><span>Used to get new access tokens. High value; rotate and protect carefully.</span></div>
         </div>
       </section>
-    </section>
 
-    <section class="section">
-      <div class="section-heading">
-        <p class="eyebrow">The mental model</p>
-        <h2>Authentication answers who you are. Authorization answers what you can do.</h2>
-      </div>
-      <div class="concept-grid">
-        <article>
-          <span>Authentication</span>
-          <h3>Identify the caller</h3>
-          <p>Is this Akshay in the browser? Is this Akshay's laptop using a deploy token? Is this a viewer holding a private share link?</p>
-        </article>
-        <article>
-          <span>Authorization</span>
-          <h3>Check permission</h3>
-          <p>Can this caller publish to this namespace? Can they read this private artifact? Can they change visibility?</p>
-        </article>
-        <article>
-          <span>Credential</span>
-          <h3>Proof presented</h3>
-          <p>A browser cookie, bearer token, share token, or OAuth access token. Each is just a different kind of proof.</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="section split">
-      <div>
-        <p class="eyebrow">Recommended path</p>
-        <h2>Learn auth as a sequence of trust decisions.</h2>
-        <p>Do not start with OAuth. Start with one browser request. Then ask: what proof did the caller present, where did that proof come from, how can it be stolen, and what is the caller allowed to do?</p>
-      </div>
-      <div class="learning-path">
-        <div><b>1</b><span>Session cookie: how a browser stays logged in.</span></div>
-        <div><b>2</b><span>Bearer token: how a non-browser tool calls an API.</span></div>
-        <div><b>3</b><span>Scopes and ACLs: how authorization is checked.</span></div>
-        <div><b>4</b><span>OAuth + OIDC: how another app gets delegated access and identity.</span></div>
-        <div><b>5</b><span>MCP: which auth style fits local vs hosted agent tools.</span></div>
-      </div>
-    </section>
-
-    <section class="section split">
-      <div>
-        <p class="eyebrow">OAuth, precisely</p>
-        <h2>OAuth is usually about delegated authorization, not login by itself.</h2>
-        <p>OAuth lets one client access a resource on behalf of a user without receiving the user's password. OpenID Connect, or OIDC, layers identity on top of OAuth so the app can also learn who signed in.</p>
-        <p>For this product, OAuth matters most for remote MCP later. The local CLI can use a simpler browser-login-to-deploy-token flow first.</p>
-      </div>
-      <div class="oauth-stack" aria-label="OAuth and OIDC stack">
-        <div><b>OAuth 2.0</b><span>Delegated access: issue access tokens with scopes.</span></div>
-        <div><b>OIDC</b><span>Identity layer: adds ID tokens and user profile claims.</span></div>
-        <div><b>PKCE</b><span>Proof key: protects public clients that cannot keep a client secret.</span></div>
-        <div><b>Scopes</b><span>Permission strings like artifact:write or artifact:read.</span></div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="section-heading">
-        <p class="eyebrow">Why is it called that?</p>
-        <h2>Name origins make the map easier to remember.</h2>
-      </div>
-      <div class="names-grid">
-        <div><b>S3</b><span>Amazon Simple Storage Service. Three S words, hence S3. Store objects in buckets and retrieve them by key.</span></div>
-        <div><b>R2</b><span>Cloudflare's object store. Cloudflare's launch post says R2 means “Really Requestable,” plus a few playful alternates; the product is S3-compatible storage without egress fees.</span></div>
-        <div><b>D1</b><span>Cloudflare's first SQL database for Workers. Cloudflare describes it as their first SQL database; the name reads like Database One / D1, though the docs do not lean heavily on an acronym.</span></div>
-        <div><b>OAuth</b><span>Open Authorization. It is about delegated access: one app is authorized to access something on your behalf.</span></div>
-        <div><b>OIDC</b><span>OpenID Connect. It connects identity/login semantics to OAuth-style flows.</span></div>
-        <div><b>PKCE</b><span>Proof Key for Code Exchange. Pronounced “pixy.” It proves the app exchanging the code is the same one that started the flow.</span></div>
-        <div><b>Bearer token</b><span>Whoever bears/presents the token can use it. That is why bearer tokens must be protected.</span></div>
-        <div><b>Cookie</b><span>An old web term for a small piece of data a server asks the browser to store and send back later.</span></div>
-        <div><b>CSRF</b><span>Cross-site request forgery. A different site tries to make your browser send an authenticated request.</span></div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="section-heading">
-        <p class="eyebrow">Authorization code + PKCE</p>
-        <h2>The modern OAuth flow is a two-step exchange with a proof key.</h2>
-      </div>
-      <div class="sequence">
-        <div><span>1</span><b>Client creates code_verifier</b><p>A random secret stays in the client.</p></div>
-        <div><span>2</span><b>Client sends code_challenge</b><p>The user is redirected to authorize access.</p></div>
-        <div><span>3</span><b>Authorization server returns code</b><p>The code is temporary and not enough by itself.</p></div>
-        <div><span>4</span><b>Client exchanges code + verifier</b><p>The server checks the verifier matches the challenge.</p></div>
-        <div><span>5</span><b>Server returns tokens</b><p>Usually an access token, sometimes refresh and ID tokens.</p></div>
-      </div>
-    </section>
-
-    <section class="section split reverse">
-      <div>
-        <p class="eyebrow">Tokens</p>
-        <h2>Most auth bugs come from mixing up token jobs.</h2>
-        <p>A session cookie is for the browser. A deploy token is for the CLI or local MCP. An access token is for an API call. An ID token proves identity to the client. A refresh token gets new access tokens and should be handled carefully.</p>
-      </div>
-      <div class="token-board">
-        <div><b>Session cookie</b><span>Browser login state. HttpOnly, Secure, SameSite.</span></div>
-        <div><b>Bearer token</b><span>Whoever holds it can use it. Send in Authorization header.</span></div>
-        <div><b>Deploy token</b><span>Longer-lived API token for CLI/local MCP. Store hash server-side.</span></div>
-        <div><b>Access token</b><span>Short-lived API authorization token, often scoped.</span></div>
-        <div><b>ID token</b><span>OIDC identity claims. Meant for the client, not usually your API auth.</span></div>
-        <div><b>Refresh token</b><span>Used to obtain new access tokens. High value, rotate and protect.</span></div>
-      </div>
-    </section>
-
-    <section class="section split">
-      <div>
-        <p class="eyebrow">Threat model</p>
-        <h2>Each credential has a different failure mode.</h2>
+      <section class="prose-section">
+        <h2>11. Threat modeling makes the design concrete</h2>
         <p>Auth starts to click when you stop asking “is this secure?” and start asking “what happens if this exact credential leaks?”</p>
-      </div>
-      <div class="threat-grid">
-        <div><b>Session cookie leaks</b><span>Attacker may act as the user in the browser session. Use HttpOnly, Secure, SameSite, short expiry, rotation, and logout revocation.</span></div>
-        <div><b>Deploy token leaks</b><span>Attacker may publish or read artifacts within its scopes. Store only token hashes, support revocation, expiration, and least-privilege scopes.</span></div>
-        <div><b>Share token leaks</b><span>Anyone with the link can view that private-link artifact. Make links unguessable, artifact-specific, revocable, and optionally expiring.</span></div>
-        <div><b>Access token leaks</b><span>Attacker can call the API until expiry. Keep access tokens short-lived and audience-scoped; rotate refresh tokens if used.</span></div>
-      </div>
-    </section>
-
-    <section class="section split">
-      <div>
-        <p class="eyebrow">Visibility</p>
-        <h2>Private link and unlisted are not the same thing.</h2>
-        <p>Unlisted is about discovery. Private link is about access. If the content is sensitive, use private or private link. If it is merely not meant for the profile feed, unlisted is fine.</p>
-      </div>
-      <div class="visibility-table">
-        <div><b>Private</b><span>Owner session required.</span></div>
-        <div><b>Private link</b><span>Secret share URL grants view access and can be revoked.</span></div>
-        <div><b>Unlisted</b><span>Normal URL works, but the artifact is hidden from profile/search.</span></div>
-        <div><b>Public</b><span>Normal URL and visible on profile/feed/discovery.</span></div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="section-heading">
-        <p class="eyebrow">The MVP design</p>
-        <h2>Keep the first version boring on purpose.</h2>
-      </div>
-      <div class="timeline">
-        <div>
-          <span>1</span>
-          <h3>Human signs in</h3>
-          <p>Magic link or OAuth creates a web session cookie for the dashboard.</p>
+        <div class="threat-grid">
+          <div><b>Session cookie leaks</b><span>Attacker may act as the user in the browser session. Use HttpOnly, Secure, SameSite, short expiry, rotation, and logout revocation.</span></div>
+          <div><b>Deploy token leaks</b><span>Attacker may publish or read artifacts within its scopes. Store only token hashes, support revocation, expiration, and least-privilege scopes.</span></div>
+          <div><b>Share token leaks</b><span>Anyone with the link can view that private-link artifact. Make links unguessable, artifact-specific, revocable, and optionally expiring.</span></div>
+          <div><b>Access token leaks</b><span>Attacker can call the API until expiry. Keep access tokens short-lived and audience-scoped; rotate refresh tokens if used.</span></div>
         </div>
-        <div>
-          <span>2</span>
-          <h3>CLI logs in once</h3>
-          <p>The CLI opens the browser, receives a scoped deploy token, and stores it in the OS keychain.</p>
-        </div>
-        <div>
-          <span>3</span>
-          <h3>Local MCP reuses it</h3>
-          <p>The stdio MCP server runs locally, reads files, packages HTML, and calls the API with the same token.</p>
-        </div>
-        <div>
-          <span>4</span>
-          <h3>Remote MCP waits</h3>
-          <p>Hosted agents need OAuth and consent screens. That is real but not necessary for day one.</p>
-        </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="section">
-      <div class="section-heading">
-        <p class="eyebrow">Jargon map</p>
-        <h2>The vocabulary you will see in real systems.</h2>
-      </div>
-      <div class="glossary">
-        <div><b>Principal</b><span>The actor: user, service account, agent, or share-link holder.</span></div>
-        <div><b>Subject</b><span>The identity the system says the principal has, often a user ID.</span></div>
-        <div><b>Claim</b><span>A fact inside a token, like email, issuer, audience, or expiration.</span></div>
-        <div><b>Issuer</b><span>The auth server that minted a token.</span></div>
-        <div><b>Audience</b><span>The API or service the token is intended for.</span></div>
-        <div><b>Scope</b><span>A coarse permission string attached to a token.</span></div>
-        <div><b>CSRF</b><span>Cross-site request forgery. Mostly a cookie-auth concern.</span></div>
-        <div><b>CORS</b><span>Browser rule controlling which origins can read responses.</span></div>
-        <div><b>JWK / JWKS</b><span>Public keys used to verify signed JWTs.</span></div>
-        <div><b>Introspection</b><span>Asking the auth server whether an opaque token is valid.</span></div>
-        <div><b>Revocation</b><span>Invalidating a token or session before it expires.</span></div>
-        <div><b>Least privilege</b><span>Give a token only the permissions it needs.</span></div>
-      </div>
-    </section>
+      <section class="prose-section">
+        <h2>12. Why is it called that?</h2>
+        <p>Names are memory hooks. These are the ones that matter for this product:</p>
+        <div class="names-grid">
+          <div><b>S3</b><span>Amazon Simple Storage Service. Three S words, hence S3. Store objects in buckets and retrieve them by key.</span></div>
+          <div><b>R2</b><span>Cloudflare's object store. Cloudflare's launch post says R2 means “Really Requestable,” plus a few playful alternates; the product is S3-compatible storage without egress fees.</span></div>
+          <div><b>D1</b><span>Cloudflare's first SQL database for Workers. The name reads like Database One / D1, though the docs do not lean heavily on an acronym.</span></div>
+          <div><b>OAuth</b><span>Open Authorization. It is about delegated access.</span></div>
+          <div><b>OIDC</b><span>OpenID Connect. It connects identity/login semantics to OAuth-style flows.</span></div>
+          <div><b>PKCE</b><span>Proof Key for Code Exchange. It proves the app exchanging the code is the same one that started the flow.</span></div>
+          <div><b>Bearer token</b><span>Whoever bears/presents the token can use it.</span></div>
+          <div><b>Cookie</b><span>An old web term for a small piece of data a server asks the browser to store and send back later.</span></div>
+          <div><b>CSRF</b><span>Cross-site request forgery. A different site tries to make your browser send an authenticated request.</span></div>
+        </div>
+      </section>
 
-    <section class="section split">
-      <div>
-        <p class="eyebrow">Good next sources</p>
-        <h2>Read these after the map is in your head.</h2>
-        <p>The fastest path is to use this artifact as the conceptual scaffold, then read the primary docs with the vocabulary already warmed up.</p>
-      </div>
-      <div class="sources-list">
-        <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies" target="_blank" rel="noreferrer">MDN: HTTP cookies</a>
-        <a href="https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html" target="_blank" rel="noreferrer">OWASP: Session Management Cheat Sheet</a>
-        <a href="https://learn.microsoft.com/en-us/entra/identity-platform/v2-oauth2-auth-code-flow" target="_blank" rel="noreferrer">Microsoft: OAuth authorization code flow</a>
-        <a href="https://dev.auth0.com/docs/authenticate/protocols/openid-connect-protocol" target="_blank" rel="noreferrer">Auth0: OpenID Connect protocol</a>
-        <a href="https://modelcontextprotocol.io/specification/2025-06-18/basic/transports" target="_blank" rel="noreferrer">MCP spec: transports</a>
-        <a href="https://blog.cloudflare.com/introducing-r2-object-storage/" target="_blank" rel="noreferrer">Cloudflare: R2 naming and launch</a>
-      </div>
-    </section>
+      <section class="prose-section">
+        <h2>13. The MVP auth design for the artifact host</h2>
+        <ol>
+          <li><strong>Web dashboard:</strong> magic link or OAuth login, then secure HttpOnly session cookie.</li>
+          <li><strong>CLI:</strong> browser login once, then scoped deploy token in the OS keychain.</li>
+          <li><strong>Local MCP:</strong> reuse the CLI auth store and the shared artifact core package.</li>
+          <li><strong>Private links:</strong> artifact-specific share tokens that can expire and be revoked.</li>
+          <li><strong>Remote MCP:</strong> later, OAuth Authorization Code + PKCE with explicit consent and scopes.</li>
+        </ol>
+        <p>That is the whole stack. It sounds like a lot because auth vocabulary is dense. But the underlying pattern is repetitive: identify the caller, validate the credential, check authorization, then do the smallest thing that credential is allowed to do.</p>
+      </section>
+
+      <section class="prose-section">
+        <h2>Good next sources</h2>
+        <div class="sources-list">
+          <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies" target="_blank" rel="noreferrer">MDN: HTTP cookies</a>
+          <a href="https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html" target="_blank" rel="noreferrer">OWASP: Session Management Cheat Sheet</a>
+          <a href="https://learn.microsoft.com/en-us/entra/identity-platform/v2-oauth2-auth-code-flow" target="_blank" rel="noreferrer">Microsoft: OAuth authorization code flow</a>
+          <a href="https://dev.auth0.com/docs/authenticate/protocols/openid-connect-protocol" target="_blank" rel="noreferrer">Auth0: OpenID Connect protocol</a>
+          <a href="https://modelcontextprotocol.io/specification/2025-06-18/basic/transports" target="_blank" rel="noreferrer">MCP spec: transports</a>
+          <a href="https://blog.cloudflare.com/introducing-r2-object-storage/" target="_blank" rel="noreferrer">Cloudflare: R2 naming and launch</a>
+        </div>
+      </section>
+    </article>
   </main>
 
   <script src="script.js"></script>
