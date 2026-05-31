@@ -390,6 +390,50 @@ export const ideas: Idea[] = [
       },
     ],
   },
+  {
+    slug: 'physical-weekly-ai-magazine',
+    number: 'N° 011',
+    title: 'A physical weekly magazine for the AI industry',
+    tagline: 'A print magazine covering AI news, projects, editorials, trends, and ads from builders selling AI products.',
+    domain: 'Media · AI industry',
+    status: 'seed',
+    year: '2026',
+    tags: ['AI', 'media', 'magazine', 'advertising', 'startups'],
+    summary:
+      'AI moves too quickly for most people to follow, but the conversation is still scattered across Twitter, newsletters, Discords, launch posts, research papers, and product demos. A physical weekly magazine could turn that chaos into a curated ritual: the week in AI, new projects worth knowing, smart editorials, trend reports, and a serious advertising surface for people trying to market AI products. The surprising part is that print might be the premium format, not the nostalgic one.',
+    sections: [
+      {
+        heading: 'The friction',
+        body:
+          'The AI industry has too much information and very little shared context. Builders track launches on social feeds, researchers follow papers, operators skim newsletters, and buyers mostly hear about products through ads or word of mouth. Everyone is looking at a different slice of the week.\n\nDigital media also has a trust and attention problem. Another newsletter competes with a thousand unread emails. Another feed post disappears in minutes. A physical magazine creates a different posture: a finite object, edited by humans, that someone can read on a desk, a train, a flight, or a coffee table.\n\nThat physicality is part of the product strategy. A good AI weekly should feel like something an investor leaves in a lobby, a founder brings on a flight, an engineer keeps beside a keyboard, and a sponsor wants to be seen inside.',
+      },
+      {
+        heading: 'What it does',
+        body:
+          'Each issue is a weekly package: major AI news, product launches, open-source projects, model releases, research explainers, founder interviews, market maps, editorials, trend essays, and practical buyer guides. The magazine should feel useful to builders, executives, investors, and curious technical readers without becoming either pure hype or academic review.\n\nThe recurring sections could include a front-of-book editor note, The Week in AI, a ranked Signal Board, Project Radar, Model Watch, Research to Product, Operator Playbook, Builder Marketplace, opinion, jobs, events, and a back-page artifact worth saving. The structure matters because readers should be able to build a ritual around it: same sections every week, new signal every issue.\n\nThe ads are not a side note; they are part of the product. AI companies need distribution, and many are selling to exactly the audience that would read a serious AI weekly. The magazine can sell tasteful full-page ads, classified-style launch listings, sponsored demos, hiring ads, API/tool announcements, and launch-week placements, while clearly separating editorial from paid inventory.',
+      },
+      {
+        heading: 'Why it might work',
+        body:
+          'The AI market is crowded, high-velocity, and full of companies desperate for attention from a small set of builders and buyers. That is exactly the kind of environment where a trusted industry publication can matter. If the magazine becomes a weekly map of what happened and what is worth caring about, it can serve both readers and advertisers.\n\nPrint also gives the brand a status surface that digital AI media often lacks. A good issue on a desk says something about taste and seriousness. Conferences, coworking spaces, startup offices, university labs, and investor offices could all be distribution nodes. The physical object makes the industry feel more legible and more real.',
+      },
+      {
+        heading: 'Product shape',
+        body:
+          'The first version could be a limited-run weekly or biweekly print issue paired with a digital archive. Distribution might start with paid subscriptions, founder/investor office drops, AI conferences, coworking spaces, and sponsored bundles. Each issue could have a stable structure: the week in AI, five launches to know, one technical explainer, one editorial, one market map, one interview, and a curated ad section.\n\nOperationally, the publication needs to behave like a small newsroom plus a B2B media business. Friday locks the thesis and ad inventory. Saturday gathers launches, papers, demos, and tips. Sunday ranks the week. Monday drafts and collects ad assets. Tuesday designs and fact-checks. Wednesday proofs and hands off to print. Thursday ships, markets the issue, and reports value back to advertisers.\n\nAds should be designed as native print artifacts, not banner ads pasted onto paper. A product could buy a launch card with a QR code, pricing note, target user, and a concise reason to try it. Over time the ad pages could become a historical catalog of the AI tooling market: who launched, what they promised, and how the industry changed.',
+      },
+      {
+        heading: 'Go-to-market',
+        body:
+          'The right launch is not a giant media launch. It is a proof-of-desire sequence. First publish a gorgeous sample issue and sell founding subscriptions plus founding ad slots. Then print a small paid pilot and hand-place copies where the audience already gathers: AI startup offices, VC firms, university labs, coworking spaces, dinners, hackathons, and conferences.\n\nThe early marketing should make the object itself famous. Show the cover. Show the ad section. Show a week of AI turned into a table of contents. Let founders imagine their product in the Builder Marketplace. Let executives imagine handing the issue to their team. The pitch is not "subscribe to another content feed." It is "own the weekly map of the AI industry."',
+      },
+      {
+        heading: 'Open questions',
+        body:
+          'Who is the first paying reader: builders who want context, executives who need a briefing, investors who want deal flow, or AI-curious professionals who want a calmer way to keep up? How expensive is weekly print and fulfillment at small scale? Does the magazine need a digital community or job board to make the business work, or can subscriptions plus ads carry it?\n\nCan a tiny team maintain the weekly cadence without becoming shallow? What parts can agents help with safely: source monitoring, transcript cleanup, market maps, claim checking, ad intake, layout QA, QR analytics, and issue retrospectives? Which parts must remain human: editorial taste, final ranking, advertiser boundaries, and the voice of the issue?\n\nThe editorial line matters most. If it is too breathless, it becomes hype. If it is too skeptical, advertisers will not see it as a launch surface. The opportunity is a publication that is useful, opinionated, and commercially aware without losing reader trust.',
+      },
+    ],
+  },
 ];
 
 export const ideaBySlug = (slug: string) => ideas.find((i) => i.slug === slug);

@@ -5,6 +5,7 @@ import { Prose } from '../components/Prose';
 import { MacOmnibarDeepDive } from '../components/MacOmnibarDeepDive';
 import { HtmlArtifactsDeepDive } from '../components/HtmlArtifactsDeepDive';
 import { PredictionMarketDeepDive } from '../components/PredictionMarketDeepDive';
+import { AIWeeklyMagazineDeepDive } from '../components/AIWeeklyMagazineDeepDive';
 import { NotFound } from './NotFound';
 
 export function IdeaPage() {
@@ -17,6 +18,9 @@ export function IdeaPage() {
   const next = index < ideas.length - 1 ? ideas[index + 1] : undefined;
 
   const visualAssets = visualsBySlug[idea.slug] ?? [];
+  const leadVisual =
+    idea.slug === 'physical-weekly-ai-magazine' ? visualAssets[0] : undefined;
+  const galleryAssets = leadVisual ? visualAssets.slice(1) : visualAssets;
 
   return (
     <article>
@@ -47,17 +51,45 @@ export function IdeaPage() {
         </div>
       </header>
 
+      {leadVisual && (
+        <section className="border-b border-[color:var(--color-rule)] bg-[#fffaf0]">
+          <div className="mx-auto max-w-6xl px-5 sm:px-8 py-8 sm:py-12">
+            <a href={leadVisual.src} target="_blank" rel="noreferrer" className="block">
+              <img
+                src={leadVisual.src}
+                alt={leadVisual.alt}
+                className="w-full rounded-sm border border-[color:var(--color-rule)] shadow-[0_24px_80px_rgba(26,26,26,0.10)]"
+              />
+            </a>
+            <div className="mt-4 grid gap-2 sm:grid-cols-[0.32fr_0.68fr] text-sm text-[color:var(--color-ink-mute)]">
+              <strong className="text-[color:var(--color-ink)]">{leadVisual.title}</strong>
+              <span>{leadVisual.caption}</span>
+            </div>
+            {leadVisual.prompt && (
+              <details className="mt-4 border-t border-[color:var(--color-rule)] pt-4">
+                <summary className="cursor-pointer font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-accent)]">
+                  Generation prompt
+                </summary>
+                <pre className="mt-3 whitespace-pre-wrap rounded-sm bg-[color:var(--color-paper)] p-4 text-[12px] leading-relaxed text-[color:var(--color-ink-soft)]">
+                  {leadVisual.prompt}
+                </pre>
+              </details>
+            )}
+          </div>
+        </section>
+      )}
+
       <div className="mx-auto max-w-4xl px-5 sm:px-8 py-14">
         <section className="mb-14">
           <SectionLabel>Overview</SectionLabel>
           <Prose text={idea.summary} />
         </section>
 
-        {visualAssets.length > 0 && (
+        {galleryAssets.length > 0 && (
           <section className="mb-14">
             <SectionLabel>Visual exploration</SectionLabel>
             <div className="grid gap-6">
-              {visualAssets.map((asset) => (
+              {galleryAssets.map((asset) => (
                 <figure key={asset.src} className="border border-[color:var(--color-rule)] bg-[#fffaf0] p-3 sm:p-5">
                   <a href={asset.src} target="_blank" rel="noreferrer" className="block">
                     <img
@@ -97,6 +129,7 @@ export function IdeaPage() {
         {idea.slug === 'mac-omnibar-for-agents' && <MacOmnibarDeepDive />}
         {idea.slug === 'agent-native-html-artifacts' && <HtmlArtifactsDeepDive />}
         {idea.slug === 'prediction-market-mispricing-engine' && <PredictionMarketDeepDive />}
+        {idea.slug === 'physical-weekly-ai-magazine' && <AIWeeklyMagazineDeepDive />}
 
         <section className="mt-12">
           <SectionLabel>Tags</SectionLabel>
@@ -183,6 +216,54 @@ Lighting/mood: Analytical, calm, responsible, research-system feel.
 Color palette: warm paper (#f6f2ea), black ink, soft gray rules, muted burnt orange for active signal, green only for positive edge, red only for risk/cost.
 Text constraints: Keep labels short and legible. Use exact short labels: "No-Vig Consensus", "Executable Price", "Net Edge", "Risk Cap", "Limit Orders", "Trade Journal", "Backtest Loop".
 Constraints: No real logos, no casino imagery, no promises of guaranteed profit, no people, no photographic backgrounds, no watermark.`;
+
+const aiWeeklyCoverPrompt = `Use case: product-mockup
+Asset type: Seeking Gradient Ideas notebook hero visual for a physical weekly AI magazine, landscape 16:9
+Primary request: Create a gorgeous premium editorial render of a physical weekly magazine called "AI WEEKLY" that makes the viewer want to subscribe every week.
+Scene/backdrop: Warm off-white studio surface with soft directional light, subtle paper texture, refined editorial styling.
+Subject: A beautiful printed magazine issue shown at a slight angle, glossy but tactile cover, thick paper, crisp spine, with two additional issues partially fanned underneath. Cover design should feel like a high-end magazine about developments in AI: feature teasers, project spotlights, trends, editorials, and tasteful AI product ads. Include visible cover masthead text "AI WEEKLY" and short cover lines like "New Models", "Builder Index", "The Week in Agents", "Launches".
+Style/medium: Photorealistic premium product photography mixed with high-end editorial magazine design. Sophisticated, contemporary, beautiful, not sci-fi cliché.
+Composition/framing: Wide landscape image, magazine centered with generous whitespace, slight shadows, cover large enough to inspect, subtle depth.
+Lighting/mood: Aspirational, smart, collectible, Sunday-morning reading ritual for the AI industry.
+Color palette: Warm paper background, black ink, muted silver, electric cyan and restrained magenta accents, tasteful orange details.
+Text constraints: Keep text short and magazine-like; do not include real company logos or trademarks. Avoid tiny unreadable paragraphs.
+Constraints: No real logos, no people, no robot faces, no floating holograms, no watermark, no fake barcodes as main focus, no messy distorted hands.`;
+
+const aiWeeklyFeatureSpreadPrompt = `Use case: product-mockup
+Asset type: Seeking Gradient Ideas notebook visual, interior magazine spread, landscape 16:9
+Primary request: Create a beautiful render of an open physical weekly AI magazine showing a feature spread about new AI projects and trends.
+Scene/backdrop: Magazine lying open on a warm desk surface, photographed from overhead at a slight angle, crisp paper folds and shadows.
+Subject: Two-page editorial spread of an AI industry weekly. Left page: a feature article layout with a large headline "The Week in Agents", short decks, pull quote, small charts, and a column of curated AI project launches. Right page: visual trend map with cards for model releases, open-source projects, startup launches, and research highlights. It should feel dense but elegant, like a premium magazine readers want to sit with.
+Style/medium: Photorealistic print design mockup, high-end editorial typography, refined data/editorial design, tactile paper.
+Composition/framing: Wide landscape, full open spread visible, pages occupy most of frame, readable hierarchy, generous margins, no clutter.
+Lighting/mood: Smart, premium, collectible, intellectually exciting.
+Color palette: Warm paper, black ink, muted gray, cyan/magenta signal colors, restrained burnt orange section markers.
+Text constraints: Use short headings and labels only; avoid long fake paragraphs. Text can be stylized but should look like magazine layout.
+Constraints: No real brand logos, no people, no robot faces, no watermark, no messy distorted hands, no generic sci-fi holograms.`;
+
+const aiWeeklyMarketplacePrompt = `Use case: ads-marketing
+Asset type: Seeking Gradient Ideas notebook visual, AI product advertising pages in a magazine, landscape 16:9
+Primary request: Create a premium open-magazine render focused on the advertising section of a physical weekly AI magazine, showing how desirable the ad inventory could be for AI product builders.
+Scene/backdrop: Open magazine on a warm neutral table, studio/editorial lighting, tactile printed pages.
+Subject: A two-page spread called "Builder Marketplace" or "Launch Board" with tasteful ads from fictional AI products. Include a mix of full-page ad, smaller launch cards, QR-code-like blocks, and classified-style listings for AI tools. Ads should feel like beautiful print creative, not web banners. Categories: developer agents, evaluation tools, model infra, design copilots, memory tools, workflow automation, hiring.
+Style/medium: Photorealistic print magazine mockup, high-end design annual, premium startup magazine, clean commercial/editorial design.
+Composition/framing: Wide landscape, both pages visible, ad layouts crisp and varied, clear visual hierarchy, attractive enough that AI companies would want to buy placement.
+Lighting/mood: Energetic but tasteful, polished, commercially valuable, the classified section everyone scans.
+Color palette: Warm paper, black ink, silver gray, cyan, violet, magenta, orange accent.
+Text constraints: Use only fictional product names and short phrases; no real logos or trademarks. Example short copy: "Ship agents faster", "Evaluate every run", "Memory for teams", "Launch this week".
+Constraints: No real company names or logos, no people, no robot faces, no watermark, no distorted hands, no overly busy unreadable clutter.`;
+
+const aiWeeklySubscriptionPrompt = `Use case: product-mockup
+Asset type: Seeking Gradient Ideas notebook atmospheric product render, landscape 16:9
+Primary request: Create an aspirational lifestyle/product render of the physical weekly AI magazine as a subscription ritual.
+Scene/backdrop: A beautiful desk or coffee table with warm morning light, premium paper magazine, espresso/coffee cup, notebook, pencil, maybe a shipping mailer sleeve. No people.
+Subject: A stack of weekly AI magazine issues and one open issue, showing cover and inside pages. It should feel like the essential weekly read for people building and buying AI products. Include subtle details like sticky tabs, a bookmark ribbon, a subscription card, and a tasteful ad insert peeking out.
+Style/medium: Photorealistic editorial product photography, high-end magazine subscription campaign, tactile paper, luxurious but practical.
+Composition/framing: Wide landscape, magazine stack prominent, open pages visible, shallow depth of field, clean negative space for website use.
+Lighting/mood: Desirable, calm, premium, intellectually exciting; the feeling of receiving the most important AI briefing of the week.
+Color palette: Warm neutrals, black ink, soft paper white, muted cyan/magenta/orange accents.
+Text constraints: Short visible magazine text only: "AI WEEKLY", "Issue 011", "Launches", "Trends", "Ads", "Editorial". Avoid long fake text.
+Constraints: No real logos, no people or hands, no robot faces, no watermark, no messy clutter, no overdone sci-fi neon.`;
 
 const visualsBySlug: Record<string, VisualAsset[]> = {
   'icloud-album-printer': [
@@ -301,6 +382,36 @@ const visualsBySlug: Record<string, VisualAsset[]> = {
       caption: 'Sportsbook odds, game state, Kalshi order books, fair probability, edge and risk logic, execution, and a backtest loop.',
       alt: 'Architecture board showing sportsbook odds, game state, Kalshi order books, fair probability engine, risk engine, execution, journal, and backtest feedback.',
       prompt: predictionMarketArchitecturePrompt,
+    },
+  ],
+  'physical-weekly-ai-magazine': [
+    {
+      src: '/mockups/specific/ai-weekly-cover-stack.jpg',
+      title: 'Premium cover direction',
+      caption: 'A collectible weekly issue with a serious AI industry masthead, launch teasers, and ad inventory treated as part of the product.',
+      alt: 'Premium physical magazine cover stack for AI Weekly with launch, model, agent, and advertising teasers.',
+      prompt: aiWeeklyCoverPrompt,
+    },
+    {
+      src: '/mockups/specific/ai-weekly-feature-spread.jpg',
+      title: 'Feature and trend spread',
+      caption: 'An interior issue structure: one hero editorial, project rankings, trend map, model releases, startup launches, and research highlights.',
+      alt: 'Open AI Weekly magazine feature spread with The Week in Agents article and AI landscape trend map.',
+      prompt: aiWeeklyFeatureSpreadPrompt,
+    },
+    {
+      src: '/mockups/specific/ai-weekly-builder-marketplace.jpg',
+      title: 'Builder marketplace ads',
+      caption: 'The ad section as a destination: launch cards, premium spots, classifieds, QR-style calls to action, and fictional AI product placements.',
+      alt: 'Open AI Weekly magazine advertising spread called Builder Marketplace with fictional AI product ads and launch listings.',
+      prompt: aiWeeklyMarketplacePrompt,
+    },
+    {
+      src: '/mockups/specific/ai-weekly-subscription-ritual.jpg',
+      title: 'Weekly subscription ritual',
+      caption: 'The magazine as a recurring object: a stack of issues, open reading copy, ad insert, desk notes, and the feeling of a weekly AI briefing worth keeping.',
+      alt: 'Desk scene with stack of AI Weekly magazines, an open issue, coffee, notebook, subscription card, and ad insert.',
+      prompt: aiWeeklySubscriptionPrompt,
     },
   ],
 };
