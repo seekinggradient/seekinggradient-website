@@ -145,6 +145,7 @@ pre code {
 }
 
 .definition-grid,
+.comparison-table,
 .token-board,
 .threat-grid,
 .names-grid {
@@ -163,6 +164,7 @@ pre code {
 }
 
 .definition-grid div,
+.comparison-table div,
 .token-board div,
 .threat-grid div,
 .names-grid div {
@@ -172,6 +174,7 @@ pre code {
 }
 
 .definition-grid b,
+.comparison-table b,
 .token-board b,
 .threat-grid b,
 .names-grid b {
@@ -189,6 +192,7 @@ pre code {
 }
 
 .definition-grid span,
+.comparison-table span,
 .token-board span,
 .threat-grid span,
 .names-grid span {
@@ -417,6 +421,7 @@ pre code {
 
   .diagram,
   .definition-grid,
+  .comparison-table,
   .definition-grid.three,
   .definition-grid.four,
   .token-board,

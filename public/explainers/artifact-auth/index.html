@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Auth for Agent-Native Artifacts</title>
-  <meta name="description" content="A senior-engineer style walkthrough of cookies, sessions, tokens, OAuth, OIDC, PKCE, private links, and MCP auth for an agent-native HTML artifact host." />
+  <meta name="description" content="A senior-engineer style walkthrough of passwords, cookies, API keys, sessions, tokens, OAuth, OIDC, PKCE, private links, and MCP auth for an agent-native HTML artifact host." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
@@ -80,7 +80,39 @@ Cookie: session=sess_9pL...</code></pre>
       </section>
 
       <section class="prose-section">
-        <h2>4. Non-browser tools should not use browser cookies</h2>
+        <h2>4. Passwords, cookies, API keys, and tokens are different jobs.</h2>
+        <p>One thing that makes web auth feel slippery at first is that people use “secret,” “token,” “key,” “cookie,” and “credential” almost interchangeably. They are related, but they are not the same abstraction.</p>
+        <p>The simplest framing is: <strong>a credential is proof you present to a system.</strong> The names differ because of who holds the proof, how it is transported, what it unlocks, and how easily it can be revoked.</p>
+
+        <div class="definition-grid">
+          <div><b>Password</b><span>A human-chosen or password-manager-generated secret used to prove identity during login. The server should never store it raw.</span></div>
+          <div><b>Session ID</b><span>A random server-minted secret that represents a logged-in browser session. It is usually carried inside a cookie.</span></div>
+          <div><b>Cookie</b><span>A browser storage and transport mechanism. A cookie is not inherently “auth”; it becomes auth when it carries a session ID or similar secret.</span></div>
+          <div><b>API key</b><span>A long random secret used by software to call an API. It often identifies a project, app, service account, or developer account.</span></div>
+          <div><b>Bearer token</b><span>A style of credential where possession is enough. If you can present it, the server treats you as authorized for whatever that token permits.</span></div>
+          <div><b>OAuth access token</b><span>A usually short-lived bearer token issued after a delegated authorization flow, with audience, expiration, and scopes.</span></div>
+        </div>
+
+        <p>A password is for getting a human through the front door. A session cookie is how the browser proves, “this is still the same logged-in browser as before.” An API key is how software proves, “I am this app, project, or automation.” An OAuth access token is how software proves, “the user delegated this specific access to me.”</p>
+
+        <div class="callout">
+          <h3>The first rule for single-page apps</h3>
+          <p>Do not put real secrets in frontend HTML, CSS, or JavaScript. A single-page app is shipped to the user’s browser. Anything inside it can be viewed, copied, and reused. Public API keys that only identify a project can sometimes be okay, but any key that grants private access must live on a server.</p>
+        </div>
+
+        <p>That rule matters a lot for this artifact host. If someone deploys a beautiful single-page app that calls OpenAI, Stripe, Gmail, or a private database, the page should not contain the raw API key. The hosted artifact needs either a backend function, a proxy endpoint, or an integration model where the secret stays server-side and the page gets only the narrow capability it needs.</p>
+
+        <p>Here is the rough mental model I would keep in my head:</p>
+        <div class="comparison-table" aria-label="Credential comparison">
+          <div><b>Human login</b><span>Password, passkey, magic link, or Google sign-in. Successful login creates a session.</span></div>
+          <div><b>Browser requests</b><span>Session cookie. Automatically attached by the browser to matching requests.</span></div>
+          <div><b>CLI or script</b><span>API key or deploy token. Manually sent in an <code>Authorization</code> header.</span></div>
+          <div><b>Third-party app</b><span>OAuth access token. The user consented to a limited set of scopes.</span></div>
+        </div>
+      </section>
+
+      <section class="prose-section">
+        <h2>5. Non-browser tools should not use browser cookies</h2>
         <p>A CLI is not a browser. A local MCP server is not a browser. They should not scrape, copy, or reuse the dashboard cookie. Instead, they should use a token designed for API access.</p>
         <p>The login flow can still begin in the browser:</p>
         <ol>
@@ -98,7 +130,7 @@ Authorization: Bearer art_live_B7k...</code></pre>
       </section>
 
       <section class="prose-section">
-        <h2>5. Local MCP can reuse the CLI’s trust model</h2>
+        <h2>6. Local MCP can reuse the CLI’s trust model</h2>
         <p>The first MCP server should be local over stdio. That means it runs on the user’s machine, launched by Codex, Claude Desktop, or another agent client. This matters because the local MCP server can read local files and package the HTML artifact before upload.</p>
         <p>The shape is:</p>
         <pre><code>Agent client -> local MCP server -> artifact-core -> hosted Worker API</code></pre>
@@ -112,7 +144,7 @@ Authorization: Bearer art_live_B7k...</code></pre>
       </section>
 
       <section class="prose-section">
-        <h2>6. Private links are bearer tokens in the URL</h2>
+        <h2>7. Private links are bearer tokens in the URL</h2>
         <p>Private link and unlisted are easy to confuse. They are not the same thing.</p>
         <div class="definition-grid four">
           <div><b>Private</b><span>Requires the owner to be logged in.</span></div>
@@ -125,7 +157,7 @@ Authorization: Bearer art_live_B7k...</code></pre>
       </section>
 
       <section class="prose-section">
-        <h2>7. OAuth is for delegated access</h2>
+        <h2>8. OAuth is for delegated access</h2>
         <p>OAuth is often introduced as “login with Google,” which is a little misleading. OAuth 2.0 is mostly about authorization: letting one application access a resource on behalf of a user without giving that application the user’s password.</p>
         <p>The actors are:</p>
         <div class="definition-grid">
@@ -140,7 +172,7 @@ Authorization: Bearer art_live_B7k...</code></pre>
       </section>
 
       <section class="prose-section">
-        <h2>8. PKCE is the proof that protects the code exchange</h2>
+        <h2>9. PKCE is the proof that protects the code exchange</h2>
         <p>The modern OAuth flow for public clients is Authorization Code with PKCE. “Public client” means a client that cannot safely keep a secret. A native app, browser app, CLI, or agent client cannot hide a client secret from the environment it runs in.</p>
         <p>PKCE stands for Proof Key for Code Exchange, pronounced “pixy.” It protects against an attacker stealing the temporary authorization code and redeeming it first.</p>
         <ol>
@@ -156,7 +188,7 @@ Authorization: Bearer art_live_B7k...</code></pre>
       </section>
 
       <section class="prose-section">
-        <h2>9. Remote MCP is where OAuth becomes necessary</h2>
+        <h2>10. Remote MCP is where OAuth becomes necessary</h2>
         <p>A local MCP server can use the CLI token because it runs on the user’s machine. A remote MCP server is different. It may serve many users, run outside the user’s machine, and be invoked by hosted agent clients. That is delegated access, so OAuth is the right family of tools.</p>
         <p>A reasonable later architecture looks like this:</p>
         <ol>
@@ -204,9 +236,11 @@ Authorization: Bearer art_live_B7k...</code></pre>
       </section>
 
       <section class="prose-section">
-        <h2>10. Token jobs: do not mix these up</h2>
+        <h2>11. Token jobs: do not mix these up</h2>
         <div class="token-board">
+          <div><b>Password</b><span>Human login proof. Verify it once, then exchange it for a session. Store only a salted password hash.</span></div>
           <div><b>Session cookie</b><span>Browser login state. HttpOnly, Secure, SameSite.</span></div>
+          <div><b>API key</b><span>Software-to-API proof. Treat it as a secret, rotate it, and never put private keys in frontend code.</span></div>
           <div><b>Bearer token</b><span>Whoever holds it can use it. Sent in the Authorization header.</span></div>
           <div><b>Deploy token</b><span>A bearer token for CLI/local MCP publishing. Store only a hash server-side.</span></div>
           <div><b>Access token</b><span>A usually short-lived OAuth API token with audience and scopes.</span></div>
@@ -216,10 +250,12 @@ Authorization: Bearer art_live_B7k...</code></pre>
       </section>
 
       <section class="prose-section">
-        <h2>11. Threat modeling makes the design concrete</h2>
+        <h2>12. Threat modeling makes the design concrete</h2>
         <p>Auth starts to click when you stop asking “is this secure?” and start asking “what happens if this exact credential leaks?”</p>
         <div class="threat-grid">
+          <div><b>Password leaks</b><span>Attacker may log in as the user, and users may have reused it elsewhere. Hash passwords server-side, support MFA/passkeys, and detect suspicious login attempts.</span></div>
           <div><b>Session cookie leaks</b><span>Attacker may act as the user in the browser session. Use HttpOnly, Secure, SameSite, short expiry, rotation, and logout revocation.</span></div>
+          <div><b>API key leaks</b><span>Attacker may call paid or private APIs as the owner. Keep private API keys server-side, scope them tightly, and rotate them quickly.</span></div>
           <div><b>Deploy token leaks</b><span>Attacker may publish or read artifacts within its scopes. Store only token hashes, support revocation, expiration, and least-privilege scopes.</span></div>
           <div><b>Share token leaks</b><span>Anyone with the link can view that private-link artifact. Make links unguessable, artifact-specific, revocable, and optionally expiring.</span></div>
           <div><b>Access token leaks</b><span>Attacker can call the API until expiry. Keep access tokens short-lived and audience-scoped; rotate refresh tokens if used.</span></div>
@@ -227,7 +263,7 @@ Authorization: Bearer art_live_B7k...</code></pre>
       </section>
 
       <section class="prose-section">
-        <h2>12. Why is it called that?</h2>
+        <h2>13. Why is it called that?</h2>
         <p>Names are memory hooks. These are the ones that matter for this product:</p>
         <div class="names-grid">
           <div><b>S3</b><span>Amazon Simple Storage Service. Three S words, hence S3. Store objects in buckets and retrieve them by key.</span></div>
@@ -237,13 +273,14 @@ Authorization: Bearer art_live_B7k...</code></pre>
           <div><b>OIDC</b><span>OpenID Connect. It connects identity/login semantics to OAuth-style flows.</span></div>
           <div><b>PKCE</b><span>Proof Key for Code Exchange. It proves the app exchanging the code is the same one that started the flow.</span></div>
           <div><b>Bearer token</b><span>Whoever bears/presents the token can use it.</span></div>
+          <div><b>API key</b><span>A key is the thing that unlocks access to an API. The phrase is simple and literal, which is partly why it stuck.</span></div>
           <div><b>Cookie</b><span>An old web term for a small piece of data a server asks the browser to store and send back later.</span></div>
           <div><b>CSRF</b><span>Cross-site request forgery. A different site tries to make your browser send an authenticated request.</span></div>
         </div>
       </section>
 
       <section class="prose-section">
-        <h2>13. The MVP auth design for the artifact host</h2>
+        <h2>14. The MVP auth design for the artifact host</h2>
         <ol>
           <li><strong>Web dashboard:</strong> magic link or OAuth login, then secure HttpOnly session cookie.</li>
           <li><strong>CLI:</strong> browser login once, then scoped deploy token in the OS keychain.</li>
