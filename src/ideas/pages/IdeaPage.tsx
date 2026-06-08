@@ -265,6 +265,42 @@ Color palette: Warm neutrals, black ink, soft paper white, muted cyan/magenta/or
 Text constraints: Short visible magazine text only: "AI WEEKLY", "Issue 011", "Launches", "Trends", "Ads", "Editorial". Avoid long fake text.
 Constraints: No real logos, no people or hands, no robot faces, no watermark, no messy clutter, no overdone sci-fi neon.`;
 
+const hyperlocalNewsPrompt = `Use case: ui-mockup
+Asset type: Seeking Gradient Ideas notebook visual board, landscape product mockup, 16:9
+Primary request: Create a 16:9 polished product mockup board for a hyperlocal news app.
+Scene/backdrop: Warm off-white editorial canvas, thin charcoal dividers, restrained burnt-orange accent.
+Subject: Three adjacent app screens: "Near Me" neighborhood feed, "Alert Radius" map, and "City Desk" verification queue. Include short labels like Verified, School Board, Permit Watch, Road Closure, Today.
+Style/medium: Trustworthy civic product UI mockup, calm local news surface, useful rather than sensational.
+Composition/framing: Wide 16:9 board with three adjacent mobile screens and supporting civic information modules.
+Lighting/mood: Calm, useful, grounded, neighborhood-scale.
+Color palette: Warm paper, black ink, muted gray, restrained orange accent, small civic status colors.
+Text constraints: Use sparse, legible product labels only.
+Constraints: No real addresses, no real logos, no people, no sensational crime imagery, no watermark.`;
+
+const shortTermRentalDemandPrompt = `Use case: ui-mockup
+Asset type: Seeking Gradient Ideas notebook visual board, landscape product mockup, 16:9
+Primary request: Create a 16:9 polished product mockup board for an Airbnb host pricing intelligence product.
+Scene/backdrop: Warm off-white editorial canvas, quiet SaaS design, thin charcoal dividers, restrained orange accent.
+Subject: Three adjacent screens: 1. Address Insight with a typed rental address and neighborhood demand trend; 2. Event Demand Calendar showing upcoming conferences, concerts, sports matches, holidays, and hotel occupancy; 3. Pricing Action screen with suggested nightly rate lift, confidence, comp set hotel prices, and calendar sync.
+Style/medium: Sophisticated SaaS/product UI mockup for short-term rental hosts, practical and data-backed.
+Composition/framing: Wide 16:9 board with three clear screens and enough whitespace to read the product direction.
+Lighting/mood: Calm, analytical, host-friendly, revenue-aware without hype.
+Color palette: Warm off-white, black ink, muted gray, restrained orange, green only for demand/connection indicators.
+Text constraints: Use short labels: Address Insight, Demand Spike, Event Radar, Hotel ADR, Occupancy, Raise Rate, Calendar Sync.
+Constraints: No real addresses, no Airbnb logo, no real hotel logos, no people, no guaranteed earnings, no watermark.`;
+
+const agentsfsPrompt = `Use case: infographic-diagram
+Asset type: Seeking Gradient Ideas notebook concept board, landscape 16:9
+Primary request: Create a 16:9 restrained product concept board for agentsfs.ai, a portable agent-era filesystem. Keep it light and conceptual, not a detailed implementation spec.
+Scene/backdrop: Warm off-white editorial canvas, thin charcoal dividers, black ink, muted gray, restrained burnt-orange accent.
+Subject: A quiet central file tree named agentsfs.ai with simple folders like /projects, /memory, /artifacts, /scratch, /sources. Around it show three small compatible access surfaces: CLI, MCP, and Skills.
+Style/medium: Technical notebook concept board, systems product seed, hand-drawn but polished.
+Composition/framing: Wide 16:9 board with one central filesystem shape and small surrounding access surfaces.
+Lighting/mood: Calm, first-principles, portable, intentionally unfinished.
+Color palette: Warm paper, black ink, muted gray, restrained burnt orange.
+Text constraints: Include small labels: Portable Filesystem, Cross-Harness, Agent Memory, Provenance, Works Anywhere.
+Constraints: No logos for real companies, no detailed protocol diagrams, no people, no robots, no watermark.`;
+
 const visualsBySlug: Record<string, VisualAsset[]> = {
   'icloud-album-printer': [
     {
@@ -412,6 +448,33 @@ const visualsBySlug: Record<string, VisualAsset[]> = {
       caption: 'The magazine as a recurring object: a stack of issues, open reading copy, ad insert, desk notes, and the feeling of a weekly AI briefing worth keeping.',
       alt: 'Desk scene with stack of AI Weekly magazines, an open issue, coffee, notebook, subscription card, and ad insert.',
       prompt: aiWeeklySubscriptionPrompt,
+    },
+  ],
+  'hyperlocal-news': [
+    {
+      src: '/mockups/specific/hyperlocal-news.png',
+      title: 'Neighborhood-scale news surface',
+      caption: 'A near-me feed, alert radius map, and verification queue for civic updates that matter within a few blocks.',
+      alt: 'Three-screen product mockup for a hyperlocal news app with neighborhood feed, radius map, and verification desk.',
+      prompt: hyperlocalNewsPrompt,
+    },
+  ],
+  'short-term-rental-demand-radar': [
+    {
+      src: '/mockups/specific/short-term-rental-pricing.png',
+      title: 'Address-based demand radar',
+      caption: 'Rental-address demand trend, event calendar, hotel-rate context, and pricing actions for short-term rental hosts.',
+      alt: 'Three-screen product mockup for a short-term rental demand radar with address insight, event calendar, and pricing action screens.',
+      prompt: shortTermRentalDemandPrompt,
+    },
+  ],
+  'agentsfs': [
+    {
+      src: '/mockups/specific/agentsfs.png',
+      title: 'One filesystem, many surfaces',
+      caption: 'A deliberately light concept board for a portable agent filesystem exposed through CLI, MCP, and skills.',
+      alt: 'Concept board for agentsfs.ai showing a central portable filesystem tree connected to CLI, MCP, and skills surfaces.',
+      prompt: agentsfsPrompt,
     },
   ],
 };

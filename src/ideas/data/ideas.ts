@@ -434,6 +434,118 @@ export const ideas: Idea[] = [
       },
     ],
   },
+  {
+    slug: 'hyperlocal-news',
+    number: 'N° 012',
+    title: 'A hyperlocal news layer for the few blocks around you',
+    tagline: 'A neighborhood news product for permits, schools, road closures, meetings, alerts, and the tiny local changes people actually need.',
+    domain: 'Local media · Civic information',
+    status: 'seed',
+    year: '2026',
+    tags: ['local news', 'civic data', 'maps', 'community'],
+    summary:
+      'Most news is too large for daily life. People want to know what changed near their home, school, commute, block, park, or favorite small business. This idea is a hyperlocal news layer that turns city records, school-board updates, permit filings, event calendars, road closures, and verified community reports into a readable feed for the few blocks that matter.',
+    sections: [
+      {
+        heading: 'The friction',
+        body:
+          'Local information exists, but it is scattered across city websites, meeting PDFs, neighborhood groups, school-board notes, permit portals, police alerts, transit pages, and word of mouth. The people most affected by a change often hear about it last.\n\nTraditional local news is stretched thin, and social feeds reward drama over usefulness. A resident usually does not need the whole city. They need the practical layer: what is happening near me, what is confirmed, what is changing, and what should I pay attention to this week?',
+      },
+      {
+        heading: 'What it does',
+        body:
+          'The product starts with an address, neighborhood, or drawn map radius. It builds a feed of nearby updates: planning permits, zoning changes, school-board decisions, road work, public meetings, safety alerts, local business openings, park closures, events, and community notices.\n\nThe important product primitive is verification. Each item should show where it came from, how local it is, whether it was machine-ingested or human-confirmed, and what action a resident can take. A user should be able to follow a school, street, neighborhood, council district, or commute route, not just a city-wide publication.',
+      },
+      {
+        heading: 'Why it might work',
+        body:
+          'The internet made news global, but daily concern is still local. People care intensely about a new building next door, a school policy change, a street closure, or a weekend event that changes parking. Those updates are valuable because they are specific.\n\nAgents and structured-data pipelines make the old local-information problem newly tractable. They can monitor public records, summarize meeting agendas, extract locations from PDFs, cluster duplicates, and draft plain-language updates for human review. The product becomes less like a newspaper and more like a civic sensor network with an editorial layer.',
+      },
+      {
+        heading: 'Product shape',
+        body:
+          'The first version could be a mobile-first map and feed for one metro area. A user enters an address, chooses a radius, and gets a daily digest: three verified things nearby, one upcoming meeting, one permit or construction change, and one event or local opening worth knowing about.\n\nThe wedge might be narrow: permit watch for homeowners, school-board watch for parents, road-closure alerts for commuters, or neighborhood briefings for real-estate professionals. Over time those vertical feeds can roll up into a fuller local news layer.',
+      },
+      {
+        heading: 'Open questions',
+        body:
+          'Where does trust come from: named local editors, source transparency, community correction, or partnerships with existing local outlets? How much can be automated before the product becomes brittle or spammy? Does this work as a consumer subscription, a civic data product, a real-estate tool, or a bundle sold through neighborhood organizations?',
+      },
+    ],
+  },
+  {
+    slug: 'short-term-rental-demand-radar',
+    number: 'N° 013',
+    title: 'A demand radar for short-term rental hosts',
+    tagline: 'An address-based pricing assistant that tells hosts when local demand is about to spike.',
+    domain: 'Travel · Host tools',
+    status: 'seed',
+    year: '2026',
+    tags: ['short-term rentals', 'pricing', 'events', 'travel demand'],
+    summary:
+      'Many short-term rental hosts price by instinct, stale comps, or whatever their platform suggests. But demand is local, seasonal, and event-driven. This product starts with a rental address and explains what is happening nearby: tourist inflow, hotel occupancy, average daily hotel prices, event calendars, conferences, sports, graduations, and other demand spikes that should change nightly rates.',
+    sections: [
+      {
+        heading: 'The friction',
+        body:
+          'A host can own the perfect unit and still miss the week when demand surges. Big events, conferences, tournaments, concerts, university weekends, and local festivals can move prices dramatically, but the information is spread across hotel data, event calendars, flight trends, destination marketing, and local chatter.\n\nPlatforms may offer dynamic pricing, but many hosts do not understand why a price changed or when they should override it. The missing layer is not just a number. It is an explanation: this address is near this demand source, these dates are tightening, comparable hotels are pricing up, and your calendar should react.',
+      },
+      {
+        heading: 'What it does',
+        body:
+          'The host enters an address. The product maps the unit to nearby demand drivers: venues, convention centers, stadiums, campuses, tourist corridors, transit access, hotel clusters, and recurring events. It then watches demand signals such as hotel average daily rate, occupancy proxies, event schedules, flight or search trends where available, and local news about upcoming draws.\n\nThe output is a simple host briefing: dates to raise, dates to hold, dates to discount, confidence level, nearby events, comparable hotel pricing, and suggested minimum-night rules. The product should make it easy to push or copy recommendations into a rental calendar without pretending the model is always right.',
+      },
+      {
+        heading: 'Why it might work',
+        body:
+          'Short-term rental pricing is a local intelligence problem. A generic city-wide pricing curve misses the difference between being near a stadium, near a conference shuttle, near a beach, or far from the demand source. Hosts also have asymmetric upside: catching a few major demand spikes per year can matter more than optimizing every ordinary Tuesday.\n\nThe product becomes especially useful when it explains itself. A host can trust a recommendation more when it says: hotel prices near you are rising, occupancy is tightening, three events overlap, and similar units are already blocked or priced higher.',
+      },
+      {
+        heading: 'Product shape',
+        body:
+          'The MVP could be a weekly email or dashboard for one address. It shows the next 90 days, flags demand spikes, and gives a short reason for each pricing recommendation. A second surface could be a calendar overlay: green for normal nights, amber for watch dates, red for price-up windows.\n\nA stronger version could add a lightweight local-news layer: permits, venue announcements, transit disruptions, and tourism changes that affect guest demand or guest experience. That makes the product adjacent to hyperlocal news, but with a clear buyer and measurable economic value.',
+      },
+      {
+        heading: 'Open questions',
+        body:
+          'Which demand signals are accessible enough for a small product: hotel rates, event listings, scraped calendars, tourism feeds, search trends, or partner data? Is the buyer an individual host, a small property manager, or a revenue manager with many units? How should the product avoid overpromising revenue while still being direct enough to change host behavior?',
+      },
+    ],
+  },
+  {
+    slug: 'agentsfs',
+    number: 'N° 014',
+    title: 'agentsfs.ai: a portable filesystem for agents',
+    tagline: 'A cross-harness filesystem primitive for agents to read, write, remember, and carry context between tools.',
+    domain: 'Infrastructure · AI agents',
+    status: 'seed',
+    year: '2026',
+    tags: ['agents', 'filesystem', 'memory', 'MCP', 'CLI'],
+    summary:
+      'agentsfs.ai is a starting point for rethinking the filesystem in the agentic era. The idea is not primarily multi-agent collaboration. It is a portable, boring, highly compatible place where different agent harnesses can read, write, remember, and leave useful context through a CLI, MCP server, and skill-friendly conventions.',
+    sections: [
+      {
+        heading: 'The starting intuition',
+        body:
+          'Agents already work through files, but the filesystem they inherit was designed for humans, applications, and operating systems. A Claude Code session, a Codex session, an OpenClaw agent, and a local script can all touch files, but they do not automatically share the same durable memory, provenance, conventions, or handoff surface.\n\nThe question is simple: what would a filesystem look like if agents were first-class users, without making it exotic or fragile?',
+      },
+      {
+        heading: 'What it might be',
+        body:
+          'The lightest version is a portable filesystem contract: a directory shape, a CLI, an MCP interface, and skill conventions that let any harness find the same projects, memories, artifacts, scratch space, and source material. It should feel easy to mount, sync, zip, inspect, and move.\n\nThe extra goodies can come later: metadata, provenance, summaries, references, decay, search, permissions, journals, and memory recall. But the first promise should stay small: this is a place agents can use consistently across tools.',
+      },
+      {
+        heading: 'Why it might matter',
+        body:
+          'Agent tools are multiplying faster than their durable context layers. Each harness wants to remember, plan, cache, summarize, and write artifacts, but those memories often stay trapped inside one product. A portable filesystem could become the common ground: not the agent, not the model, not the app, just the place where work and memory can survive tool boundaries.',
+      },
+      {
+        heading: 'Open questions',
+        body:
+          'What is the smallest useful contract? Which parts belong in files, which parts belong in an index, and which parts should remain ordinary directories? How much structure helps agents without making humans hate it? Should agentsfs begin as a local-first tool, a hosted sync layer, a plugin convention, or all three in a very thin form?',
+      },
+    ],
+  },
 ];
 
 export const ideaBySlug = (slug: string) => ideas.find((i) => i.slug === slug);
