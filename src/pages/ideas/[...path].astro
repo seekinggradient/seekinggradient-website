@@ -7,14 +7,22 @@ export function getStaticPaths() {
   return [
     { params: { path: 'about' } },
     { params: { path: 'mockups' } },
+    { params: { path: 'short-term-rental-demand-radar/technical-plan' } },
     ...ideas.map((idea) => ({ params: { path: idea.slug } })),
   ];
 }
 
 const path = Astro.params.path ?? '';
 const idea = ideas.find((entry) => entry.slug === path);
-const title = idea ? `${idea.title} - Seeking Gradient` : 'Ideas - Seeking Gradient';
-const description = idea?.tagline ?? 'A working notebook of product and systems ideas by Seeking Gradient.';
+const isShortTermRentalTechnicalPlan = path === 'short-term-rental-demand-radar/technical-plan';
+const title = isShortTermRentalTechnicalPlan
+  ? 'Building the short-term rental demand radar - Seeking Gradient'
+  : idea
+    ? `${idea.title} - Seeking Gradient`
+    : 'Ideas - Seeking Gradient';
+const description = isShortTermRentalTechnicalPlan
+  ? 'A practical architecture, data-source plan, and cost model for an address-based short-term rental demand radar.'
+  : idea?.tagline ?? 'A working notebook of product and systems ideas by Seeking Gradient.';
 ---
 
 <!doctype html>

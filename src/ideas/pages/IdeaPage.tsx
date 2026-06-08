@@ -130,6 +130,25 @@ export function IdeaPage() {
         {idea.slug === 'agent-native-html-artifacts' && <HtmlArtifactsDeepDive />}
         {idea.slug === 'prediction-market-mispricing-engine' && <PredictionMarketDeepDive />}
         {idea.slug === 'physical-weekly-ai-magazine' && <AIWeeklyMagazineDeepDive />}
+        {idea.slug === 'short-term-rental-demand-radar' && (
+          <section className="mb-14">
+            <SectionLabel>Implementation notes</SectionLabel>
+            <Link
+              to="/short-term-rental-demand-radar/technical-plan"
+              className="group block border border-[color:var(--color-rule)] bg-[#fffaf0] p-5 transition-colors hover:bg-[color:var(--color-paper-deep)]/50"
+            >
+              <div className="font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-accent)] mb-2">
+                Technical plan
+              </div>
+              <h3 className="display text-2xl leading-tight group-hover:text-[color:var(--color-accent)] transition-colors">
+                Architecture, data sources, hotel-rate proxy, and cost model
+              </h3>
+              <p className="mt-3 text-[15px] leading-[1.65] text-[color:var(--color-ink-soft)] max-w-prose">
+                A deeper build note for turning the address-based idea into a working host assistant, including source choices and operating-cost ranges.
+              </p>
+            </Link>
+          </section>
+        )}
 
         <section className="mt-12">
           <SectionLabel>Tags</SectionLabel>
