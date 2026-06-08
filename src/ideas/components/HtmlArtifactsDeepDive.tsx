@@ -502,6 +502,25 @@ export function HtmlArtifactsDeepDive() {
         Deep dive — the artifact primitive
       </h2>
 
+      <div className="mb-8 border border-[color:var(--color-rule)] bg-[color:var(--color-paper)] p-5 sm:p-6">
+        <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-accent)] mb-3">
+          Built version
+        </p>
+        <p className="text-[17px] leading-[1.75] text-[color:var(--color-ink-soft)]">
+          This idea has since become{' '}
+          <a
+            href="https://madeweb.ai"
+            target="_blank"
+            rel="noreferrer"
+            className="link-underline text-[color:var(--color-accent)]"
+          >
+            MadeWeb
+          </a>
+          : a live product for publishing agent-made single-page HTML artifacts and giving them
+          durable links.
+        </p>
+      </div>
+
       <div className="mb-12 border border-[color:var(--color-rule)] bg-[#fffaf0] p-5 sm:p-7">
         <div className="grid gap-5 md:grid-cols-[0.65fr_0.35fr] md:items-end">
           <div>

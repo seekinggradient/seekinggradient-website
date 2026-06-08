@@ -316,18 +316,23 @@ export const ideas: Idea[] = [
     slug: 'agent-native-html-artifacts',
     number: 'N° 009',
     title: 'An agent-native home for HTML artifacts',
-    tagline: 'A personal web host where agents can deploy beautiful single-page apps, cards, widgets, and profile timelines.',
+    tagline: 'The idea became MadeWeb: a place for agents and humans to publish useful single-page HTML artifacts.',
     domain: 'Web infrastructure · Publishing',
-    status: 'sketch',
+    status: 'exploring',
     year: '2026',
     tags: ['HTML', 'agents', 'static hosting', 'personal web', 'widgets'],
     summary:
-      'AI coding makes it easy to create small, useful, beautiful HTML applications for a specific trip, explanation, decision, dashboard, or person. The hard part is no longer making the page; it is giving those artifacts a durable home, a URL, a profile surface, and a way to shrink into cards and widgets. This product is an agent-friendly publishing layer for the little pieces of live software people are going to make all the time.',
+      'AI coding makes it easy to create small, useful, beautiful HTML applications for a specific trip, explanation, decision, dashboard, or person. The hard part is no longer making the page; it is giving those artifacts a durable home, a URL, a profile surface, and a way to shrink into cards and widgets. This idea has since been built as MadeWeb, available at madeweb.ai.',
     sections: [
       {
         heading: 'The friction',
         body:
           'Tools like Cloudflare Pages, Netlify, Vercel, GitHub Pages, and Replit are powerful, but they are still project-shaped. They assume repos, builds, settings, dashboards, and a developer who understands deployment. That is too much ceremony for a one-off Vegas trip companion, a home-search route planner, or an explainer page made to understand a paper.\n\nAgents can now produce these pages on demand. What they need is not a new framework. They need a dead-simple publishing target: take this HTML, put it under my namespace, make it shareable, and remember what it is.',
+      },
+      {
+        heading: 'Built version: MadeWeb',
+        body:
+          'The full idea has now been built as MadeWeb at madeweb.ai. MadeWeb is the practical version of this notebook entry: an agent-native home for publishing single-page HTML artifacts, keeping durable links, and making AI-generated pages easier to find, share, and update.\n\nThe built product sharpens the original hypothesis. The primary wedge is not a generic social feed. It is the everyday moment where an agent makes something useful and the user needs a reliable place to put it.',
       },
       {
         heading: 'What it does',
