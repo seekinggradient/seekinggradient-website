@@ -521,33 +521,43 @@ export const ideas: Idea[] = [
     slug: 'agentsfs',
     number: 'N° 014',
     title: 'agentsfs.ai: a portable filesystem for agents',
-    tagline: 'A cross-harness filesystem primitive for agents to read, write, remember, and carry context between tools.',
+    tagline: 'A user-owned filesystem contract that gives agents durable, compounding memory across every harness.',
     domain: 'Infrastructure · AI agents',
-    status: 'seed',
+    status: 'exploring',
     year: '2026',
-    tags: ['agents', 'filesystem', 'memory', 'MCP', 'CLI'],
+    tags: ['agents', 'filesystem', 'memory', 'git', 'MCP', 'CLI'],
     summary:
-      'agentsfs.ai is a starting point for rethinking the filesystem in the agentic era. The idea is not primarily multi-agent collaboration. It is a portable, boring, highly compatible place where different agent harnesses can read, write, remember, and leave useful context through a CLI, MCP server, and skill-friendly conventions.',
+      'Agents can already do expert-level work inside a session — what they can\'t do is keep it. The context an agent builds has nowhere durable to live, and what does get saved is trapped inside one vendor\'s memory. agentsfs is a portable, user-owned substrate — files + conventions + tools + instructions, and nothing else — that any harness can read, write, and maintain. The intelligence lives in the user\'s agents; agentsfs makes their knowledge survive and compound.',
     sections: [
       {
-        heading: 'The starting intuition',
+        heading: 'The problem',
         body:
-          'Agents already work through files, but the filesystem they inherit was designed for humans, applications, and operating systems. A Claude Code session, a Codex session, an OpenClaw agent, and a local script can all touch files, but they do not automatically share the same durable memory, provenance, conventions, or handoff surface.\n\nThe question is simple: what would a filesystem look like if agents were first-class users, without making it exotic or fragile?',
+          'An agent session is a remarkable thing: in an hour it can research a company, untangle a claim, or assemble a working model of a domain. Then the session ends, and almost everything it built — the context, the dead ends ruled out, the judgment formed — has nowhere durable to live. The next session rebuilds it from scratch. The models are ready to compound knowledge into genuine expertise; nothing gives them a place to put it.\n\nTwo kinds of people hit this wall. Builders who want compounding agents — a daily stock-research agent that gets smarter about each company over time — are blocked not on model capability but on memory; today the only path is a bespoke pipeline per product. And everyday users working through a long-running issue — an insurance claim, a project — must re-explain everything in every new conversation. The known workaround, "tell the agent to keep a file and read it next time," works, but nothing in today\'s tools encourages, structures, or rewards it.\n\nThe existing substrates each miss. Vendor memory is harness-locked and opaque: Claude only remembers what happened in Claude. The plain filesystem is portable but has no agent conventions. And the knowledge tools — Obsidian, Notion, Dropbox — are app-first: they are adding agent integrations, but bolted onto a product whose center of gravity is their application and their account.',
       },
       {
-        heading: 'What it might be',
+        heading: 'The core bet: no intelligence inside',
         body:
-          'The lightest version is a portable filesystem contract: a directory shape, a CLI, an MCP interface, and skill conventions that let any harness find the same projects, memories, artifacts, scratch space, and source material. It should feel easy to mount, sync, zip, inspect, and move.\n\nThe extra goodies can come later: metadata, provenance, summaries, references, decay, search, permissions, journals, and memory recall. But the first promise should stay small: this is a place agents can use consistently across tools.',
+          'agentsfs contains no LLM and never will as a core dependency. It is files + conventions + tools + instructions. The user\'s own agent — Claude Code, Codex, OpenClaw, whatever comes next — does all the compounding, synthesis, and cleanup; agentsfs makes that work obvious, structured, and cheap for any agent that shows up.\n\nThe anchoring analogy: git doesn\'t write your commits; it makes committing so structured and cheap that you do it constantly. agentsfs doesn\'t compound knowledge; it makes compounding the obvious, easy thing.\n\nIn practice the intelligence connects three ways: prompts and skills shipped as product ("read this to get started," plus CLAUDE.md / AGENTS.md registration snippets), a CLI and MCP server exposing the same tools, and maintenance jobs that run on the user\'s own harness scheduler — no daemon, no API keys, no inference cost, and the system improves automatically as agents improve.',
       },
       {
-        heading: 'Why it might matter',
+        heading: 'The contract',
         body:
-          'Agent tools are multiplying faster than their durable context layers. Each harness wants to remember, plan, cache, summarize, and write artifacts, but those memories often stay trapped inside one product. A portable filesystem could become the common ground: not the agent, not the model, not the app, just the place where work and memory can survive tool boundaries.',
+          'The design splits along one axis: the contract is what works with zero tooling — just files, conventions, and git — while the toolkit makes it pleasant but is never load-bearing for truth.\n\nEvery instance is a plain git repo, which alone provides edit logs, file history, line-level provenance, and offline-first sync through any remote — none, self-hosted, GitHub, or a hosted service. git clone is a permanent exit ramp for your entire substrate: any hosted offering competes on convenience, never on captivity.\n\nOn top of git sit a few boring conventions, chosen because agents are already superhumanly fluent in them: a one-line description in every file\'s frontmatter (powering progressive disclosure — tree, then folder descriptions, then file descriptions, then full files), [[wikilinks]] connecting entity pages by name rather than path, source citations recording where claims came from, and a self-describing root README that teaches the contract to any agent dropped in cold. Unzip the folder, point any agent at it, it works.',
       },
       {
-        heading: 'Open questions',
+        heading: 'The toolkit',
         body:
-          'What is the smallest useful contract? Which parts belong in files, which parts belong in an index, and which parts should remain ordinary directories? How much structure helps agents without making humans hate it? Should agentsfs begin as a local-first tool, a hosted sync layer, a plugin convention, or all three in a very thin form?',
+          'A thin CLI and MCP server with the same capabilities on both surfaces: tree with one-line descriptions and freshness dates for progressive disclosure; full-text and semantic search, the one capability that can\'t be contract-only; backlinks, answering "find all references to this entity" like a language server for knowledge; rename, the link-aware refactor that rewrites every wikilink in one deterministic pass; and doctor, a no-LLM health checker that flags orphan files, dead links, missing descriptions, and fragmentation.\n\ndoctor matters more than it looks: its output is the worklist for the "gardener," a scheduled maintenance job on the user\'s harness that consolidates sparse notes, updates descriptions, and restructures as the domain evolves. Every index — search, links, embeddings — is derived and rebuildable from the files alone. Files are the only source of truth.',
+      },
+      {
+        heading: 'Structure that explains itself',
+        body:
+          'agentsfs prescribes the meta-structure, not the taxonomy. The contract\'s promise is not "the tree looks like X" — it is "the tree always explains itself." Fixed buckets were rejected because domains differ too much: a stock-research instance grows entity pages per company, an insurance claim grows a timeline and correspondence. Prescribed taxonomies become junk drawers.\n\nOnly three names are reserved: the root README that bootstraps any agent, .agentsfs/ for derived machine state, and scratch/ — explicitly ephemeral, because "this is disposable" is the one thing a plain filesystem cannot express. Everything else is the agent\'s garden. Onboarding prompts propose a starter structure and invite the agent to adapt it; the gardener is licensed to restructure as the domain evolves; and because wikilinks resolve by name rather than path, reorganizing never breaks references.\n\nThe quiet test for every decision: if it works for a non-technical person managing an insurance claim, it works for the power user running ten harnesses.',
+      },
+      {
+        heading: 'What was deliberately deferred',
+        body:
+          'Directory-level permissions and scoped checkout (an agent that can see work/ but not personal/ — maps naturally onto git sparse checkout), native and web apps for browsing your substrate, and the business model (open-source core plus paid hosted sync, the Obsidian model) are all real ideas sitting in an explicit parking lot until the core contract is built and proven.\n\nThe candidate first slice: init (template, self-describing root, git), the onboarding prompt, and tree with descriptions — proven end-to-end by a real agent on a real task before any search infrastructure gets built.',
       },
     ],
   },
