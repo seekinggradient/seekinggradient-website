@@ -1,0 +1,15 @@
+# Dependencies
+node_modules/
+
+# Generated / caches
+.astro/
+.wrangler/
+
+# OS / editor noise
+.DS_Store
+
+# Logs
+*.log
+
+# NOTE: dist/ is intentionally tracked — the site is deployed from the
+# committed build output. Run `npm run build` and commit dist/ to publish.
