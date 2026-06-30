@@ -561,6 +561,45 @@ export const ideas: Idea[] = [
       },
     ],
   },
+  {
+    slug: 'ambient-knowledge-agent-for-notes',
+    number: 'N° 015',
+    title: 'An ambient knowledge agent for notes',
+    tagline: 'A note-taking layer that quietly surfaces context, sources, and questions while you write.',
+    domain: 'Knowledge tools · AI',
+    status: 'seed',
+    year: '2026',
+    tags: ['notes', 'knowledge work', 'agents', 'research', 'Obsidian'],
+    summary:
+      'Writing notes often creates a strange gap: the moment you are forming a thought is exactly when useful background knowledge, examples, counterpoints, and references would help, but searching for them pulls you out of the thought. This idea is an Obsidian-like writing surface with an AI agent working just outside the main canvas. It behaves less like autocomplete and more like a peripheral research companion: quiet, source-backed, and available when invited.',
+    sections: [
+      {
+        heading: 'The friction',
+        body:
+          'Imagine writing notes about BM25. The note might mention term frequency, inverse document frequency, field length normalization, ranking functions, Elasticsearch, and retrieval-augmented generation. Each phrase is a doorway into useful context, but opening a browser tab breaks the writing flow.\n\nAutocomplete is the wrong metaphor. The writer does not necessarily want the tool to finish the sentence. In knowledge work, the valuable move is often adjacent rather than forward: a definition, a citation, a diagram idea, a contradiction, a related note, a missing assumption, or a small worked example. The tool should expand the room around the thought without grabbing the pen.',
+      },
+      {
+        heading: 'What it does',
+        body:
+          'The product watches the active note, the nearby cursor context, linked notes, and optionally the surrounding vault. As the user writes, it maintains a quiet peripheral panel: related concepts, source snippets, local backlinks, examples, questions worth answering, and "you may be mixing these two ideas" warnings.\n\nNothing appears inline unless the user asks. The agent does not push completions into the sentence. It prepares knowledge off to the side, maybe one keyboard shortcut or hover away. For a BM25 note, it might show the core scoring formula, a plain-English explanation of k1 and b, a link to the original Robertson/Sparck Jones lineage, a note that BM25 is lexical rather than semantic retrieval, and a comparison to embedding search.',
+      },
+      {
+        heading: 'Why it might work',
+        body:
+          'Code completion works because the next few tokens are often the product. In notes, the next words are not always the bottleneck. The bottleneck is the quality of the surrounding mental model.\n\nA peripheral agent fits the shape of writing better than a chat box or autocomplete bar. It can do slow, source-seeking, cross-note work while the user stays in the note. The user remains the author; the agent becomes the ambient research layer that keeps relevant material warm.',
+      },
+      {
+        heading: 'Product shape',
+        body:
+          'The first wedge could be an Obsidian plugin. It indexes the vault locally, watches the active note, and runs a small background research loop only when confidence and usefulness are high enough. The visible surface is restrained: a collapsed right-edge rail, a keyboard-summoned tray, or a "context inbox" that accumulates candidate insights without interrupting the page.\n\nA more ambitious wedge is a Mac app that watches the writing surface itself. With screen monitoring and accessibility permissions, it could work across Obsidian, Apple Notes, Google Docs, a browser editor, a PDF margin note, or a code-adjacent Markdown file. That version is less tied to one vault, but more delicate: it has to infer what the user is writing about from the active window, OCR or accessibility text, selection state, and app context, then show insights in a small side panel or menu-bar popover.\n\nThe agent should separate local knowledge from external knowledge. Local notes get priority because they reflect the user\'s actual thinking. External search is opt-in or clearly marked, with source links and timestamps. Good outputs should be small: one paragraph, one citation, one equation, one question, one related note. The unit is not a generated essay; it is a prepared affordance.',
+      },
+      {
+        heading: 'Open questions',
+        body:
+          'How does the system decide when to stay silent? What counts as useful context rather than ambient noise? Should insights appear only after pauses, only on explicit hotkey, or continuously in a low-priority rail? How much can be done locally before web research becomes necessary?\n\nThe platform choice is a real fork. An Obsidian plugin gets clean note structure, backlinks, and a natural local index, but lives inside one app. A Mac-level companion can follow the user anywhere they write, but inherits hard privacy, permission, and context-detection problems. Does the product need deep vault semantics first, or broad ambient awareness first?\n\nThe trust problem is also central. If the agent surfaces knowledge while someone is writing, it must make provenance visible and uncertainty normal. The product should reward checking sources, not laundering model confidence into the user\'s notes.',
+      },
+    ],
+  },
 ];
 
 export const ideaBySlug = (slug: string) => ideas.find((i) => i.slug === slug);
