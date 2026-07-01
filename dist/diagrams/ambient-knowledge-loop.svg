@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="820" viewBox="0 0 1400 820" role="img" aria-labelledby="title desc">
+<title id="title">The ambient knowledge loop</title>
+<desc id="desc">A capture write-path feeds a personal knowledge store that a distilling agent turns into cited notes; a read-path surfaces those notes while the user writes, and a dashed return closes the loop.</desc>
+<style>
+  .bg{fill:#f6f2ea}.panel{fill:#fffaf0;stroke:#d9d2bf;stroke-width:2}.core{fill:#1a1a1a}.accent{fill:#b8542c}.soft{fill:#ede6d6}.line{stroke:#3b3a36;stroke-width:2.5;fill:none;marker-end:url(#arrow)}
+  .dash{stroke-dasharray:8 8}.t{font-family:Inter,Arial,sans-serif;fill:#1a1a1a}.h{font-family:Georgia,serif;font-size:36px}.m{font-size:19px;font-weight:700}.s{font-size:15px;fill:#3b3a36}.mono{font-family:monospace;font-size:13px;fill:#6b6862}.white{fill:#fffaf0}
+</style>
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#3b3a36"/></marker></defs>
+<rect class="bg" width="1400" height="820"/>
+<text x="70" y="72" class="t h">The knowledge loop: read in, surface out</text>
+<text x="72" y="105" class="t s">The writing companion is only the read end. Its other half is ambient capture — so the agent grows the same context its owner does.</text>
+
+<rect x="70" y="170" width="360" height="470" rx="26" class="panel"/>
+<text x="105" y="222" class="t m">Capture · write path</text>
+<text x="105" y="250" class="t s">The highest-fidelity read of each surface</text>
+<rect x="105" y="278" width="290" height="54" rx="14" class="soft"/><text x="127" y="311" class="t s">You read &amp; highlight</text>
+<rect x="105" y="348" width="290" height="54" rx="14" class="soft"/><text x="127" y="381" class="t s">Browser extension · DOM</text>
+<rect x="105" y="418" width="290" height="54" rx="14" class="soft"/><text x="127" y="451" class="t s">Screen observer · AX / OCR</text>
+<rect x="105" y="488" width="290" height="54" rx="14" class="soft"/><text x="127" y="521" class="t s">Highlight hotkey ⌘⇧H</text>
+<text x="105" y="600" class="t mono">Attention is the raw material</text>
+
+<rect x="520" y="150" width="360" height="510" rx="30" class="core"/>
+<text x="560" y="205" class="t m white">Personal knowledge store</text>
+<rect x="560" y="238" width="280" height="52" rx="14" fill="#fffaf0"/><text x="582" y="270" class="t s">Capture events · capev/1</text>
+<rect x="560" y="308" width="280" height="52" rx="14" fill="#fffaf0"/><text x="582" y="340" class="t s">Distilling agent (LLM)</text>
+<rect x="560" y="378" width="280" height="52" rx="14" fill="#fffaf0"/><text x="582" y="410" class="t s">AgentsFS notes</text>
+<rect x="560" y="448" width="280" height="52" rx="14" fill="#fffaf0"/><text x="582" y="480" class="t s">Provenance + highlights</text>
+<rect x="560" y="518" width="280" height="52" rx="14" fill="#fffaf0"/><text x="582" y="550" class="t s">Local · portable · yours</text>
+
+<rect x="970" y="170" width="360" height="470" rx="26" class="panel"/>
+<text x="1005" y="222" class="t m">Surface · read path</text>
+<text x="1005" y="250" class="t s">Quiet, invited, one affordance at a time</text>
+<rect x="1005" y="278" width="290" height="54" rx="14" class="soft"/><text x="1027" y="311" class="t s">Ambient companion</text>
+<rect x="1005" y="348" width="290" height="54" rx="14" class="soft"/><text x="1027" y="381" class="t s">Context while writing</text>
+<rect x="1005" y="418" width="290" height="54" rx="14" class="soft"/><text x="1027" y="451" class="t s">Source-backed, invited</text>
+<rect x="1005" y="488" width="290" height="54" rx="14" class="soft"/><text x="1027" y="521" class="t s">One note, one citation</text>
+<text x="1005" y="600" class="t mono">Surfaced, never pushed</text>
+
+<path class="line" d="M430 400 C470 400 485 405 520 405"/>
+<text x="432" y="384" class="t s">capture</text>
+<path class="line" d="M880 405 C915 405 935 400 970 400"/>
+<text x="892" y="384" class="t s">surface</text>
+<path class="line dash" d="M1150 660 C1150 738 250 738 250 660"/>
+<text x="470" y="770" class="t s">You write, and the agent has read along — the same context, kept warm and cited.</text>
+</svg>

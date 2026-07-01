@@ -6,6 +6,7 @@ import { MacOmnibarDeepDive } from '../components/MacOmnibarDeepDive';
 import { HtmlArtifactsDeepDive } from '../components/HtmlArtifactsDeepDive';
 import { PredictionMarketDeepDive } from '../components/PredictionMarketDeepDive';
 import { AIWeeklyMagazineDeepDive } from '../components/AIWeeklyMagazineDeepDive';
+import { AmbientKnowledgeDeepDive } from '../components/AmbientKnowledgeDeepDive';
 import { NotFound } from './NotFound';
 
 export function IdeaPage() {
@@ -128,6 +129,7 @@ export function IdeaPage() {
 
         {idea.slug === 'mac-omnibar-for-agents' && <MacOmnibarDeepDive />}
         {idea.slug === 'agent-native-html-artifacts' && <HtmlArtifactsDeepDive />}
+        {idea.slug === 'ambient-knowledge-agent-for-notes' && <AmbientKnowledgeDeepDive />}
         {idea.slug === 'prediction-market-mispricing-engine' && <PredictionMarketDeepDive />}
         {idea.slug === 'physical-weekly-ai-magazine' && <AIWeeklyMagazineDeepDive />}
         {idea.slug === 'short-term-rental-demand-radar' && (

@@ -569,7 +569,7 @@ export const ideas: Idea[] = [
     domain: 'Knowledge tools · AI',
     status: 'seed',
     year: '2026',
-    tags: ['notes', 'knowledge work', 'agents', 'research', 'Obsidian'],
+    tags: ['notes', 'knowledge work', 'agents', 'research', 'Obsidian', 'capture', 'privacy', 'macOS'],
     summary:
       'Writing notes often creates a strange gap: the moment you are forming a thought is exactly when useful background knowledge, examples, counterpoints, and references would help, but searching for them pulls you out of the thought. This idea is an Obsidian-like writing surface with an AI agent working just outside the main canvas. It behaves less like autocomplete and more like a peripheral research companion: quiet, source-backed, and available when invited.',
     sections: [
@@ -597,6 +597,11 @@ export const ideas: Idea[] = [
         heading: 'Open questions',
         body:
           'How does the system decide when to stay silent? What counts as useful context rather than ambient noise? Should insights appear only after pauses, only on explicit hotkey, or continuously in a low-priority rail? How much can be done locally before web research becomes necessary?\n\nThe platform choice is a real fork. An Obsidian plugin gets clean note structure, backlinks, and a natural local index, but lives inside one app. A Mac-level companion can follow the user anywhere they write, but inherits hard privacy, permission, and context-detection problems. Does the product need deep vault semantics first, or broad ambient awareness first?\n\nThe trust problem is also central. If the agent surfaces knowledge while someone is writing, it must make provenance visible and uncertainty normal. The product should reward checking sources, not laundering model confidence into the user\'s notes.',
+      },
+      {
+        heading: 'The other half: capture',
+        body:
+          'There is a quiet assumption underneath all of this: that the vault the agent reads from is already rich enough to be worth surfacing. Usually it is not. The deeper idea is to close a loop — let the same attention that produces notes also feed the knowledge base, so the agent grows the same context its owner has and never loses the thread of what they were doing. What you read, and especially what you highlight, is the raw material; the writing companion is only the read end of a system whose write end is ambient capture.\n\nFramed this way, the Mac-level companion and a browser extension stop competing. They become sensors on a fidelity ladder — clean page text and precise highlights from the browser, accessibility text and screen OCR for everything else — normalizing into one personal store that a distilling agent turns into small, cited, atomic notes. Highlights are not decoration; they are the salience layer that tells the distiller what mattered.\n\nThe build note below works through that capture half in detail: the sensors and when each fires, how a highlight anchors and survives a reload, the single event the whole system speaks, the on-disk note format, and why privacy has to be the substrate rather than a later hardening pass.',
       },
     ],
   },
