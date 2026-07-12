@@ -12,6 +12,8 @@ sources:
 
 The ideas notebook is the public archive under `/ideas`. Core idea content lives in `src/ideas/data/ideas.ts` as an ordered typed array. Each entry provides slug, number, title, tagline, domain, status, year, tags, summary, and sections.
 
+Idea entries may also include an optional `references` array with `title`, `href`, and optional `note`. `src/ideas/pages/IdeaPage.tsx` renders those as external-link reference cards near the bottom of the idea page.
+
 Rendering behavior:
 
 - `src/pages/ideas/[...path].astro` statically generates routes from the ideas array.
@@ -27,4 +29,3 @@ Publishing rules:
 Current newest entry:
 
 - [[Ambient Knowledge Agent for Notes]] is `N° 015`.
-

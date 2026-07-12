@@ -24,3 +24,15 @@ Recent state:
 - The newest idea is [[Ambient Knowledge Agent for Notes]], added as `N° 015` with slug `ambient-knowledge-agent-for-notes`.
 - A shared in-repo agentsfs was initialized at `agentsfs/` and connected through the root `AGENTS.md` connection block.
 
+Current visual system:
+
+- The main Astro site and React [[Ideas Notebook]] share an expressive personal color system: warm paper `#f7f1e7`, deep violet ink `#17152b`, cobalt `#3154d8`, yellow `#f8e45c`, orange `#ff7043`, pink `#ef67a7`, mint `#8bd8bd`, and lilac `#d8ccff`.
+- `src/layouts/Layout.astro` supports a `fullBleed` prop for poster-like pages while retaining the constrained reading layout for essays, tracking, and utility pages.
+- Seeking Gradient is the owner's online pseudonym. The site should feel like a personal homepage, not a publication, research studio, product, or branded editorial system.
+- The homepage keeps a simple first-person information architecture but now uses a bright yellow poster hero, a code-native gradient path, highlighted words, a cobalt interest ribbon, colorful project workbench tiles, and a dark personal About section. The visual idea is “warm paper plus saturated marker ink.”
+- `/essays` is the complete Writing archive. Article pages use plain “Post” and “All writing” vocabulary.
+- `/ideas` remains a straightforward repository, but an orange hero, yellow word highlight, pink orbit, cobalt local nav, and colored row hovers connect it to the homepage personality.
+- Main navigation is Writing, Projects, About, and Email. The Projects area adds a small local Repository, Mockups, and About subnav. Tracking remains accessible from the footer.
+- Keep the personality concentrated in color planes, expressive typography, a few code-native shapes, arrow movement, and tactile hover shifts. Avoid dashboard chrome, conceptual taxonomies, generated hero imagery, complicated diagrams, and ornamental effects that obscure the personal writing-and-projects hierarchy.
+- Generated visual work remains available on project detail pages and the secondary Visual notes page, with prompt provenance stored beside assets or in `src/ideas/pages/IdeaPage.tsx`.
+- Responsive browser verification covers the homepage, ideas index, essay layout, tracking page, and mobile navigation from 320px through 1440px. `npx astro build` is the safe verification command because it avoids the network-sensitive TTS prebuild workflow.
