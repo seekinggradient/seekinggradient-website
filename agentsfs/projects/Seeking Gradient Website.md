@@ -23,6 +23,8 @@ Recent state:
 
 - The newest idea is [[Ambient Knowledge Agent for Notes]], added as `N° 015` with slug `ambient-knowledge-agent-for-notes`.
 - A shared in-repo agentsfs was initialized at `agentsfs/` and connected through the root `AGENTS.md` connection block.
+- The Writing archive now includes “The Loop Is the Easy Part” dated July 15, 2026 and “Fly Machines, Sprites, and Session Sandboxes” dated July 25, 2026. Their 16 embedded editorial diagrams live under `public/images/blog/` with reproducible prompt sidecars.
+- Blog publication dates render in the `UTC` timezone on archive and article pages so date-only content values do not shift backward for visitors in negative UTC offsets.
 
 Current visual system:
 

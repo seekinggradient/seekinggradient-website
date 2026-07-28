@@ -37,7 +37,12 @@ const audioSrc = fs.existsSync(audioFile) ? `/audio/blog/${post.slug}.mp3` : und
 					<span class="uppercase tracking-[0.18em]">Post</span>
 					<span class="h-px w-6 bg-[color:var(--color-rule)]"></span>
 					<time class="text-[color:var(--color-accent)]">
-						{post.data.pubDate.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }).toUpperCase()}
+						{post.data.pubDate.toLocaleDateString('en-US', {
+							month: 'short',
+							day: '2-digit',
+							year: 'numeric',
+							timeZone: 'UTC',
+						}).toUpperCase()}
 					</time>
 					<span class="h-px w-6 bg-[color:var(--color-rule)]"></span>
 					<span>{post.data.author}</span>
