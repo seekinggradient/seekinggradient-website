@@ -1,32 +1,32 @@
 {
-  "generatedAt": "2026-06-12T22:00:08.475Z",
+  "generatedAt": "2026-07-28T09:08:27.147Z",
   "stocks": [
     {
       "symbol": "^GSPC",
       "name": "S&P 500",
-      "price": 7431.46,
-      "change": 0.5025514,
+      "price": 7413.18,
+      "change": 0.016192641,
       "currency": "USD"
     },
     {
       "symbol": "^NDX",
       "name": "Nasdaq 100",
-      "price": 29635.947,
-      "change": 0.644469,
+      "price": 28039.21,
+      "change": -0.3167267,
       "currency": "USD"
     },
     {
       "symbol": "AAPL",
       "name": "Apple",
-      "price": 291.13,
-      "change": -1.5221729,
+      "price": 336.91,
+      "change": 1.1681,
       "currency": "USD"
     },
     {
       "symbol": "GOOGL",
       "name": "Google",
-      "price": 359.68,
-      "change": 0.5338636,
+      "price": 326.56,
+      "change": 2.13299,
       "currency": "USD"
     }
   ],
@@ -34,83 +34,83 @@
     {
       "symbol": "BTC",
       "name": "Bitcoin",
-      "price": 63445,
-      "change24h": 0.026491192572369534
+      "price": 63349,
+      "change24h": -2.6677686533324962
     },
     {
       "symbol": "ETH",
       "name": "Ethereum",
-      "price": 1662.76,
-      "change24h": -0.7460143286075529
+      "price": 1880.12,
+      "change24h": -3.9694941859672075
     }
   ],
   "hackerNews": [
     {
-      "title": "CRISPR tech selectively shreds cancer cells, including \"undruggable\" cancers",
-      "url": "https://innovativegenomics.org/news/crispr-technique-selectively-shreds-cancer-cells/",
-      "points": 571,
-      "comments": 154,
-      "hnUrl": "https://news.ycombinator.com/item?id=48505231"
+      "title": "7.1 Earthquake in Japan",
+      "url": "https://www.data.jma.go.jp/multi/quake/quake_detail.html?eventID=20260728163528&lang=en",
+      "points": 146,
+      "comments": 29,
+      "hnUrl": "https://news.ycombinator.com/item?id=49080664"
     },
     {
-      "title": "Swift at Apple: Migrating the TrueType hinting interpreter",
-      "url": "https://www.swift.org/blog/migrating-truetype-hinting-to-swift/",
-      "points": 56,
-      "comments": 19,
-      "hnUrl": "https://news.ycombinator.com/item?id=48508726"
+      "title": "Our position on open-weights models",
+      "url": "https://www.anthropic.com/news/position-open-weights-models",
+      "points": 876,
+      "comments": 1283,
+      "hnUrl": "https://news.ycombinator.com/item?id=49076057"
     },
     {
-      "title": "How to setup a local coding agent on macOS",
-      "url": "https://ikyle.me/blog/2026/how-to-setup-a-local-coding-agent-on-macos",
-      "points": 164,
-      "comments": 55,
-      "hnUrl": "https://news.ycombinator.com/item?id=48507020"
+      "title": "A $500 RL fine-tune of a 9B open model beat frontier models on catalog review",
+      "url": "https://fermisense.com/when-machines-take-the-wheel/",
+      "points": 172,
+      "comments": 43,
+      "hnUrl": "https://news.ycombinator.com/item?id=49078454"
     },
     {
-      "title": "Malware developers added nuclear and biological weapons text to to their spyware",
-      "url": "https://twitter.com/jsrailton/status/2064661778978533571",
-      "points": 223,
-      "comments": 149,
-      "hnUrl": "https://news.ycombinator.com/item?id=48495928"
+      "title": "Ars Astronomica – English translations of rare Hebrew and Latin astronomy texts",
+      "url": "https://arsastronomica.com/",
+      "points": 58,
+      "comments": 9,
+      "hnUrl": "https://news.ycombinator.com/item?id=49079727"
     },
     {
-      "title": "Mmorpg World of ClaudeCraft, vibe coded with Fable 5",
-      "url": "https://worldofclaudecraft.com/",
-      "points": 32,
-      "comments": 16,
-      "hnUrl": "https://news.ycombinator.com/item?id=48509143"
+      "title": "Benchmarking Opus 5 on SlopCodeBench",
+      "url": "https://github.com/humanlayer/advanced-context-engineering-for-coding-agents/blob/main/benchmarking-opus-5-on-slop-code-bench.md",
+      "points": 274,
+      "comments": 62,
+      "hnUrl": "https://news.ycombinator.com/item?id=49076391"
     }
   ],
   "techCrunch": [
     {
-      "title": "Chinese cybercrime operation that used AI to scam ‘hundreds of thousands of victims’ sued by Google",
-      "url": "https://techcrunch.com/2026/06/12/chinese-cybercrime-operation-that-used-ai-to-scam-hundreds-of-thousands-of-victims-sued-by-google/",
-      "pubDate": "Fri, 12 Jun 2026 20:38:09 +0000",
-      "creator": "Lorenzo Franceschi-Bicchierai"
-    },
-    {
-      "title": "SpaceX IPO closes up 19% and delivers the world’s first trillionaire",
-      "url": "https://techcrunch.com/2026/06/12/spacex-ipo-closes-up-19-and-delivers-the-worlds-first-trillionaire/",
-      "pubDate": "Fri, 12 Jun 2026 20:20:00 +0000",
-      "creator": "Marina Temkin, Sean O'Kane"
-    },
-    {
-      "title": "SpaceX IPO: Live updates on everything you need to know",
-      "url": "https://techcrunch.com/2026/06/12/spacex-ipo-live-updates-on-everything-you-need-to-know/",
-      "pubDate": "Fri, 12 Jun 2026 20:04:38 +0000",
-      "creator": "Kirsten Korosec, Russell Brandom"
-    },
-    {
-      "title": "SpaceX president Gwynne Shotwell just gave another hint at a Tesla merger",
-      "url": "https://techcrunch.com/2026/06/12/spacex-president-gwynne-shotwell-just-gave-another-hint-at-a-tesla-merger/",
-      "pubDate": "Fri, 12 Jun 2026 19:28:31 +0000",
+      "title": "Lyft and Baidu enter London’s robotaxi battleground as testing begins",
+      "url": "https://techcrunch.com/2026/07/28/lyft-and-baidu-enter-londons-robotaxi-battleground-as-testing-begins/",
+      "pubDate": "Tue, 28 Jul 2026 08:00:00 +0000",
       "creator": "Kirsten Korosec"
     },
     {
-      "title": "Mistral is rumored to be raising €3B at €20B valuation",
-      "url": "https://techcrunch.com/2026/06/12/mistral-is-rumored-to-be-raising-e3b-at-e20-valuation/",
-      "pubDate": "Fri, 12 Jun 2026 17:38:11 +0000",
-      "creator": "Ram Iyer"
+      "title": "Cursor makes its biggest India push yet ahead of SpaceX acquisition with localized pricing",
+      "url": "https://techcrunch.com/2026/07/27/cursor-makes-its-biggest-india-push-yet-ahead-of-spacex-acquisition-with-localized-pricing/",
+      "pubDate": "Tue, 28 Jul 2026 04:30:00 +0000",
+      "creator": "Jagmeet Singh"
+    },
+    {
+      "title": "Anthropic’s Dario Amodei responds: doesn’t oppose open-weight models, but fears Chinese AI",
+      "url": "https://techcrunch.com/2026/07/27/anthropics-dario-amodei-responds-doesnt-oppose-open-weight-models-but-fears-chinese-ai/",
+      "pubDate": "Tue, 28 Jul 2026 00:13:33 +0000",
+      "creator": "Julie Bort"
+    },
+    {
+      "title": "Satya Nadella says companies that trust one AI for everything may not survive",
+      "url": "https://techcrunch.com/2026/07/27/satya-nadella-says-companies-that-trust-one-ai-for-everything-may-not-survive/",
+      "pubDate": "Mon, 27 Jul 2026 21:17:11 +0000",
+      "creator": "Julie Bort"
+    },
+    {
+      "title": "Thea Energy lands $20M federal grant to build its magnets for fusion reactors",
+      "url": "https://techcrunch.com/2026/07/27/thea-energy-lands-20m-federal-grant-to-build-its-magnets-for-fusion-reactors/",
+      "pubDate": "Mon, 27 Jul 2026 20:40:12 +0000",
+      "creator": "Tim De Chant"
     }
   ],
   "quickTake": "Tech equity markets show resilience with Nasdaq and S&P 500 up, even as OpenAI signals an aggressive infrastructure push into India with 1GW capacity targets. Meanwhile, Anthropic's tightening of third-party subscription auth and Blackwell's architectural shifts highlight a maturing AI ecosystem pivoting toward both stricter governance and specialized compute patterns."

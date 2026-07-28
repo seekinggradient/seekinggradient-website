@@ -152,6 +152,39 @@ export function IdeaPage() {
           </section>
         )}
 
+        {idea.references && idea.references.length > 0 && (
+          <section className="mb-14">
+            <SectionLabel>References</SectionLabel>
+            <div className="grid gap-3">
+              {idea.references.map((reference) => (
+                <a
+                  key={reference.href}
+                  href={reference.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group block border border-[color:var(--color-rule)] bg-[#fffaf0] p-4 transition-colors hover:bg-[color:var(--color-paper-deep)]/50"
+                >
+                  <span className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                    <span>
+                      <span className="display block text-2xl leading-tight text-[color:var(--color-ink)] group-hover:text-[color:var(--color-accent)] transition-colors">
+                        {reference.title}
+                      </span>
+                      {reference.note && (
+                        <span className="mt-2 block text-[15px] leading-[1.65] text-[color:var(--color-ink-soft)]">
+                          {reference.note}
+                        </span>
+                      )}
+                    </span>
+                    <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-accent)] sm:pt-1">
+                      Open
+                    </span>
+                  </span>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
+
         <section className="mt-12">
           <SectionLabel>Tags</SectionLabel>
           <ul className="flex flex-wrap gap-2">

@@ -10,6 +10,12 @@
 
 export type IdeaStatus = 'seed' | 'sketch' | 'exploring' | 'shelved';
 
+export interface IdeaReference {
+  title: string;
+  href: string;
+  note?: string;
+}
+
 export interface Idea {
   slug: string;
   number: string;          // display number, e.g. "N° 001"
@@ -21,6 +27,7 @@ export interface Idea {
   summary: string;         // 2–4 sentence overview at top of the idea page
   sections: { heading: string; body: string }[];
   tags: string[];
+  references?: IdeaReference[];
 }
 
 export const ideas: Idea[] = [
@@ -231,6 +238,14 @@ export const ideas: Idea[] = [
         heading: 'Open questions',
         body:
           'Should the first version be fully automated export or a concierge-assisted editing flow? How much creative control do organizers actually want? What is the best pricing model: per finished video, subscription for families, or a paid upgrade for longer/high-resolution exports?',
+      },
+    ],
+    references: [
+      {
+        title: 'TwelveLabs',
+        href: 'https://www.twelvelabs.io/',
+        note:
+          'Video-intelligence platform and API for natural-language video search, segmentation, highlights, and editing-workflow export; a likely enabling layer for moving from transcript-only compilation toward agentic video editing.',
       },
     ],
   },

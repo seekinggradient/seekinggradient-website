@@ -9,6 +9,7 @@ export const GET: APIRoute = async () => {
 
   const urls = [
     '<url><loc>https://seekinggradient.com/</loc></url>',
+    '<url><loc>https://seekinggradient.com/essays</loc></url>',
     '<url><loc>https://seekinggradient.com/tracking</loc></url>',
     '<url><loc>https://seekinggradient.com/ideas</loc></url>',
     '<url><loc>https://seekinggradient.com/ideas/about</loc></url>',

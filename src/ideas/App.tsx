@@ -10,7 +10,10 @@ import { ShortTermRentalTechnicalPlan } from './pages/ShortTermRentalTechnicalPl
 export default function IdeasApp() {
   return (
     <div className="ideas-app">
-      <BrowserRouter basename="/ideas">
+      <BrowserRouter
+        basename="/ideas"
+        future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+      >
         <Routes>
           <Route element={<Layout />}>
             <Route path="/" element={<Home />} />

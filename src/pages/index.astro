@@ -1,91 +1,308 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
+import { ideas } from '../ideas/data/ideas';
 
 const posts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
+const latestPosts = posts.slice(0, 4);
+const projectSlugs = [
+	'agentsfs',
+	'ambient-knowledge-agent-for-notes',
+	'mac-omnibar-for-agents',
+	'visual-note-transcription-pipeline',
+];
+const featuredProjects = projectSlugs
+	.map((slug) => ideas.find((idea) => idea.slug === slug))
+	.filter((idea): idea is (typeof ideas)[number] => Boolean(idea));
+
+const formatDate = (date: Date) =>
+	date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 ---
 
 <Layout
 	title="Seeking Gradient"
-	description="Seeking Gradient is a personal site about autonomous agents, infrastructure experiments, and continuous learning through building."
+	description="The personal homepage of Seeking Gradient: writing about AI agents, software, infrastructure, and projects in progress."
 	canonicalPath="/"
 	ogType="website"
+	fullBleed
 >
 	<div>
-		{/* Hero Section */}
-		<section class="py-12 sm:py-20 border-b border-[color:var(--color-rule)] mb-20">
-			<div class="max-w-5xl">
-				<p class="font-mono text-xs uppercase tracking-[0.18em] text-[color:var(--color-accent)] mb-8">
-					Welcome to my digital space
-				</p>
-				<h1 class="display text-6xl sm:text-7xl md:text-8xl mb-8 max-w-4xl">
-					Seeking <span class="display-italic">Gradient</span>
+		<section class="home-hero">
+			<svg class="gradient-path" viewBox="0 0 900 640" fill="none" aria-hidden="true">
+				<defs>
+					<linearGradient id="path-gradient" x1="50" y1="570" x2="820" y2="80" gradientUnits="userSpaceOnUse">
+						<stop stop-color="#3154d8" />
+						<stop offset="0.48" stop-color="#ef67a7" />
+						<stop offset="1" stop-color="#ff7043" />
+					</linearGradient>
+				</defs>
+				<path d="M35 570C168 534 182 420 294 432C423 446 423 252 544 272C687 296 700 98 864 74" stroke="url(#path-gradient)" stroke-width="36" stroke-linecap="round" />
+				<circle cx="38" cy="570" r="20" fill="#3154d8" />
+				<circle cx="864" cy="74" r="20" fill="#ff7043" />
+			</svg>
+
+			<div class="hero-inner">
+				<p class="hero-kicker">Hello — I’m Seeking Gradient.</p>
+				<h1 class="home-title display">
+					I make things, follow <span class="word-swatch word-pink">curiosities,</span> and write down what I <span class="word-swatch word-blue">learn.</span>
 				</h1>
-				<p class="text-xl sm:text-2xl text-[color:var(--color-ink-mute)] max-w-2xl leading-relaxed mb-10">
-					Always seeking continuous improvement and learning. Building, experimenting, and growing, one step at a time.
-				</p>
-				<div class="flex flex-col sm:flex-row gap-4 text-sm">
-					<a href="#blog" class="inline-flex items-center justify-center border border-[color:var(--color-ink)] bg-[color:var(--color-ink)] text-[color:var(--color-paper)] px-6 py-3 hover:bg-[color:var(--color-accent)] hover:border-[color:var(--color-accent)] transition-colors">
-						Read Blog
-					</a>
-					<a href="/ideas" class="inline-flex items-center justify-center border border-[color:var(--color-rule)] bg-[color:var(--color-paper-deep)] text-[color:var(--color-ink)] px-6 py-3 hover:border-[color:var(--color-accent)] hover:text-[color:var(--color-accent)] transition-colors">
-						Browse Ideas
-					</a>
-					<a href="mailto:seekinggradient@gmail.com" class="inline-flex items-center justify-center border border-[color:var(--color-rule)] px-6 py-3 text-[color:var(--color-ink-soft)] hover:border-[color:var(--color-ink)] hover:text-[color:var(--color-ink)] transition-colors">
-						Get in Touch
-					</a>
-				</div>
-			</div>
-		</section>
-
-		<section class="max-w-5xl mx-auto mb-20 border-y border-[color:var(--color-rule)] py-10">
-			<div class="grid gap-8 md:grid-cols-[1fr_auto] md:items-end">
-				<div>
-					<p class="font-mono text-xs uppercase tracking-[0.18em] text-[color:var(--color-accent)] mb-4">Public notebook</p>
-					<h2 class="display text-4xl sm:text-5xl text-[color:var(--color-ink)] mb-5">Ideas <span class="display-italic">Repository</span></h2>
-					<p class="text-lg text-[color:var(--color-ink-mute)] leading-relaxed max-w-2xl">
-						A growing archive of product and systems ideas, with static pages, visual mockups, and architecture sketches as concepts mature.
+				<div class="hero-bottom">
+					<p>
+						This is my home on the internet: part blog, part project shelf, and part notebook for ideas that are still becoming something.
 					</p>
+					<div class="hero-actions">
+						<a href={`/blog/${latestPosts[0].slug}`} class="primary-link arrow-shift">Read my latest post <span class="arrow" aria-hidden="true">→</span></a>
+						<a href="/ideas" class="secondary-link arrow-shift">Explore the projects <span class="arrow" aria-hidden="true">↗</span></a>
+					</div>
 				</div>
-				<a href="/ideas" class="link-underline pb-1 text-[color:var(--color-accent)] whitespace-nowrap">
-					Open notebook →
-				</a>
 			</div>
 		</section>
 
-		<div class="max-w-4xl mx-auto" id="blog">
-			<div class="grid grid-cols-[1fr_auto_1fr] items-center gap-4 mb-12">
-				<div class="editorial-rule h-px"></div>
-				<h2 class="font-mono text-xs uppercase tracking-[0.18em] text-[color:var(--color-ink-mute)]">Latest Essays</h2>
-				<div class="editorial-rule h-px"></div>
-			</div>
-
-			<div class="space-y-20">
-				{posts.map((post) => (
-					<article class="group relative border-b border-[color:var(--color-rule)] pb-12 last:border-b-0">
-						<a href={`/blog/${post.slug}`} class="block">
-							<div class="flex flex-wrap items-center gap-3 mb-5 font-mono text-xs text-[color:var(--color-ink-mute)]">
-								<time class="text-[color:var(--color-accent)]">
-									{post.data.pubDate.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }).toUpperCase()}
-								</time>
-								<span class="h-px w-6 bg-[color:var(--color-rule)]"></span>
-								<span>{post.data.author}</span>
-							</div>
-							<h3 class="display text-4xl sm:text-5xl mb-5 group-hover:text-[color:var(--color-accent)] transition-colors">
-								{post.data.title}
-							</h3>
-							<p class="text-lg text-[color:var(--color-ink-mute)] leading-relaxed mb-6 line-clamp-3">
-								{post.data.description}
-							</p>
-							<div class="inline-flex items-center gap-2 text-sm text-[color:var(--color-ink)] group-hover:text-[color:var(--color-accent)] transition-colors">
-								Read story <span aria-hidden="true">→</span>
-							</div>
-						</a>
-					</article>
-				))}
-			</div>
+		<div class="interest-strip" aria-label="Topics explored on this site">
+			<span>AI agents</span><b>✦</b><span>software</span><b>✦</b><span>personal infrastructure</span><b>✦</b><span>ideas in progress</span><b>✦</b><span>useful rabbit holes</span>
 		</div>
+
+		<section class="writing-section" id="writing">
+			<div class="section-shell">
+				<div class="section-heading">
+					<div>
+						<h2 class="display">Recent writing</h2>
+						<p>Things I noticed while building, debugging, and occasionally getting lost.</p>
+					</div>
+					<a href="/essays" class="section-link arrow-shift">All writing <span class="arrow">→</span></a>
+				</div>
+
+				<ol class="writing-list">
+					{latestPosts.map((post, index) => (
+						<li>
+							<a href={`/blog/${post.slug}`} class="writing-link group">
+								<span class="post-index" aria-hidden="true">0{index + 1}</span>
+								<div>
+									<h3>{post.data.title}</h3>
+									<p>{post.data.description}</p>
+								</div>
+								<div class="post-meta">
+									<time>{formatDate(post.data.pubDate)}</time>
+									<span aria-hidden="true">↗</span>
+								</div>
+							</a>
+						</li>
+					))}
+				</ol>
+			</div>
+		</section>
+
+		<section class="projects-section" id="projects">
+			<div class="section-shell">
+				<div class="section-heading projects-heading">
+					<div>
+						<h2 class="display">On my workbench</h2>
+						<p>Projects, experiments, and ideas I want to keep in motion.</p>
+					</div>
+					<a href="/ideas" class="section-link arrow-shift">Full repository <span class="arrow">→</span></a>
+				</div>
+
+				<div class="project-grid">
+					{featuredProjects.map((idea, index) => (
+						<a href={`/ideas/${idea.slug}`} class={`project-tile project-tile-${index + 1}`}>
+							<div class="project-topline">
+								<span>{idea.number}</span>
+								<span>{idea.status}</span>
+							</div>
+							<div>
+								<h3>{idea.title}</h3>
+								<p>{idea.tagline}</p>
+							</div>
+							<span class="project-arrow" aria-hidden="true">↗</span>
+						</a>
+					))}
+				</div>
+			</div>
+		</section>
+
+		<section class="about-section" id="about">
+			<div class="about-orbit" aria-hidden="true"><span></span></div>
+			<div class="section-shell about-grid">
+				<h2 class="display">A pseudonym,<br /><span>not a persona.</span></h2>
+				<div class="about-copy">
+					<p>
+						Seeking Gradient is simply the name I use online. This site is where I collect the things I’m making, the questions I’m following, and the lessons worth remembering.
+					</p>
+					<p>
+						Some entries are polished. Others are deliberately rough. I’d rather keep a useful trail than pretend every thought arrived fully formed.
+					</p>
+					<a href="mailto:seekinggradient@gmail.com" class="about-email arrow-shift">Say hello <span class="arrow">↗</span></a>
+				</div>
+			</div>
+		</section>
 	</div>
 </Layout>
+
+<style>
+	.home-hero {
+		position: relative;
+		min-height: calc(92svh - 72px);
+		overflow: hidden;
+		background: var(--color-yellow);
+		border-bottom: 1px solid color-mix(in srgb, var(--color-ink), transparent 75%);
+	}
+
+	.hero-inner {
+		position: relative;
+		z-index: 1;
+		display: flex;
+		min-height: calc(92svh - 72px);
+		max-width: 80rem;
+		margin: 0 auto;
+		padding: clamp(3.5rem, 7vw, 6.5rem) clamp(1.25rem, 4vw, 2rem) 3rem;
+		flex-direction: column;
+		justify-content: space-between;
+	}
+
+	.hero-kicker {
+		width: max-content;
+		margin: 0 0 2.25rem;
+		font-family: var(--font-mono);
+		font-size: 0.72rem;
+		font-weight: 500;
+		letter-spacing: 0.15em;
+		text-transform: uppercase;
+	}
+
+	.home-title {
+		max-width: 72rem;
+		margin: 0;
+		font-size: clamp(4rem, 7.9vw, 7.5rem);
+		line-height: 0.91;
+		letter-spacing: -0.055em;
+		text-wrap: balance;
+	}
+
+	.word-swatch {
+		display: inline-block;
+		position: relative;
+		padding: 0 0.12em 0.05em;
+		color: white;
+		font-style: italic;
+		line-height: 0.86;
+	}
+
+	.word-pink { background: var(--color-pink); transform: rotate(-1.5deg); }
+	.word-blue { background: var(--color-accent); transform: rotate(1.25deg); }
+
+	.hero-bottom {
+		display: grid;
+		grid-template-columns: minmax(0, 34rem) auto;
+		gap: 2rem;
+		align-items: end;
+		margin-top: clamp(3.5rem, 8vw, 7rem);
+	}
+
+	.hero-bottom > p {
+		margin: 0;
+		font-size: 1.05rem;
+		line-height: 1.75;
+	}
+
+	.hero-actions { display: flex; flex-wrap: wrap; gap: 0.85rem; justify-content: flex-end; }
+	.hero-actions a { display: inline-flex; min-height: 3.25rem; align-items: center; gap: 0.65rem; padding: 0 1.1rem; font-size: 0.83rem; font-weight: 700; }
+	.primary-link { background: var(--color-ink); color: white; box-shadow: 4px 4px 0 var(--color-accent); }
+	.secondary-link { border: 1px solid var(--color-ink); background: color-mix(in srgb, white, transparent 70%); }
+
+	.gradient-path {
+		position: absolute;
+		right: -6rem;
+		top: -2rem;
+		width: min(62vw, 58rem);
+		opacity: 0.28;
+		mix-blend-mode: multiply;
+		transform: rotate(4deg);
+		animation: path-drift 9s ease-in-out infinite alternate;
+	}
+
+	.interest-strip {
+		display: flex;
+		overflow: hidden;
+		align-items: center;
+		justify-content: center;
+		gap: clamp(1rem, 2.5vw, 2.6rem);
+		padding: 0.95rem 1.25rem;
+		background: var(--color-accent);
+		color: white;
+		font-family: var(--font-mono);
+		font-size: 0.68rem;
+		letter-spacing: 0.11em;
+		text-transform: uppercase;
+		white-space: nowrap;
+	}
+
+	.interest-strip b { color: var(--color-yellow); }
+
+	.section-shell { max-width: 80rem; margin: 0 auto; padding: 5rem clamp(1.25rem, 4vw, 2rem); }
+	.section-heading { display: flex; align-items: end; justify-content: space-between; gap: 2rem; margin-bottom: 2.75rem; }
+	.section-heading h2 { margin: 0; font-size: clamp(3rem, 5vw, 4.8rem); }
+	.section-heading p { max-width: 36rem; margin: 1rem 0 0; color: var(--color-ink-mute); line-height: 1.65; }
+	.section-link { display: inline-flex; flex: 0 0 auto; align-items: center; gap: 0.45rem; border-bottom: 2px solid currentColor; padding-bottom: 0.25rem; font-size: 0.82rem; font-weight: 700; }
+
+	.writing-section { background: #fffaf3; }
+	.writing-list { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--color-rule); }
+	.writing-list li { border-bottom: 1px solid var(--color-rule); }
+	.writing-link { display: grid; grid-template-columns: 4rem minmax(0, 1fr) 9rem; gap: 1.5rem; align-items: start; padding: 2rem 0; transition: padding 200ms ease, background-color 200ms ease; }
+	.writing-link:hover { padding-left: 1rem; padding-right: 1rem; background: var(--color-lilac); }
+	.post-index { font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-accent); }
+	.writing-link h3 { margin: 0; font-family: var(--font-serif); font-size: clamp(1.55rem, 2.4vw, 2rem); font-weight: 500; line-height: 1.08; }
+	.writing-link p { max-width: 46rem; margin: 0.7rem 0 0; color: var(--color-ink-mute); font-size: 0.87rem; line-height: 1.65; }
+	.post-meta { display: flex; align-items: center; justify-content: space-between; gap: 1rem; font-family: var(--font-mono); font-size: 0.67rem; color: var(--color-ink-mute); }
+	.post-meta span { font-size: 1rem; transition: transform 180ms ease; }
+	.writing-link:hover .post-meta span { transform: translate(0.2rem, -0.2rem); }
+
+	.projects-section { background: var(--color-paper); }
+	.projects-heading h2 { color: var(--color-accent); }
+	.project-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border: 1px solid var(--color-ink); }
+	.project-tile { position: relative; display: flex; min-height: 23rem; padding: 1.6rem; flex-direction: column; justify-content: space-between; overflow: hidden; border-bottom: 1px solid var(--color-ink); color: var(--color-ink); transition: transform 220ms ease, box-shadow 220ms ease; }
+	.project-tile:nth-child(odd) { border-right: 1px solid var(--color-ink); }
+	.project-tile:nth-child(n+3) { border-bottom: 0; }
+	.project-tile-1 { background: var(--color-mint); }
+	.project-tile-2 { background: var(--color-orange); }
+	.project-tile-3 { background: var(--color-lilac); }
+	.project-tile-4 { background: var(--color-yellow); }
+	.project-tile:hover { z-index: 1; transform: translate(-7px, -7px); box-shadow: 8px 8px 0 var(--color-ink); }
+	.project-topline { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; }
+	.project-tile h3 { max-width: 30rem; margin: 0; font-family: var(--font-serif); font-size: clamp(2rem, 4vw, 3.4rem); font-weight: 500; letter-spacing: -0.035em; line-height: 0.98; }
+	.project-tile p { max-width: 34rem; margin: 1rem 0 0; font-size: 0.86rem; line-height: 1.6; opacity: 0.75; }
+	.project-arrow { position: absolute; right: 1.5rem; bottom: 1.2rem; font-size: 1.7rem; transition: transform 180ms ease; }
+	.project-tile:hover .project-arrow { transform: translate(0.3rem, -0.3rem); }
+
+	.about-section { position: relative; overflow: hidden; background: var(--color-night); color: white; }
+	.about-grid { position: relative; z-index: 1; display: grid; grid-template-columns: 0.9fr 1.1fr; gap: clamp(3rem, 8vw, 8rem); align-items: start; padding-top: 6.5rem; padding-bottom: 6.5rem; }
+	.about-grid h2 { margin: 0; font-size: clamp(3.5rem, 6vw, 6rem); line-height: 0.88; }
+	.about-grid h2 span { color: var(--color-yellow); font-style: italic; }
+	.about-copy { max-width: 39rem; }
+	.about-copy p { margin: 0 0 1.4rem; font-size: 1.05rem; line-height: 1.8; color: rgba(255,255,255,0.72); }
+	.about-email { display: inline-flex; align-items: center; gap: 0.6rem; margin-top: 1rem; padding: 0.8rem 1rem; background: var(--color-pink); color: white; font-weight: 700; box-shadow: 4px 4px 0 var(--color-yellow); }
+	.about-orbit { position: absolute; width: 19rem; height: 19rem; right: -5rem; bottom: -8rem; border: 2px solid var(--color-accent); border-radius: 999px; }
+	.about-orbit span { position: absolute; width: 3rem; height: 3rem; left: 1rem; top: 1rem; border-radius: 999px; background: var(--color-orange); animation: orbit-bob 5s ease-in-out infinite alternate; }
+
+	@keyframes path-drift { to { transform: translate(-1rem, 1.2rem) rotate(1deg); } }
+	@keyframes orbit-bob { to { transform: translate(2rem, -1.2rem); } }
+
+	@media (max-width: 760px) {
+		.home-hero, .hero-inner { min-height: calc(88svh - 72px); }
+		.hero-inner { padding-top: 3.5rem; }
+		.home-title { font-size: clamp(3.3rem, 15.4vw, 5.1rem); line-height: 0.93; }
+		.gradient-path { width: 42rem; right: -22rem; top: 3rem; opacity: 0.2; }
+		.hero-bottom { grid-template-columns: 1fr; margin-top: 3.5rem; }
+		.hero-actions { justify-content: flex-start; }
+		.interest-strip { justify-content: flex-start; overflow-x: auto; scrollbar-width: none; }
+		.section-shell { padding-top: 4rem; padding-bottom: 4rem; }
+		.section-heading { align-items: start; flex-direction: column; }
+		.writing-link { grid-template-columns: 2.4rem minmax(0, 1fr); gap: 0.75rem; }
+		.post-meta { grid-column: 2; justify-content: flex-start; }
+		.project-grid { grid-template-columns: 1fr; }
+		.project-tile { min-height: 20rem; border-right: 0 !important; border-bottom: 1px solid var(--color-ink) !important; }
+		.project-tile:last-child { border-bottom: 0 !important; }
+		.about-grid { grid-template-columns: 1fr; }
+	}
+</style>

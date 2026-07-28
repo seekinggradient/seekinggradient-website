@@ -1,14 +1,28 @@
 {
   "meta": {
-    "generated": "2026-07-28 08:54Z",
+    "generated": "2026-07-28 09:08Z",
     "search_root": "/Users/akshay/Development",
     "discovery": "afs status --json (afs)",
     "discovery_complete": true,
     "discovery_incomplete_roots": [],
     "instances_scanned": 39,
-    "instances_with_rfcs": 2
+    "instances_with_rfcs": 3
   },
   "rfcs": [
+    {
+      "name": "harness-plugins",
+      "kb": "agentsfs",
+      "on_hub": false,
+      "url": null,
+      "path": "agentsfs/rfcs/harness-plugins.md",
+      "rfc_status": "proposed",
+      "rfc_scope": "project",
+      "rfc_decided": "",
+      "legacy_status": "proposed",
+      "owner_approved": false,
+      "approvers": [],
+      "description": "RFC — ship optional first-party Claude Code and Codex plugins as thin lifecycle adapters over stable afs hook commands, improving orientation and memory capture without making AgentsFS depend on any harness."
+    },
     {
       "name": "rfc-artifact-sharing",
       "kb": "myexpert-eve-development",

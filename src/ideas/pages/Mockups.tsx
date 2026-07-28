@@ -1,20 +1,5 @@
 const mockups = [
   {
-    title: 'Printable photo album + agent omnibar',
-    src: '/mockups/photo-omnibar.jpg',
-    note: 'Mobile-first photo curation, plus a Mac-style omnibar with screen context and streaming agent replies.',
-  },
-  {
-    title: 'Portable memory + service business kit',
-    src: '/mockups/memory-service-kit.jpg',
-    note: 'A memory dashboard/workspace surface, paired with the cleaner/handyman business-in-a-box admin and booking flow.',
-  },
-  {
-    title: 'Stock thesis pipeline + compilation video maker',
-    src: '/mockups/stock-video.jpg',
-    note: 'A research thesis dashboard with daily brief/audio + simulated portfolio, and a milestone video collection/editing workflow.',
-  },
-  {
     title: 'Visual note transcription pipeline',
     src: '/mockups/specific/visual-note-transcription.jpg',
     note: 'Patch detection, ambiguous handwriting review, and faithful Markdown output for handwritten PDFs and scans.',
@@ -91,29 +76,24 @@ const diagrams = [
 
 export function Mockups() {
   return (
-    <div className="mx-auto max-w-6xl px-5 sm:px-8 py-16 sm:py-24">
-      <p className="font-mono text-xs uppercase tracking-[0.25em] text-[color:var(--color-accent)] mb-6">
-        Design Lab · First pass
-      </p>
-      <div className="grid lg:grid-cols-[0.95fr_1.05fr] gap-10 items-end border-b border-[color:var(--color-rule)] pb-12 mb-14">
-        <h1 className="display text-6xl sm:text-7xl lg:text-8xl">
-          Mockups and system sketches.
-        </h1>
-        <p className="text-lg sm:text-xl leading-8 text-[color:var(--color-ink-soft)] max-w-2xl">
-          Initial visual boards for the ideas, plus architecture diagrams for the more systems-heavy concepts. These are exploratory artifacts: useful for taste, framing, and product direction — not final UI specs.
+    <div className="mx-auto max-w-7xl px-5 sm:px-8 py-16 sm:py-24">
+      <div className="border-b border-[color:var(--color-rule)] pb-12 mb-14">
+        <h1 className="display text-6xl sm:text-7xl">Visual notes</h1>
+        <p className="mt-6 text-lg leading-8 text-[color:var(--color-ink-soft)] max-w-2xl">
+          Rough interface directions and system diagrams attached to projects in the repository.
         </p>
       </div>
 
       <section className="mb-20">
         <div className="flex items-baseline justify-between gap-6 mb-8">
-          <h2 className="display text-4xl sm:text-5xl">Product mockup boards</h2>
-          <span className="font-mono text-xs text-[color:var(--color-ink-mute)]">11 boards · 11 ideas</span>
+          <h2 className="display text-4xl sm:text-5xl">Interface explorations</h2>
+          <span className="text-xs text-[color:var(--color-ink-mute)]">{mockups.length} visual notes</span>
         </div>
         <div className="grid gap-10">
           {mockups.map((item) => (
-            <figure key={item.src} className="border border-[color:var(--color-rule)] bg-[#fffaf0] p-3 sm:p-5">
-              <img src={item.src} alt={item.title} className="w-full rounded-sm border border-[color:var(--color-rule)]" />
-              <figcaption className="grid sm:grid-cols-[0.4fr_0.6fr] gap-3 pt-4 text-sm">
+            <figure key={item.src}>
+              <img src={item.src} alt={item.title} loading="lazy" decoding="async" className="w-full border border-[color:var(--color-rule)]" />
+              <figcaption className="grid sm:grid-cols-[0.4fr_0.6fr] gap-3 mt-4 border-t border-[color:var(--color-rule)] pt-4 text-sm">
                 <strong className="text-[color:var(--color-ink)]">{item.title}</strong>
                 <span className="text-[color:var(--color-ink-mute)]">{item.note}</span>
               </figcaption>
@@ -125,13 +105,13 @@ export function Mockups() {
       <section>
         <div className="flex items-baseline justify-between gap-6 mb-8">
           <h2 className="display text-4xl sm:text-5xl">System diagrams</h2>
-          <span className="font-mono text-xs text-[color:var(--color-ink-mute)]">architecture sketches</span>
+          <span className="text-xs text-[color:var(--color-ink-mute)]">Architecture sketches</span>
         </div>
         <div className="grid gap-10">
           {diagrams.map((item) => (
-            <figure key={item.src} className="border border-[color:var(--color-rule)] bg-[#fffaf0] p-3 sm:p-5">
-              <img src={item.src} alt={item.title} className="w-full rounded-sm border border-[color:var(--color-rule)]" />
-              <figcaption className="grid sm:grid-cols-[0.4fr_0.6fr] gap-3 pt-4 text-sm">
+            <figure key={item.src}>
+              <img src={item.src} alt={item.title} loading="lazy" decoding="async" className="w-full border border-[color:var(--color-rule)]" />
+              <figcaption className="grid sm:grid-cols-[0.4fr_0.6fr] gap-3 mt-4 border-t border-[color:var(--color-rule)] pt-4 text-sm">
                 <strong className="text-[color:var(--color-ink)]">{item.title}</strong>
                 <span className="text-[color:var(--color-ink-mute)]">{item.note}</span>
               </figcaption>

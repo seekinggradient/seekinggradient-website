@@ -29,18 +29,23 @@ const audioSrc = fs.existsSync(audioFile) ? `/audio/blog/${post.slug}.mp3` : und
 >
 	<div class="max-w-3xl mx-auto">
 		<article class="prose prose-lg max-w-none">
-			<header class="mb-12 not-prose border-b border-[color:var(--color-rule)] pb-10">
-				<div class="flex flex-wrap items-center gap-3 mb-6 font-mono text-xs text-[color:var(--color-ink-mute)]">
+			<header class="mb-14 not-prose border-b border-[color:var(--color-rule)] pb-10">
+				<a href="/essays" class="arrow-shift mb-10 inline-flex items-center gap-2 text-[11px] font-mono uppercase tracking-[0.18em] text-[color:var(--color-ink-mute)] transition-colors hover:text-[color:var(--color-accent)]">
+					<span class="arrow" aria-hidden="true">←</span> All writing
+				</a>
+				<div class="flex flex-wrap items-center gap-3 mb-7 font-mono text-[11px] text-[color:var(--color-ink-mute)]">
+					<span class="uppercase tracking-[0.18em]">Post</span>
+					<span class="h-px w-6 bg-[color:var(--color-rule)]"></span>
 					<time class="text-[color:var(--color-accent)]">
 						{post.data.pubDate.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }).toUpperCase()}
 					</time>
 					<span class="h-px w-6 bg-[color:var(--color-rule)]"></span>
 					<span>{post.data.author}</span>
 				</div>
-				<h1 class="display text-5xl md:text-6xl mb-6">
+				<h1 class="display text-[clamp(3.2rem,8vw,5.75rem)] leading-[0.94] mb-8">
 					{post.data.title}
 				</h1>
-				<p class="text-xl md:text-2xl text-[color:var(--color-ink-mute)] leading-relaxed">
+				<p class="border-l-2 border-[color:var(--color-accent)] pl-5 text-xl text-[color:var(--color-ink-mute)] leading-[1.55] md:text-2xl">
 					{post.data.description}
 				</p>
 				<AudioPlayer audioSrc={audioSrc} title={post.data.title} />

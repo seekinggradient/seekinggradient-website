@@ -2,7 +2,7 @@ export function About() {
   return (
     <section className="mx-auto max-w-3xl px-5 sm:px-8 py-16 sm:py-24">
       <p className="text-xs uppercase tracking-[0.22em] text-[color:var(--color-ink-mute)] mb-6">
-        Colophon
+        Why this exists
       </p>
       <h1 className="display text-4xl sm:text-6xl leading-[1.02]">
         About this <span className="display-italic">notebook</span>.
@@ -10,17 +10,16 @@ export function About() {
 
       <div className="mt-10 space-y-6 text-[17px] leading-[1.75] text-[color:var(--color-ink-soft)]">
         <p>
-          This is a small public archive of ideas I keep returning to, written down so I can
-          actually look at them. Some are early enough that the right next step is a conversation;
-          others have prototypes attached. None are finished products.
+          This notebook exists to make product thinking inspectable. Each entry names a friction,
+          proposes a mechanism, and records the questions that could change or kill it.
         </p>
         <p>
-          I post under the name <em className="font-serif">Seeking Gradient</em> — the work matters
-          more than the byline. If something on here resonates, I&apos;d love to hear about it.
+          Some entries remain seeds. Others accumulate mockups, sources, technical plans, and
+          prototypes. The status changes when the evidence changes.
         </p>
         <p>
-          The site is intentionally quiet: no analytics, no comment box, no newsletter signup. It
-          is closer to a printed pamphlet than a feed.
+          The work is published as <em className="font-serif">Seeking Gradient</em>. There are no
+          analytics or comments; specific responses are welcome by email.
         </p>
       </div>
 

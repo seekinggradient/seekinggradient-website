@@ -1,0 +1,70 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+
+const posts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const formatDate = (date: Date) =>
+	date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+---
+
+<Layout
+	title="Writing | Seeking Gradient"
+	description="Writing by Seeking Gradient about AI agents, software, infrastructure, and lessons from building."
+	canonicalPath="/essays"
+	ogType="website"
+>
+	<section class="writing-hero pb-12 sm:pb-16">
+		<p class="font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-accent)]">The blog</p>
+		<h1 class="display mt-5 text-6xl sm:text-7xl"><span>Writing</span> from the workbench.</h1>
+		<p class="mt-6 max-w-2xl text-lg leading-8 text-[color:var(--color-ink-mute)]">
+			Notes on AI agents, software, infrastructure, and things I’ve learned by building and debugging them.
+		</p>
+	</section>
+
+	<ol class="archive-list border-t border-[color:var(--color-rule)]">
+		{posts.map((post) => (
+			<li class="border-b border-[color:var(--color-rule)]">
+				<a href={`/blog/${post.slug}`} class="archive-link group grid gap-3 py-7 sm:grid-cols-[9rem_1fr_auto] sm:items-start sm:gap-7 sm:py-8">
+					<time class="text-xs text-[color:var(--color-ink-mute)]">{formatDate(post.data.pubDate)}</time>
+					<div>
+						<h2 class="font-serif text-2xl leading-tight transition-colors group-hover:text-[color:var(--color-accent)] sm:text-[1.8rem]">{post.data.title}</h2>
+						<p class="mt-3 max-w-3xl text-[14px] leading-6 text-[color:var(--color-ink-mute)]">{post.data.description}</p>
+					</div>
+					<span class="transition-transform group-hover:translate-x-1" aria-hidden="true">→</span>
+				</a>
+			</li>
+		))}
+	</ol>
+</Layout>
+
+<style>
+	.writing-hero h1 {
+		max-width: 58rem;
+		line-height: 0.92;
+	}
+
+	.writing-hero h1 span {
+		display: inline-block;
+		padding: 0 0.12em 0.05em;
+		background: var(--color-yellow);
+		line-height: 0.86;
+		transform: rotate(-1.5deg);
+	}
+
+	.archive-link {
+		transition: padding 180ms ease, background-color 180ms ease;
+	}
+
+	.archive-list li:nth-child(4n + 1) .archive-link:hover { background: var(--color-mint); }
+	.archive-list li:nth-child(4n + 2) .archive-link:hover { background: var(--color-lilac); }
+	.archive-list li:nth-child(4n + 3) .archive-link:hover { background: var(--color-yellow); }
+	.archive-list li:nth-child(4n + 4) .archive-link:hover { background: color-mix(in srgb, var(--color-orange), white 48%); }
+
+	.archive-link:hover {
+		padding-left: 1rem;
+		padding-right: 1rem;
+	}
+</style>

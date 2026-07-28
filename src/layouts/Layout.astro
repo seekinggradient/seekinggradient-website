@@ -4,6 +4,7 @@ interface Props {
 	description?: string;
 	canonicalPath?: string;
 	ogType?: 'website' | 'article';
+	fullBleed?: boolean;
 }
 
 const {
@@ -11,6 +12,7 @@ const {
 	description = 'Seeking Gradient explores autonomous agents, infrastructure, and practical lessons from building on the internet.',
 	canonicalPath = '/',
 	ogType = 'website',
+	fullBleed = false,
 } = Astro.props;
 
 const SITE_URL = 'https://seekinggradient.com';
@@ -27,7 +29,7 @@ const canonicalUrl = new URL(canonicalPath, SITE_URL).toString();
 		<title>{title}</title>
 		<meta name="description" content={description} />
 		<link rel="canonical" href={canonicalUrl} />
-		<meta name="theme-color" content="#f6f2ea" />
+		<meta name="theme-color" content="#f8e45c" />
 
 		<meta property="og:type" content={ogType} />
 		<meta property="og:site_name" content="Seeking Gradient" />
@@ -45,17 +47,24 @@ const canonicalUrl = new URL(canonicalPath, SITE_URL).toString();
 
 		<style is:global>
 			:root {
-				--color-paper: #f6f2ea;
-				--color-paper-deep: #ede6d6;
-				--color-ink: #1a1a1a;
-				--color-ink-soft: #3b3a36;
-				--color-ink-mute: #6b6862;
-				--color-rule: #d9d2bf;
-				--color-accent: #b8542c;
-				--color-accent-soft: #e9c9b5;
+				--color-paper: #f7f1e7;
+				--color-paper-deep: #ebe2d5;
+				--color-ink: #17152b;
+				--color-ink-soft: #3f3a54;
+				--color-ink-mute: #716b7e;
+				--color-rule: #cec4b6;
+				--color-accent: #3154d8;
+				--color-accent-soft: #cfd8ff;
+				--color-yellow: #f8e45c;
+				--color-orange: #ff7043;
+				--color-pink: #ef67a7;
+				--color-mint: #8bd8bd;
+				--color-lilac: #d8ccff;
+				--color-night: #17152b;
 				--font-serif: "Fraunces", ui-serif, Georgia, serif;
 				--font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
 				--font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+				--page-gutter: clamp(1.25rem, 4vw, 3.5rem);
 			}
 
 			html {
@@ -72,8 +81,18 @@ const canonicalUrl = new URL(canonicalPath, SITE_URL).toString();
 				font-family: var(--font-sans);
 			}
 
+			body::before {
+				content: "";
+				position: fixed;
+				inset: 0;
+				z-index: -1;
+				pointer-events: none;
+				opacity: 0.035;
+				background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");
+			}
+
 			::selection {
-				background-color: var(--color-accent-soft);
+				background-color: var(--color-yellow);
 				color: var(--color-ink);
 			}
 
@@ -88,7 +107,7 @@ const canonicalUrl = new URL(canonicalPath, SITE_URL).toString();
 			.display {
 				font-family: var(--font-serif);
 				font-weight: 400;
-				letter-spacing: 0;
+				letter-spacing: -0.025em;
 				line-height: 0.95;
 				font-variation-settings: "opsz" 144, "SOFT" 50;
 			}
@@ -116,6 +135,93 @@ const canonicalUrl = new URL(canonicalPath, SITE_URL).toString();
 				background-size: 100% 2px;
 			}
 
+			.eyebrow {
+				font-family: var(--font-mono);
+				font-size: 0.69rem;
+				font-weight: 500;
+				line-height: 1.4;
+				letter-spacing: 0.2em;
+				text-transform: uppercase;
+			}
+
+			.button-primary,
+			.button-secondary {
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				min-height: 3.25rem;
+				padding: 0 1.25rem;
+				font-size: 0.875rem;
+				font-weight: 600;
+				transition: transform 180ms ease, background-color 180ms ease, border-color 180ms ease, color 180ms ease;
+			}
+
+			.button-primary {
+				border: 1px solid var(--color-ink);
+				background: var(--color-ink);
+				color: var(--color-paper);
+			}
+
+			.button-primary:hover {
+				transform: translateY(-2px);
+				border-color: var(--color-accent);
+				background: var(--color-accent);
+			}
+
+			.button-secondary {
+				border: 1px solid var(--color-rule);
+				color: var(--color-ink);
+			}
+
+			.button-secondary:hover {
+				transform: translateY(-2px);
+				border-color: var(--color-ink);
+			}
+
+			.arrow-shift .arrow {
+				display: inline-block;
+				transition: transform 180ms ease;
+			}
+
+			.arrow-shift:hover .arrow {
+				transform: translateX(0.3rem);
+			}
+
+			.brand-mark {
+				box-shadow: 4px 4px 0 var(--color-ink);
+			}
+
+			.nav-email {
+				box-shadow: 3px 3px 0 var(--color-ink);
+			}
+
+			.footer-color {
+				background: var(--color-yellow);
+				color: var(--color-ink);
+			}
+
+			.site-menu summary {
+				list-style: none;
+				cursor: pointer;
+			}
+
+			.site-menu summary::-webkit-details-marker {
+				display: none;
+			}
+
+			.site-menu[open] summary {
+				color: var(--color-accent);
+			}
+
+			@media (prefers-reduced-motion: reduce) {
+				*, *::before, *::after {
+					scroll-behavior: auto !important;
+					animation-duration: 0.01ms !important;
+					transition-duration: 0.01ms !important;
+				}
+
+			}
+
 			pre::-webkit-scrollbar {
 				height: 6px;
 			}
@@ -138,58 +244,64 @@ const canonicalUrl = new URL(canonicalPath, SITE_URL).toString();
 		</style>
 	</head>
 	<body class="overflow-x-hidden leading-normal">
-		<nav class="sticky top-0 z-50 bg-[color:var(--color-paper)]/90 backdrop-blur-md border-b border-[color:var(--color-rule)]">
-			<div class="max-w-6xl mx-auto px-5 sm:px-8 h-20 flex justify-between items-center gap-8">
-				<a href="/" class="group flex items-center gap-3">
-					<div class="w-10 h-10 rounded-xl bg-[color:var(--color-ink)] flex items-center justify-center text-white shadow-sm transition-transform group-hover:-translate-y-0.5">
-						<span class="font-serif italic text-[19px] leading-none">sg</span>
+		<nav class="sticky top-0 z-50 bg-[color:var(--color-paper)]/88 backdrop-blur-xl border-b border-[color:var(--color-ink)]/15">
+			<div class="max-w-7xl mx-auto px-5 sm:px-8 h-[72px] flex justify-between items-center gap-5">
+				<a href="/" class="group flex items-center gap-2.5" aria-label="Seeking Gradient home">
+					<div class="brand-mark w-9 h-9 rounded-full bg-[color:var(--color-orange)] flex items-center justify-center text-[color:var(--color-ink)] transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:rotate-[-7deg]">
+						<span class="font-serif italic text-[17px] leading-none">sg</span>
 					</div>
-					<span class="display text-2xl sm:text-3xl group-hover:text-[color:var(--color-accent)] transition-colors">
+					<span class="display text-[1.35rem] sm:text-[1.65rem] group-hover:text-[color:var(--color-accent)] transition-colors">
 						Seeking <span class="display-italic">Gradient</span>
 					</span>
 				</a>
-				<div class="hidden md:flex items-center gap-6 text-sm text-[color:var(--color-ink-soft)]">
-					<a href="/#blog" class="link-underline pb-0.5 hover:text-[color:var(--color-ink)]">Essays</a>
-					<a href="/ideas" class="link-underline pb-0.5 hover:text-[color:var(--color-ink)]">Ideas</a>
-					<a href="/tracking" class="link-underline pb-0.5 hover:text-[color:var(--color-ink)]">Tracking</a>
-					<a href="mailto:seekinggradient@gmail.com" class="link-underline pb-0.5 text-[color:var(--color-accent)]">Contact</a>
+				<div class="hidden md:flex items-center gap-7 text-[13px] font-medium text-[color:var(--color-ink-soft)]">
+					<a href="/essays" class="link-underline pb-0.5 hover:text-[color:var(--color-ink)]">Writing</a>
+					<a href="/ideas" class="link-underline pb-0.5 hover:text-[color:var(--color-ink)]">Projects</a>
+					<a href="/#about" class="link-underline pb-0.5 hover:text-[color:var(--color-ink)]">About</a>
+					<a href="mailto:seekinggradient@gmail.com" class="nav-email px-3 py-1.5 bg-[color:var(--color-yellow)] text-[color:var(--color-ink)] transition-transform hover:-rotate-2">Email ↗</a>
 				</div>
+				<details class="site-menu md:hidden relative">
+					<summary class="eyebrow border border-[color:var(--color-rule)] px-3 py-2">Menu</summary>
+					<div class="absolute right-0 top-[calc(100%+0.75rem)] w-48 border border-[color:var(--color-rule)] bg-[color:var(--color-paper)] p-2 shadow-[0_20px_50px_rgb(21_23_22/0.12)]">
+						<a href="/essays" class="block px-3 py-2.5 text-sm hover:bg-[color:var(--color-paper-deep)]">Writing</a>
+						<a href="/ideas" class="block px-3 py-2.5 text-sm hover:bg-[color:var(--color-paper-deep)]">Projects</a>
+						<a href="/#about" class="block px-3 py-2.5 text-sm hover:bg-[color:var(--color-paper-deep)]">About</a>
+						<a href="mailto:seekinggradient@gmail.com" class="block px-3 py-2.5 text-sm text-[color:var(--color-accent)] hover:bg-[color:var(--color-paper-deep)]">Email</a>
+					</div>
+				</details>
 			</div>
 		</nav>
 
-		<main class="max-w-6xl mx-auto px-5 sm:px-8 py-16 sm:py-20">
+		<main class={fullBleed ? '' : 'max-w-6xl mx-auto px-5 sm:px-8 py-14 sm:py-20'}>
 			<slot />
 		</main>
 
-		<footer class="border-t border-[color:var(--color-rule)] mt-20 py-14">
-			<div class="max-w-6xl mx-auto px-5 sm:px-8">
-				<div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+		<footer class="footer-color mt-20 py-10 sm:py-12">
+			<div class="max-w-7xl mx-auto px-5 sm:px-8">
+				<div class="grid grid-cols-1 md:grid-cols-[1.4fr_0.6fr] gap-10 items-end">
 					<div>
 						<h2 class="display text-3xl mb-4">Seeking <span class="display-italic">Gradient</span></h2>
-						<p class="text-[color:var(--color-ink-mute)] max-w-sm leading-relaxed">
-							Exploring the intersection of autonomous agents, infrastructure, and the quiet gradients of the digital age.
+						<p class="max-w-lg leading-relaxed opacity-75">
+							A personal site for writing, projects, and things I'm learning by building.
 						</p>
 					</div>
-					<div class="flex md:justify-end gap-12">
+					<div class="flex md:justify-end gap-14">
 						<div>
-							<h3 class="font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink-mute)] mb-6">Links</h3>
-							<ul class="space-y-4 text-sm text-[color:var(--color-ink-soft)]">
-								<li><a href="/" class="link-underline pb-0.5 hover:text-[color:var(--color-accent)]">Home</a></li>
-								<li><a href="/#blog" class="link-underline pb-0.5 hover:text-[color:var(--color-accent)]">Essays</a></li>
-								<li><a href="/ideas" class="link-underline pb-0.5 hover:text-[color:var(--color-accent)]">Ideas</a></li>
-								<li><a href="mailto:seekinggradient@gmail.com" class="link-underline pb-0.5 hover:text-[color:var(--color-accent)]">Email</a></li>
+							<ul class="flex flex-wrap gap-x-6 gap-y-3 text-sm md:justify-end">
+								<li><a href="/essays" class="link-underline pb-0.5">Writing</a></li>
+								<li><a href="/ideas" class="link-underline pb-0.5">Projects</a></li>
+								<li><a href="/tracking" class="link-underline pb-0.5">Tracking</a></li>
+								<li><a href="mailto:seekinggradient@gmail.com" class="link-underline pb-0.5">Email</a></li>
 							</ul>
 						</div>
 					</div>
 				</div>
-				<div class="mt-14 pt-8 border-t border-[color:var(--color-rule)] flex flex-col md:flex-row justify-between gap-4 font-mono text-xs text-[color:var(--color-ink-mute)]">
-					<span>&copy; 2026 Seeking Gradient. Built with Astro & OpenClaw.</span>
-					<div class="flex gap-6">
-						<span>Privacy-First</span>
-						<span>No Tracking</span>
-					</div>
+				<div class="mt-10 pt-6 border-t border-[color:var(--color-ink)]/20 flex flex-col md:flex-row justify-between gap-4 font-mono text-[11px] opacity-65">
+					<span>&copy; 2026 Seeking Gradient.</span>
+					<span>No analytics.</span>
 				</div>
 			</div>
 		</footer>
+
 	</body>
 </html>
