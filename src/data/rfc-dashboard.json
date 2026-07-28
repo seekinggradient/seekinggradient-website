@@ -1,0 +1,286 @@
+{
+  "meta": {
+    "generated": "2026-07-28 08:54Z",
+    "search_root": "/Users/akshay/Development",
+    "discovery": "afs status --json (afs)",
+    "discovery_complete": true,
+    "discovery_incomplete_roots": [],
+    "instances_scanned": 39,
+    "instances_with_rfcs": 2
+  },
+  "rfcs": [
+    {
+      "name": "rfc-artifact-sharing",
+      "kb": "myexpert-eve-development",
+      "on_hub": true,
+      "url": "https://hub.agentsfs.ai/seekinggradient/myexpert-eve-development/blob/rfcs/rfc-artifact-sharing.md",
+      "path": "rfcs/rfc-artifact-sharing.md",
+      "rfc_status": "accepted",
+      "rfc_scope": "project",
+      "rfc_decided": "2026-07-23",
+      "legacy_status": "final",
+      "owner_approved": false,
+      "approvers": [
+        {
+          "kind": "agent",
+          "id": "session 380b4416-c5c2-49c2-a13e-fd714b94576b",
+          "model": "claude-fable-5",
+          "date": "2026-07-23"
+        }
+      ],
+      "description": "RFC for AgentsFS Hub — capability share links, comments, and pretty HTML export for individual documents, with the honest files-vs-DB argument and a contract-vs-Hub split."
+    },
+    {
+      "name": "rfc-composio-connectors",
+      "kb": "myexpert-eve-development",
+      "on_hub": true,
+      "url": "https://hub.agentsfs.ai/seekinggradient/myexpert-eve-development/blob/rfcs/rfc-composio-connectors.md",
+      "path": "rfcs/rfc-composio-connectors.md",
+      "rfc_status": "accepted",
+      "rfc_scope": "project",
+      "rfc_decided": "2026-07-23",
+      "legacy_status": "final",
+      "owner_approved": false,
+      "approvers": [
+        {
+          "kind": "agent",
+          "id": "session 380b4416-c5c2-49c2-a13e-fd714b94576b",
+          "model": "claude-fable-5",
+          "date": "2026-07-23"
+        }
+      ],
+      "description": "Should myexpert.ai adopt Composio as the connector/auth layer for expert agents, or build on Eve's native connections primitive — researched July 2026"
+    },
+    {
+      "name": "rfc-expert-portfolio",
+      "kb": "myexpert-eve-development",
+      "on_hub": true,
+      "url": "https://hub.agentsfs.ai/seekinggradient/myexpert-eve-development/blob/rfcs/rfc-expert-portfolio.md",
+      "path": "rfcs/rfc-expert-portfolio.md",
+      "rfc_status": "accepted",
+      "rfc_scope": "project",
+      "rfc_decided": "2026-07-23",
+      "legacy_status": "final",
+      "owner_approved": false,
+      "approvers": [
+        {
+          "kind": "agent",
+          "id": "session 380b4416-c5c2-49c2-a13e-fd714b94576b",
+          "model": "claude-fable-5",
+          "date": "2026-07-23"
+        }
+      ],
+      "description": "The expert portfolio for myexpert.ai — which experts to build, their utility, their proactivity design, a worked health-expert deep-dive, and the shared platform capabilities the portfolio forces."
+    },
+    {
+      "name": "rfc-expert-ux",
+      "kb": "myexpert-eve-development",
+      "on_hub": true,
+      "url": "https://hub.agentsfs.ai/seekinggradient/myexpert-eve-development/blob/rfcs/rfc-expert-ux.md",
+      "path": "rfcs/rfc-expert-ux.md",
+      "rfc_status": "accepted",
+      "rfc_scope": "project",
+      "rfc_decided": "2026-07-23",
+      "legacy_status": "final",
+      "owner_approved": false,
+      "approvers": [
+        {
+          "kind": "agent",
+          "id": "session 380b4416-c5c2-49c2-a13e-fd714b94576b",
+          "model": "claude-fable-5",
+          "date": "2026-07-23"
+        }
+      ],
+      "description": "The per-expert UX for myexpert.ai — what a user sees when they open their expert, grounded in the running Boswell instance, with wireframes, image-gen prompts, and a homepage mock."
+    },
+    {
+      "name": "rfc-imessage",
+      "kb": "myexpert-eve-development",
+      "on_hub": true,
+      "url": "https://hub.agentsfs.ai/seekinggradient/myexpert-eve-development/blob/rfcs/rfc-imessage.md",
+      "path": "rfcs/rfc-imessage.md",
+      "rfc_status": "accepted",
+      "rfc_scope": "project",
+      "rfc_decided": "2026-07-23",
+      "legacy_status": "final",
+      "owner_approved": false,
+      "approvers": [
+        {
+          "kind": "agent",
+          "id": "session 380b4416-c5c2-49c2-a13e-fd714b94576b",
+          "model": "claude-fable-5",
+          "date": "2026-07-23"
+        }
+      ],
+      "description": "Evaluate paths to add iMessage as a proactive-digest + two-way-chat delivery channel for myexpert.ai experts, alongside the existing Telegram webhook channel"
+    },
+    {
+      "name": "rfc-phone-calling",
+      "kb": "myexpert-eve-development",
+      "on_hub": true,
+      "url": "https://hub.agentsfs.ai/seekinggradient/myexpert-eve-development/blob/rfcs/rfc-phone-calling.md",
+      "path": "rfcs/rfc-phone-calling.md",
+      "rfc_status": "accepted",
+      "rfc_scope": "project",
+      "rfc_decided": "2026-07-23",
+      "legacy_status": "final",
+      "owner_approved": false,
+      "approvers": [
+        {
+          "kind": "agent",
+          "id": "session 380b4416-c5c2-49c2-a13e-fd714b94576b",
+          "model": "claude-fable-5",
+          "date": "2026-07-23"
+        }
+      ],
+      "description": "Phone calling via Twilio (or alternatives) for myexpert.ai — talk to your expert on an actual phone call, inbound and proactive outbound."
+    },
+    {
+      "name": "rfc-source-problem",
+      "kb": "myexpert-eve-development",
+      "on_hub": true,
+      "url": "https://hub.agentsfs.ai/seekinggradient/myexpert-eve-development/blob/rfcs/rfc-source-problem.md",
+      "path": "rfcs/rfc-source-problem.md",
+      "rfc_status": "accepted",
+      "rfc_scope": "project",
+      "rfc_decided": "2026-07-23",
+      "legacy_status": "final",
+      "owner_approved": false,
+      "approvers": [
+        {
+          "kind": "agent",
+          "id": "session 380b4416-c5c2-49c2-a13e-fd714b94576b",
+          "model": "claude-fable-5",
+          "date": "2026-07-23"
+        }
+      ],
+      "description": "The source problem — discovery, access, evaluation, and resilience of expert intake, treated as the product moat rather than plumbing. Decomposes intake into four loops, designs the access-recipe playbook as a factory asset, and sequences what ships this week vs. factory-side vs. the autonomous-wiring flow."
+    },
+    {
+      "name": "rfc-whitelabel-layers",
+      "kb": "myexpert-eve-development",
+      "on_hub": true,
+      "url": "https://hub.agentsfs.ai/seekinggradient/myexpert-eve-development/blob/rfcs/rfc-whitelabel-layers.md",
+      "path": "rfcs/rfc-whitelabel-layers.md",
+      "rfc_status": "accepted",
+      "rfc_scope": "project",
+      "rfc_decided": "2026-07-23",
+      "legacy_status": "final",
+      "owner_approved": false,
+      "approvers": [
+        {
+          "kind": "agent",
+          "id": "session 380b4416-c5c2-49c2-a13e-fd714b94576b",
+          "model": "claude-fable-5",
+          "date": "2026-07-23"
+        }
+      ],
+      "description": "Strategy for making AgentsFS / Hub / Eve integration so clean that platform improvements propagate into myexpert.ai automatically — the fork-to-library seam, Hub white-labeling, a propagation test against three real improvements, a low-disruption sequence, and why the end-state diff is the expert-factory's spec schema."
+    },
+    {
+      "name": "rfc-hq-kb",
+      "kb": "seekinggradient-hq",
+      "on_hub": true,
+      "url": "https://hub.agentsfs.ai/seekinggradient/seekinggradient-hq/blob/rfcs/rfc-hq-kb.md",
+      "path": "rfcs/rfc-hq-kb.md",
+      "rfc_status": "accepted",
+      "rfc_scope": "portfolio",
+      "rfc_decided": "2026-07-24",
+      "legacy_status": "final",
+      "owner_approved": false,
+      "approvers": [
+        {
+          "kind": "agent",
+          "id": "session 380b4416-c5c2-49c2-a13e-fd714b94576b",
+          "model": "claude-fable-5",
+          "date": "2026-07-24"
+        }
+      ],
+      "description": "The HQ knowledge base as built — seekinggradient-hq, the thin router that holds whole-system knowledge over federated per-project KBs. Records the design-as-shipped, the router discipline, the HQ-vs-project membership test, the \"part of\" back-pointer convention, and why it is not a mega-KB. Companion to rfc-portfolio-architecture."
+    },
+    {
+      "name": "rfc-madeweb",
+      "kb": "seekinggradient-hq",
+      "on_hub": true,
+      "url": "https://hub.agentsfs.ai/seekinggradient/seekinggradient-hq/blob/rfcs/rfc-madeweb.md",
+      "path": "rfcs/rfc-madeweb.md",
+      "rfc_status": "accepted",
+      "rfc_scope": "portfolio",
+      "rfc_decided": "2026-07-24",
+      "legacy_status": "final",
+      "owner_approved": false,
+      "approvers": [
+        {
+          "kind": "agent",
+          "id": "session 380b4416-c5c2-49c2-a13e-fd714b94576b",
+          "model": "claude-fable-5",
+          "date": "2026-07-24"
+        }
+      ],
+      "description": "What madeweb actually is (a Cloudflare-native agent-publishing host for single-page interactive HTML), its live-but-dormant deployment and bug state, and the honest integrate-vs-mine-and-freeze decision for its role as the portfolio's INTERACTIVE-artifact organ. Both branches designed; recommends mine-and-freeze — lift the interactive-serving core + agent contract into the Hub, retire the standalone SaaS — with the named trigger that would flip it to a temporary headless revival."
+    },
+    {
+      "name": "rfc-podcast-primitive",
+      "kb": "seekinggradient-hq",
+      "on_hub": true,
+      "url": "https://hub.agentsfs.ai/seekinggradient/seekinggradient-hq/blob/rfcs/rfc-podcast-primitive.md",
+      "path": "rfcs/rfc-podcast-primitive.md",
+      "rfc_status": "accepted",
+      "rfc_scope": "portfolio",
+      "rfc_decided": "2026-07-24",
+      "legacy_status": "final",
+      "owner_approved": false,
+      "approvers": [
+        {
+          "kind": "agent",
+          "id": "session 380b4416-c5c2-49c2-a13e-fd714b94576b",
+          "model": "claude-fable-5",
+          "date": "2026-07-24"
+        }
+      ],
+      "description": "The podcast primitive — a composable renderer that turns an expert's agentsfs knowledge into one high-quality episode; extraction plan, contract, and cost."
+    },
+    {
+      "name": "rfc-portfolio-architecture",
+      "kb": "seekinggradient-hq",
+      "on_hub": true,
+      "url": "https://hub.agentsfs.ai/seekinggradient/seekinggradient-hq/blob/rfcs/rfc-portfolio-architecture.md",
+      "path": "rfcs/rfc-portfolio-architecture.md",
+      "rfc_status": "accepted",
+      "rfc_scope": "portfolio",
+      "rfc_decided": "2026-07-24",
+      "legacy_status": "final",
+      "owner_approved": false,
+      "approvers": [
+        {
+          "kind": "agent",
+          "id": "session 380b4416-c5c2-49c2-a13e-fd714b94576b",
+          "model": "claude-fable-5",
+          "date": "2026-07-24"
+        }
+      ],
+      "description": "The capstone architecture for the whole SeekingGradient portfolio — one organism built in installments, its organs classified into seven composition forms with membership rules, API surfaces, and maintenance tiers; the convergence thesis (brain × surfaces × delivery) with K Street Health Brief as the worked example; the federated-KB-with-HQ knowledge architecture; an evidence-gated extraction sequence that never wobbles the live product; and a light-touch monetization posture. Deepens seekinggradient-hq/portfolio.md into the composition architecture."
+    },
+    {
+      "name": "rfc-slides-primitive",
+      "kb": "seekinggradient-hq",
+      "on_hub": true,
+      "url": "https://hub.agentsfs.ai/seekinggradient/seekinggradient-hq/blob/rfcs/rfc-slides-primitive.md",
+      "path": "rfcs/rfc-slides-primitive.md",
+      "rfc_status": "accepted",
+      "rfc_scope": "portfolio",
+      "rfc_decided": "2026-07-24",
+      "legacy_status": "final",
+      "owner_approved": false,
+      "approvers": [
+        {
+          "kind": "agent",
+          "id": "session 380b4416-c5c2-49c2-a13e-fd714b94576b",
+          "model": "claude-fable-5",
+          "date": "2026-07-24"
+        }
+      ],
+      "description": "A composable slides renderer for the SeekingGradient portfolio — a design-constrained agent that turns an approved content packet + a design profile into an excellent open-slide deck (embeddable SPA + PPTX + PNGs), reliably at the Kauai bar."
+    }
+  ]
+}
