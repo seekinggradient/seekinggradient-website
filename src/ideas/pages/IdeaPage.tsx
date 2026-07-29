@@ -9,6 +9,7 @@ import { AIWeeklyMagazineDeepDive } from '../components/AIWeeklyMagazineDeepDive
 import { AmbientKnowledgeDeepDive } from '../components/AmbientKnowledgeDeepDive';
 import { PersonalKindlePublisherDeepDive } from '../components/PersonalKindlePublisherDeepDive';
 import { AgentFantasyFootballDeepDive } from '../components/AgentFantasyFootballDeepDive';
+import { MarkdownToDeepDive } from '../components/MarkdownToDeepDive';
 import { NotFound } from './NotFound';
 
 export function IdeaPage() {
@@ -24,7 +25,8 @@ export function IdeaPage() {
   const leadVisual =
     idea.slug === 'physical-weekly-ai-magazine' ||
     idea.slug === 'personal-kindle-publishing-pipeline' ||
-    idea.slug === 'agent-fantasy-football-competition'
+    idea.slug === 'agent-fantasy-football-competition' ||
+    idea.slug === 'markdown-to'
       ? visualAssets[0]
       : undefined;
   const galleryAssets = leadVisual ? visualAssets.slice(1) : visualAssets;
@@ -138,6 +140,7 @@ export function IdeaPage() {
         {idea.slug === 'ambient-knowledge-agent-for-notes' && <AmbientKnowledgeDeepDive />}
         {idea.slug === 'personal-kindle-publishing-pipeline' && <PersonalKindlePublisherDeepDive />}
         {idea.slug === 'agent-fantasy-football-competition' && <AgentFantasyFootballDeepDive />}
+        {idea.slug === 'markdown-to' && <MarkdownToDeepDive />}
         {idea.slug === 'prediction-market-mispricing-engine' && <PredictionMarketDeepDive />}
         {idea.slug === 'physical-weekly-ai-magazine' && <AIWeeklyMagazineDeepDive />}
         {idea.slug === 'short-term-rental-demand-radar' && (
@@ -420,6 +423,58 @@ Text (verbatim): "LIVE DRAFT", "TRADE ROOM", "THE TABLE", "ON THE CLOCK", "PICK"
 Constraints: No real personal names, player names, team names, NFL or fantasy-platform logos, sponsor logos, betting odds, money, crypto, gambling cues, people, hands, robots, trophies, or watermark. Use only generic player IDs and position abbreviations. Keep all interface language neutral and research-oriented.
 Avoid: generic dark-mode analytics dashboard, purple gradients, excessive rounded cards, mobile phone frames, glassmorphism, sci-fi holograms, AI sparkle motifs, tiny unreadable paragraphs, fake social-media branding, visual clutter.`;
 
+const markdownToKanbanPrompt = `Use case: ui-mockup
+Asset type: Seeking Gradient Ideas notebook lead product visual, landscape 16:9
+Primary request: Create a polished, high-fidelity product screenshot for “MARKDOWN TO” showing one canonical Markdown Kanban file operating as a live, editable Kanban app whose complete state can be downloaded back as Markdown.
+Scene/backdrop: Warm off-white editorial software canvas with subtle paper grain, thin deep-violet rules, cobalt and orange accents. No physical room and no device frames.
+Subject: One coherent web app, not a collage. A narrow source inspector on the left shows a readable file named “launch.kanban.md” with frontmatter and three Markdown headings: Backlog, In progress, Done; below them are task-list lines with stable task IDs. The large workspace on the right is a beautiful live three-column Kanban board with cards matching those tasks. One task is visibly mid-drag between Backlog and In progress, with a subtle source-diff indicator explaining that the Markdown state will update. The top command bar has clear actions for source, validation, history, and downloading the current portable Markdown file.
+Style/medium: Crisp, realistic responsive web product UI; editorial developer tool; live app backed by a file; practical and premium. Prefer dividers and spatial hierarchy over rounded card chrome.
+Composition/framing: Wide 16:9 app screenshot; source inspector about 30 percent; board about 70 percent; no browser chrome. The round-trip relationship must be unmistakable.
+Lighting/mood: Bright, rigorous, tactile, trustworthy, empowering; software ownership rather than cloud lock-in.
+Color palette: warm paper #f7f1e7, deep violet ink #17152b, cobalt #3154d8, orange #ff7043, yellow #f8e45c, mint #8bd8bd, lilac #d8ccff.
+Text (verbatim): “MARKDOWN TO”, “launch.kanban.md”, “Backlog”, “In progress”, “Done”, “Define profile schema”, “Build drag-to-source patch”, “Publish conformance tests”, “VALID · KANBAN 0.1”, “VIEW SOURCE”, “HISTORY”, “DOWNLOAD .MD”, “STATE → MARKDOWN”.
+Constraints: Use only the exact visible labels listed above; any other source metadata may use simple symbols or abstract code lines. No real person names, real company logos, trademarks, URLs, prices, testimonials, people, hands, robots, AI sparkle motifs, watermark, browser frame, or device mockup. Make the board genuinely usable-looking and the Markdown file readable enough to communicate the format.
+Avoid: multi-output converter collage, purple gradients, generic dark dashboard, glassmorphism, floating holograms, excessive rounded cards, distorted labels, visual clutter.`;
+
+const markdownToGalleryPrompt = `Use case: ui-mockup
+Asset type: Seeking Gradient Ideas notebook visual brainstorming board, landscape 16:9
+Primary request: Create a visually exciting but disciplined gallery for “MARKDOWN TO” that shows a surprising universe of separate, canonical Markdown-backed live app formats. Each preview is its own file and its own app—not one file converted into all views.
+Scene/backdrop: Warm off-white editorial canvas with subtle paper grain, deep-violet ink, thin dividers, and restrained colorful accents. No physical room and no device frames.
+Subject: A curated gallery of twelve distinct mini live-app previews, organized like an editorial specimen sheet with varied scale rather than a generic equal-card grid. Formats: personal CRM with relationship rows; travel itinerary with route map; household budget with category bars; recipe in hands-free cook mode; study flashcards; interactive survey/form; tournament bracket; habit tracker; family tree; inventory/catalog; incident timeline; and choose-your-path story map. Each preview should look functional and clearly different. Add a small file tab to a few examples to imply separate portable .md sources.
+Style/medium: High-fidelity responsive web UI specimen board, editorial software atlas, imaginative but credible. Crisp typography and information design. Prefer rules, strips, charts, and diagrams over bubbly cards.
+Composition/framing: Wide 16:9 board with one strong title zone and twelve app specimens in a rhythmic asymmetric layout. The gallery should reward inspection while remaining legible. No browser chrome.
+Lighting/mood: Inventive, expansive, playful, plausible; the feeling that plain text could become a whole portable app ecosystem.
+Color palette: warm paper #f7f1e7, deep violet ink #17152b, cobalt #3154d8, orange #ff7043, yellow #f8e45c, mint #8bd8bd, lilac #d8ccff, restrained pink #ef67a7.
+Text (verbatim): “A FORMAT FOR EVERY LITTLE APP”, “CRM”, “TRIP”, “BUDGET”, “COOK MODE”, “FLASHCARDS”, “FORM”, “BRACKET”, “HABITS”, “FAMILY TREE”, “INVENTORY”, “INCIDENT”, “STORY MAP”, “.md”.
+Constraints: Use only the exact listed visible labels; all other copy should be abstract lines, symbols, numbers, or non-readable microtext. No real person names, real addresses, real company logos, trademarks, prices, testimonials, people, hands, robots, watermarks, browser chrome, or phone frames. Every specimen is backed by its own implied Markdown file; do not show arrows implying one file converts to all twelve.
+Avoid: one-source-to-many diagram, purple gradients, generic dashboard card wall, glassmorphism, sci-fi holograms, AI sparkles, distorted labels, repetitive layouts, visual clutter.`;
+
+const markdownToAudioPrompt = `Use case: ui-mockup
+Asset type: Seeking Gradient Ideas notebook paid Markdown-to-audio product screenshot, landscape 16:9
+Primary request: Create a polished high-fidelity TTS production studio for “MARKDOWN TO AUDIO”, where a customer uploads a specially formatted Markdown manuscript, previews a premium voice, pays for generation, and receives chaptered audio while retaining the portable Markdown source.
+Scene/backdrop: Warm off-white editorial software canvas with subtle paper grain, thin deep-violet rules, and restrained cobalt, orange, mint, and yellow accents. No physical room or device frames.
+Subject: One coherent desktop web app. Left: manuscript outline from “field-notes.audio.md” with four chapters, pronunciation notes, and sections that can be excluded from narration. Center: a large chapter script editor with sentence-level timing markers and one highlighted pronunciation directive. Right: a premium voice audition panel with a waveform, voice choices represented abstractly, pace and expressiveness controls, and an estimated duration/cost summary. Bottom: a production queue showing chapter-level progress, regenerate-section control, and final export formats MP3, M4B, and private podcast feed. Make payment feel like a normal transparent utility, not a subscription ad.
+Style/medium: Crisp realistic web product UI screenshot; editorial audio workstation; approachable professional tool. Prefer dividers and careful hierarchy over rounded SaaS cards.
+Composition/framing: Wide 16:9 single-app screenshot; manuscript rail 22 percent, script workspace 46 percent, voice/estimate rail 32 percent; production strip across bottom. No browser chrome.
+Lighting/mood: Calm, premium, trustworthy, creator-focused; high-quality narration as a practical paid conversion service.
+Color palette: warm paper #f7f1e7, deep violet ink #17152b, cobalt #3154d8, orange #ff7043, yellow #f8e45c, mint #8bd8bd, lilac #d8ccff.
+Text (verbatim): “MARKDOWN TO AUDIO”, “field-notes.audio.md”, “MANUSCRIPT”, “VOICE”, “PRONUNCIATION”, “PREVIEW”, “PACE”, “EXPRESSIVENESS”, “ESTIMATE”, “DURATION”, “GENERATE AUDIO”, “PRODUCTION”, “REGENERATE SECTION”, “MP3”, “M4B”, “PRIVATE PODCAST”, “DOWNLOAD SOURCE .MD”.
+Constraints: Use only the exact visible labels listed above; chapter names and body text should be abstract lines or non-readable microtext. No real person or voice names, real AI/model/company logos, URLs, exact prices, testimonials, people, hands, robots, watermark, browser frame, microphone photo, or music-app branding. Make the paid estimate understandable without inventing a currency amount.
+Avoid: generic music player, podcast cover art collage, purple gradients, dark audio workstation, neon waveforms, excessive rounded cards, glassmorphism, AI sparkles, distorted labels, visual clutter.`;
+
+const markdownToAgentToolingPrompt = `Use case: ui-mockup
+Asset type: Seeking Gradient Ideas notebook agent-tooling product screenshot, landscape 16:9
+Primary request: Create a polished documentation-and-developer-tool board for “MARKDOWN TO”, showing how AI agents discover an application format, author one conforming file, validate it, and open or publish its live app through CLI, MCP, and harness skills.
+Scene/backdrop: Warm off-white editorial canvas, thin deep-violet rules, restrained cobalt, orange, mint, and yellow accents, subtle paper texture. No physical scene and no device frames.
+Subject: A single coherent developer portal/workbench. Left column: documentation navigation headed “SPEC 0.1” with sections Core, Formats, Live Renderers, Round-trip, Conformance, Security. Center: a clean syntax example in an editor for “launch.kanban.md” with YAML frontmatter naming kanban@0.1 and Markdown headings Backlog, In progress, Done. Right: a terminal pane with validate and open commands plus a compact MCP tool inspector. Along the bottom, show small installation strips for CLI, MCP, and Skills, connected to one “CORE COMPILER” that emits “TYPED JSON IR” and then “LIVE APP”.
+Style/medium: High-fidelity developer documentation and tool UI screenshot; editorial RFC design; sharp monospaced code; premium, credible open standard. Cardless regions divided by rules where possible.
+Composition/framing: Wide 16:9 board with documentation, one canonical source file, terminal/MCP, and shared architecture all readable at a glance; strong hierarchy; no browser chrome.
+Lighting/mood: Rigorous, agent-native, open, calm, trustworthy; something a developer could actually build from.
+Color palette: warm paper #f7f1e7, deep violet ink #17152b, cobalt #3154d8, orange #ff7043, yellow #f8e45c, mint #8bd8bd, lilac #d8ccff.
+Text (verbatim): “MARKDOWN TO”, “SPEC 0.1”, “Core”, “Formats”, “Live Renderers”, “Round-trip”, “Conformance”, “Security”, “launch.kanban.md”, “kanban@0.1”, “Backlog”, “In progress”, “Done”, “mdto validate launch.kanban.md”, “VALID”, “mdto open launch.kanban.md”, “MCP TOOLS”, “inspect”, “validate”, “open”, “patch”, “publish”, “CLI”, “MCP”, “SKILLS”, “CORE COMPILER”, “TYPED JSON IR”, “LIVE APP”.
+Constraints: Use only these listed visible labels; all other body copy should be abstract code lines or non-readable microtext. No real person names, company or harness logos, URLs, prices, testimonials, people, hands, robots, watermark, browser chrome, or marketing badges. Keep the terminal syntax legible and correct. Show one file opening one live app, never one file targeting many outputs. Avoid excessive rounded cards.
+Avoid: one-source-to-many converter diagram, purple gradients, generic dark-mode dashboard, neon cyberpunk, glassmorphism, distorted text, AI sparkles, floating holograms, code waterfall, visual clutter.`;
+
 const visualsBySlug: Record<string, VisualAsset[]> = {
   'icloud-album-printer': [
     {
@@ -628,6 +683,40 @@ const visualsBySlug: Record<string, VisualAsset[]> = {
         'The three public surfaces that make the system watchable and auditable: a live draft, a structured trade room, and a leaderboard/forum with decision evidence.',
       alt: 'Three-screen product board for an agent fantasy football research league showing a live draft, trade negotiation, and public standings with traces.',
       prompt: agentFantasyProductPrompt,
+    },
+  ],
+  'markdown-to': [
+    {
+      src: '/mockups/specific/markdown-to-kanban-app.png',
+      title: 'A live app with a file underneath',
+      caption:
+        'The reference proof: a canonical Kanban file becomes a draggable board, and every interaction remains a visible, downloadable Markdown state change.',
+      alt: 'Markdown To Kanban app with Markdown source on the left, a live draggable board on the right, and controls for history and downloading the current Markdown file.',
+      prompt: markdownToKanbanPrompt,
+    },
+    {
+      src: '/mockups/specific/markdown-to-format-gallery.png',
+      title: 'A format for every little app',
+      caption:
+        'Twelve less-obvious directions: CRM, trip, budget, cook mode, flashcards, form, bracket, habits, family tree, inventory, incident timeline, and branching story map.',
+      alt: 'Editorial gallery of twelve distinct Markdown-backed app formats including a CRM, trip map, budget, recipe mode, flashcards, form, bracket, habit tracker, family tree, inventory, incident timeline, and story map.',
+      prompt: markdownToGalleryPrompt,
+    },
+    {
+      src: '/mockups/specific/markdown-to-audio-studio.png',
+      title: 'Paid high-quality narration',
+      caption:
+        'A manuscript-aware TTS studio with chapter structure, pronunciation direction, voice preview, a transparent estimate, section regeneration, and chaptered exports.',
+      alt: 'Markdown To Audio production studio with manuscript outline, script timings, pronunciation control, voice audition, generation estimate, chapter progress, and MP3, M4B, and private podcast exports.',
+      prompt: markdownToAudioPrompt,
+    },
+    {
+      src: '/mockups/specific/markdown-to-agent-tooling-v2.png',
+      title: 'The machine-readable front door',
+      caption:
+        'Versioned formats, validation, CLI, MCP tools, and harness skills converge on one compiler, typed JSON IR, and the matching live app.',
+      alt: 'Markdown To developer portal showing format documentation, a canonical Kanban Markdown file, CLI validation and opening, MCP tools, typed JSON IR, and the matching live app.',
+      prompt: markdownToAgentToolingPrompt,
     },
   ],
 };

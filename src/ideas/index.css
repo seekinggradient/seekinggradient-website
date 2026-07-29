@@ -170,6 +170,40 @@ body {
   to { transform: translate(2rem, 1.25rem); }
 }
 
+.markdown-to-flow {
+  overflow: hidden;
+}
+
+.markdown-to-pulse {
+  animation: markdown-to-pulse 2.8s ease-in-out infinite;
+}
+
+.markdown-to-row,
+.markdown-to-reveal {
+  transition:
+    background-color 180ms ease,
+    transform 180ms ease;
+}
+
+.markdown-to-row:hover {
+  background-color: color-mix(in srgb, var(--color-mint), white 72%);
+}
+
+.markdown-to-reveal:hover {
+  transform: translateY(-3px);
+}
+
+@keyframes markdown-to-pulse {
+  0%, 100% {
+    opacity: 0.55;
+    text-shadow: none;
+  }
+  50% {
+    opacity: 1;
+    text-shadow: 0 0 18px color-mix(in srgb, var(--color-mint), transparent 40%);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;

@@ -857,6 +857,143 @@ export const ideas: Idea[] = [
       },
     ],
   },
+  {
+    slug: 'markdown-to',
+    number: 'N° 018',
+    title: 'Markdown To: a portable file format for little apps',
+    tagline:
+      'A family of canonical Markdown formats that open as live Kanban boards, audio studios, trips, forms, books, and other rich apps—then download back to Markdown.',
+    domain: 'Open formats · Agent-native software',
+    status: 'exploring',
+    year: '2026',
+    tags: [
+      'Markdown',
+      'open standards',
+      'portable software',
+      'agents',
+      'MCP',
+      'CLI',
+      'TTS',
+      'Kanban',
+      'developer tools',
+    ],
+    summary:
+      'Markdown is already the closest thing agents and humans share as a universal working surface: readable without special software, easy to generate, friendly to version control, and durable enough to outlive an app. Markdown To turns that familiarity into a family of strict, versioned application formats. A file written as `kanban@0.1` opens as a live board whose drag-and-drop state can be downloaded as Markdown; a file written as `audio@0.1` opens as a paid high-quality narration studio. The Markdown file is the user-owned artifact, typed JSON is the runtime representation, and the website is the reference renderer, documentation hub, and optional host.',
+    sections: [
+      {
+        heading: 'The proposition',
+        body:
+          'The idea is not that one magical file becomes every conceivable output. It is that Markdown To defines many small canonical formats, each with one clear application model. If a human or agent writes a Kanban file in the documented shape, Markdown To renders a Kanban app. If they write a trip file, it renders an itinerary and route map. If they write an audio manuscript, it renders a TTS production studio. The format tells the website what the file means.\n\nEach live app remains backed by the file. Dragging a card, completing a habit, changing a trip stop, or editing a pronunciation produces a deterministic source patch. At any point the user can download the current `.md` state, put it in git, email it, edit it in a text editor, or open it with another conforming renderer. The hosted UI is valuable; the user\'s state is never captive to it.',
+      },
+      {
+        heading: 'Why Markdown, and where JSON belongs',
+        body:
+          'JSON is better at machine state. It has explicit types, clean nesting, mature schema validation, and predictable parsers. Markdown is better at being an artifact people and agents actually want to touch. It can hold prose beside structure, produces readable diffs, accepts comments and links naturally, and still makes sense when no application recognizes its special format.\n\nThe strongest architecture uses both. Strict Markdown is the portable format at rest. The compiler validates it and emits typed JSON intermediate representation for live renderers, APIs, patches, and tests. A serializer maps supported UI changes back to minimal Markdown diffs. High-write or multi-user data—form responses, analytics, concurrent operation logs—can live in a database or sidecar while the Markdown remains the canonical definition and downloadable snapshot. The product should not pretend a text file is a high-throughput database; it should make ordinary app state unusually ownable.',
+      },
+      {
+        heading: 'A format for every little app',
+        body:
+          'The obvious formats are only the beginning. Work formats include Kanban, Gantt, calendar, roadmaps, OKRs, incident rooms, runbooks, decision matrices, and release trains. Publishing formats include websites, documentation, books, interactive essays, slides, newsletters, teleprompters, and courses. Media formats include chaptered audio, private podcasts, narrated slides, captioned video, and walking tours.\n\nThe more interesting edge is personal software: a private CRM, habit tracker, household budget, pantry, recipe cook mode, meal plan, workout log, reading queue, wishlist, travel itinerary, family tree, garden plan, or home inventory. Coordination formats could become forms, surveys, polls, RSVPs, event schedules, tournament brackets, seating plans, and catalogs. Playful formats could power branching stories, tabletop campaigns, quest logs, character sheets, museum guides, scavenger hunts, and playlists.\n\nA format earns its place only when it has meaningful structure, benefits from direct manipulation, serializes cleanly, and remains useful as raw text. The goal is not a novelty catalog. It is a coherent ecosystem of small apps with unusually durable state.',
+      },
+      {
+        heading: 'The canonical contract',
+        body:
+          'Every file starts as safe CommonMark or GitHub Flavored Markdown plus a small YAML frontmatter envelope naming an exact format version, such as `markdownto: kanban@0.1`. The format assigns semantics to familiar structures: headings can become columns, task lists become cards, tables become typed collections, links become relations, and format-owned HTML comments can carry stable ids or sparse metadata without cluttering ordinary rendering. A fenced data block is the escape hatch when natural Markdown cannot express a structure honestly.\n\nThe hard requirements are stable identity, deterministic parsing, source locations, versioned schemas, useful diagnostics, preservation of unknown fields, and no implicit code execution. The compiler produces one canonical JSON IR. The live renderer consumes that IR and emits typed mutation patches; it never reparses or guesses at source. Conformance fixtures define what compatibility means, including the difficult round-trip promise: changing a live app must not reformat unrelated prose or silently drop data.',
+      },
+      {
+        heading: 'Kanban as the reference app',
+        body:
+          'Kanban is the right first proof because its grammar is legible and its interaction is meaningful. A file contains frontmatter, one heading per column, and one task-list item per card. Stable ids and optional metadata preserve owners, priority, labels, dependencies, and dates. In an ordinary Markdown viewer it is still a useful project list. On Markdown To it becomes a fast board with drag-and-drop, filters, card editing, history, and validation.\n\nA drag produces a semantic operation—move task `T-002` from Backlog to In progress against source hash X. The compiler turns that operation into the smallest source edit. If the file changed elsewhere, the app shows a real conflict instead of overwriting it. The user can download the normalized board state at any moment. Read-only renderers are easy; this safe state-to-source loop is the technical heart of the project.',
+      },
+      {
+        heading: 'Markdown to audio as a paid workflow',
+        body:
+          'Audio is a particularly strong second format because it combines a canonical manuscript with a service people may happily pay for. An `audio@0.1` file can specify chapters, narration exclusions, pronunciations, pauses, voice direction, pace, and export preferences while remaining a readable manuscript. The live studio lets the user audition high-quality voices, preview difficult sentences, inspect a transparent duration and fee estimate, and approve generation.\n\nProduction should run chapter by chapter with resumable jobs, word-level timings, captions, and source-hash caching. If one paragraph sounds wrong, the user regenerates that section rather than paying for the entire book again. Delivery can include MP3, M4B, captions, a private podcast feed, and the source Markdown plus a build receipt. The business model is unusually direct: underlying generation cost plus a visible service margin, with optional premiums for higher-quality voices, mastering, storage, or private feed hosting.',
+      },
+      {
+        heading: 'Agent-native distribution',
+        body:
+          'The human website should be beautiful, but agents should not need to scrape it. Each version and format should publish concise Markdown documentation, JSON Schema, valid and invalid fixtures, migrations, an `llms.txt`, and a small `SKILL.md`. The CLI should support init, inspect, validate, open, render, publish, migrate, and doctor. The MCP server should expose the same compiler through structured tools for discovering formats, scaffolding files, validating documents, applying semantic patches, rendering apps, and publishing them.\n\nPlugins for common harnesses should be thin teaching layers, not separate implementations. They tell the agent when a request fits a Markdown To format, fetch only the relevant specification, create the smallest valid file, validate before claiming success, and return the portable source alongside any hosted link. The wedge is agents because they already prefer files and can adopt conventions quickly; the result is still useful to everyone.',
+      },
+      {
+        heading: 'How it becomes a standard',
+        body:
+          'The open layer should include the grammar, schemas, intermediate representation, fixtures, parser, validator, renderer SDK, and conformance suite. A format cannot become common if its meaning requires an account or one company\'s cloud. The hosted business sells convenience: beautiful live apps, private links, collaboration, version history, custom domains, themes, high-quality TTS, access controls, managed builds, and API volume.\n\nStart with two deliberately different proofs: `kanban@0.1` demonstrates safe bidirectional app state; `audio@0.1` demonstrates an editorial production workflow with real variable cost. Then ship the TypeScript core, CLI, local MCP, playground, and harness skills. Add more formats only after real files expose what belongs in the core. Governance can move toward public RFCs and third-party format namespaces once multiple implementations exist. The standard should follow demonstrated portability, not lead with a committee.',
+      },
+      {
+        heading: 'The name and domain',
+        body:
+          'The intended name—Markdown To—is stronger than the accidental “Markdown 2.” It reads as a verb, communicates transformation without implying a replacement for Markdown, and fits every product phrase: Markdown to Kanban, Markdown to audio, Markdown to a trip. The typo also surfaced a useful constraint: markdown2.com is already an active, unrelated rich-document converter, so avoiding “Markdown 2” prevents confusion.\n\nOf the available domains, `markdownto.ai` is the winner. It teaches the name immediately and emphasizes the agent-native wedge. `markdownto.io` is worth buying as a defensive redirect and durable developer-infrastructure fallback. `mdto.ai` is also worth securing for the CLI, API, short links, or machine-facing endpoints, though it is too opaque to introduce the category alone. `mdto.io` is optional; if all four are inexpensive, buying the set is reasonable.',
+      },
+      {
+        heading: 'Open questions',
+        body:
+          'Can a strict format remain pleasant to hand-author after stable ids and metadata arrive? Is GFM the portable base, or should the normative core stay at CommonMark with GFM as a bundled extension? Should a file have exactly one format, or can carefully scoped extensions compose without ambiguity? Is hidden HTML-comment metadata preferable to visible attribute syntax or fenced YAML?\n\nWhich formats should be official versus community-owned? What mutation protocol supports conflicts, undo, and concurrent edits without turning the file into an event log? How should a hosted app separate its canonical definition from high-volume runtime data such as form submissions? Can a conformance badge make portability credible across independent renderers? And how much hosted functionality can remain proprietary before the project feels like a funnel rather than a genuine standard?',
+      },
+    ],
+    references: [
+      {
+        title: 'CommonMark specification',
+        href: 'https://spec.commonmark.org/0.31.2/',
+        note:
+          'The unambiguous base grammar and test-oriented precedent for a portable Markdown standard.',
+      },
+      {
+        title: 'GitHub Flavored Markdown specification',
+        href: 'https://github.github.com/gfm/',
+        note:
+          'A strict CommonMark superset whose tables and task-list items are especially useful for application formats.',
+      },
+      {
+        title: 'Pandoc user guide',
+        href: 'https://pandoc.org/MANUAL.html',
+        note:
+          'The canonical universal document-converter reference and an important boundary: Markdown To is about live semantic apps, not merely more output extensions.',
+      },
+      {
+        title: 'MDX — what is MDX?',
+        href: 'https://mdxjs.com/docs/what-is-mdx/',
+        note:
+          'A major Markdown extension that enables JSX components and JavaScript; useful contrast for Markdown To\'s no-implicit-execution contract.',
+      },
+      {
+        title: 'Markdoc syntax',
+        href: 'https://markdoc.dev/docs/syntax',
+        note:
+          'A CommonMark superset with schemas, validation, tags, attributes, and variables—valuable precedent for typed extensibility.',
+      },
+      {
+        title: 'Mermaid Kanban syntax',
+        href: 'https://mermaid.js.org/syntax/kanban.html',
+        note:
+          'Evidence that text-authored Kanban structure is useful, while leaving an opening for a full bidirectional live app and portable state contract.',
+      },
+      {
+        title: 'Mermaid Gantt syntax',
+        href: 'https://mermaid.js.org/syntax/gantt.html',
+        note:
+          'A mature example of text-defined tasks, dates, dependencies, milestones, exclusions, and rendered schedules.',
+      },
+      {
+        title: 'Quarto',
+        href: 'https://quarto.org/',
+        note:
+          'A powerful Markdown-based publishing system spanning articles, presentations, dashboards, websites, blogs, books, PDF, Word, and EPUB.',
+      },
+      {
+        title: 'Model Context Protocol specification',
+        href: 'https://modelcontextprotocol.io/specification/latest',
+        note:
+          'The standard tool surface for letting agent harnesses discover formats, validate files, render apps, and publish results.',
+      },
+      {
+        title: 'The existing markdown2.com product',
+        href: 'https://markdown2.com/',
+        note:
+          'An unrelated rich-document converter discovered during naming research; the active product makes “Markdown To” the clearer public identity.',
+      },
+    ],
+  },
 ];
 
 export const ideaBySlug = (slug: string) => ideas.find((i) => i.slug === slug);
