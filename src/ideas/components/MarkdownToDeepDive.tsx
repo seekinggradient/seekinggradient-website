@@ -125,6 +125,82 @@ Sources, image captions, and production notes stay readable
 in the manuscript but are not sent to narration.
 :::`;
 
+const sdkExample = `import { defineFormat, defineRenderer } from "@markdownto/sdk";
+
+export const kanban = defineFormat({
+  id: "community.example/kanban",
+  version: "1.0.0",
+  core: "^1.0.0",
+  schema: "./schema.json",
+  grammar: "./grammar.ts",
+  toIR: "./to-ir.ts",
+  applyPatch: "./apply-patch.ts",
+  fixtures: "./fixtures/",
+  migrations: { "0.x": "./migrate-0-to-1.ts" }
+});
+
+export default defineRenderer({
+  id: "community.example/focus-board",
+  version: "2.3.0",
+  accepts: ["community.example/kanban@^1"],
+  mode: "round-trip",
+  capabilities: ["drag", "edit", "filter", "offline"],
+  permissions: { network: false, storage: "document" },
+  entry: "./renderer.tsx"
+});`;
+
+const priorArt = [
+  {
+    name: 'Adaptive Markdown',
+    href: 'https://github.com/SemiSimpleMath/Adaptive-Markdown',
+    overlap: 'A single readable .md file becomes a living app and an agent-editable programmable surface.',
+    opening:
+      'It embeds document-specific HTML, CSS, and JavaScript. Markdown To can instead make constrained, code-free application formats interoperable across runtimes.',
+  },
+  {
+    name: 'Kanbaruu',
+    href: 'https://www.kanbaruu.com/',
+    overlap: 'Repository-synced Markdown tasks, Kanban/Gantt/list/calendar views, and a native MCP surface for agents.',
+    opening:
+      'It is one project-management product, not a vendor-neutral family of application formats with competing renderers.',
+  },
+  {
+    name: 'Obsidian Kanban',
+    href: 'https://github.com/obsidian-community/obsidian-kanban',
+    overlap: 'A mature Markdown-backed board proves that direct manipulation can write useful state back into text.',
+    opening:
+      'Its grammar and runtime are tied to an Obsidian plugin. It is prior art to support and import, not a universal compatibility contract.',
+  },
+  {
+    name: 'Markwhen',
+    href: 'https://markwhen.com/',
+    overlap: 'A Markdown-like language parses into JSON and renders timelines, calendars, logs, and Gantt-shaped views.',
+    opening:
+      'It is an excellent specialized format rather than a registry and SDK for unrelated application families.',
+  },
+  {
+    name: 'Pandoc + Quarto',
+    href: 'https://quarto.org/',
+    overlap: 'Markdown already publishes into books, EPUB, slides, websites, documents, dashboards, and many other outputs.',
+    opening:
+      'These are primarily publishing pipelines. Markdown To is strongest where a live UI mutates durable application state and writes it back.',
+  },
+  {
+    name: 'MDX + Markdoc',
+    href: 'https://markdoc.dev/docs/syntax',
+    overlap: 'Component syntax, schemas, validation, tags, and attributes show how Markdown can carry richer semantics.',
+    opening:
+      'They are authoring frameworks, not a safe registry of shared application data models with renderer conformance.',
+  },
+  {
+    name: 'AudioDoc',
+    href: 'https://www.docstoaudio.com/',
+    overlap: 'A Markdown upload can already become natural-voice narration with chapter-aware listening.',
+    opening:
+      'The deeper opportunity is a portable audio-production contract: pronunciation, exclusions, direction, receipts, caching, and reproducible exports.',
+  },
+];
+
 const coreRules: Row[] = [
   ['Base language', 'UTF-8 CommonMark; the recommended authoring subset is GFM.', 'A conforming file remains useful in any ordinary Markdown viewer.'],
   ['Envelope', 'One YAML frontmatter block names the exact markdownto format, stable document id, title, and permissions.', 'The file declares which live application understands it before a renderer guesses.'],
@@ -190,7 +266,8 @@ const mcpTools: Row[] = [
   ['get_spec', 'version or format', 'Return the normative grammar, schema, examples, and conformance fixtures an agent needs.'],
   ['inspect_document', 'path', 'Detect format, state, references, renderer capabilities, permissions, and diagnostics.'],
   ['validate_document', 'path, strict | compatible', 'Validate core plus format and renderer constraints with line-addressed repair hints.'],
-  ['list_formats', 'optional capability query', 'Find formats and live renderers without asking an agent to memorize the ecosystem.'],
+  ['list_formats', 'optional capability query', 'Discover official and namespaced formats without asking an agent to memorize the ecosystem.'],
+  ['list_renderers', 'format, version, required capabilities', 'Resolve compatible read-only or round-trip renderers and expose permissions, provenance, and conformance.'],
   ['scaffold_document', 'format, title', 'Create the smallest valid, commented source file and local asset structure.'],
   ['render_document', 'path, options', 'Compile to IR, select the format renderer, and return a live artifact plus a deterministic build receipt.'],
   ['apply_patch', 'entity id, typed changes', 'Translate a safe semantic UI edit back into the smallest source diff.'],
@@ -200,10 +277,21 @@ const mcpTools: Row[] = [
 const packages: Row[] = [
   ['@markdownto/core', 'Parse the safe Markdown subset, preserve source positions, and emit the canonical IR.', 'No browser, network, renderer, or hosted-service dependency.'],
   ['@markdownto/formats', 'Versioned schemas, fixtures, migrations, and semantic extraction for official application formats.', 'Formats version independently from the core grammar.'],
-  ['@markdownto/renderers', 'Reference live apps for Kanban, Gantt, audio, trips, forms, courses, and other formats.', 'Each renderer declares format, feature, mutation, and output capabilities.'],
+  ['@markdownto/sdk', 'Author, test, package, sign, and publish third-party formats and renderers with one typed contract.', 'The SDK exposes extension points; it does not let packages redefine the core or bypass permissions.'],
+  ['@markdownto/renderers', 'Official reference live apps for Kanban, Gantt, audio, trips, forms, courses, and other formats.', 'Reference renderers prove the contract without becoming the only allowed user experience.'],
+  ['@markdownto/registry', 'Resolve namespaced formats, compatible renderers, immutable versions, signatures, and conformance reports.', 'The public registry is an index; packages remain installable without the hosted marketplace.'],
   ['@markdownto/cli', 'init, inspect, validate, preview, render, publish, migrate, doctor.', 'Thin wrapper around the exact same compiler used by MCP.'],
   ['@markdownto/mcp', 'Local stdio first; remote Streamable HTTP after OAuth and upload semantics exist.', 'Local MCP can read files; remote MCP receives content or an upload handle.'],
   ['@markdownto/conformance', 'Golden files, invalid fixtures, IR snapshots, renderer assertions, and a badge program.', '“Compatible” means passing tests, not merely using the name.'],
+];
+
+const marketplaceContracts: Row[] = [
+  ['Format package', 'Namespaced id, semantic version, core range, grammar, JSON Schema, Markdown-to-IR extractor, patch serializer, migrations, docs, and fixtures.', 'Defines what a file means; no UI code and no implicit network or execution.'],
+  ['Renderer package', 'Accepted format ranges, read/write mode, capabilities, runtime target, permission manifest, entrypoint, screenshots, license, and optional price.', 'Defines one way to experience a format without changing its meaning.'],
+  ['Registry record', 'Owner, signature, immutable digest, dependencies, release channel, deprecation state, security advisories, and conformance reports.', 'Makes discovery auditable for people, agents, CLIs, and private enterprise mirrors.'],
+  ['Compatibility report', 'Exact core, format, renderer, and fixture-suite versions plus read, render, export, and round-trip results.', 'Turns “works with Kanban” into a reproducible claim rather than marketing copy.'],
+  ['Marketplace listing', 'Live demo, source link, install command, permissions, output examples, support policy, pricing, and verified badges.', 'Monetizes discovery and hosting while keeping format meaning outside the marketplace.'],
+  ['Promotion path', 'Experimental namespace → community stable → candidate standard → official, with public RFC review and required migrations.', 'Lets invention move quickly without allowing popularity or payment to silently redefine a format.'],
 ];
 
 const conformanceLevels: Row[] = [
@@ -321,7 +409,48 @@ export function MarkdownToDeepDive() {
         </p>
       </div>
 
-      <SubLabel>2 · The canonical file</SubLabel>
+      <SubLabel>2 · What already exists—and the actual opening</SubLabel>
+      <p className="max-w-prose text-[15px] leading-[1.75] text-[color:var(--color-ink-soft)]">
+        This is a synthesis, not a claim that nobody has made Markdown interactive before. Nearly every individual
+        move has precedent: Markdown-backed boards, text-defined timelines, component-aware Markdown, universal
+        publishing, document narration, and agent-accessible file tools. Two projects come especially close.
+        Adaptive Markdown treats the document as a programmable app; Kanbaruu treats Markdown project state as a
+        shared surface for humans and agents.
+      </p>
+      <div className="mt-5 overflow-hidden border-y border-[color:var(--color-ink)]">
+        {priorArt.map((product, index) => (
+          <div
+            key={product.name}
+            className={`markdown-to-row grid gap-3 py-5 sm:grid-cols-[0.22fr_0.35fr_0.43fr] ${
+              index ? 'border-t border-[color:var(--color-rule)]' : ''
+            }`}
+          >
+            <a
+              href={product.href}
+              target="_blank"
+              rel="noreferrer"
+              className="font-medium text-[color:var(--color-accent)] underline decoration-[color:var(--color-rule)] underline-offset-4 hover:decoration-[color:var(--color-accent)]"
+            >
+              {product.name} ↗
+            </a>
+            <p className="text-[14px] leading-[1.65] text-[color:var(--color-ink)]">{product.overlap}</p>
+            <p className="text-[14px] leading-[1.65] text-[color:var(--color-ink-soft)]">{product.opening}</p>
+          </div>
+        ))}
+      </div>
+      <div className="mt-5 border-l-4 border-[color:var(--color-orange)] bg-[color:var(--color-lilac)]/30 p-5">
+        <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-[color:var(--color-accent)]">
+          Honest novelty claim
+        </div>
+        <p className="mt-2 text-[15px] leading-[1.7] text-[color:var(--color-ink)]">
+          “Markdown to Kanban” is not new. “Markdown becomes an app” is not entirely new either. The credible opening
+          is a <strong>public registry of versioned, declarative application formats</strong>, a shared IR and mutation
+          protocol, conformance tests, multiple interchangeable renderers per format, and agent-native discovery
+          across the whole ecosystem. Kanban should be the reference implementation, not the novelty claim.
+        </p>
+      </div>
+
+      <SubLabel>3 · The canonical file</SubLabel>
       <p className="max-w-prose text-[15px] leading-[1.75] text-[color:var(--color-ink-soft)]">
         The safest design is deliberately boring. Start with CommonMark/GFM, add a frontmatter envelope, and make a
         named application format responsible for semantics. A live renderer must never use an LLM to guess which
@@ -371,7 +500,7 @@ export function MarkdownToDeepDive() {
         is <strong>Markdown outside, typed JSON inside</strong>, with a strict, tested serializer in both directions.
       </p>
 
-      <SubLabel>3 · The compiler contract</SubLabel>
+      <SubLabel>4 · The compiler contract</SubLabel>
       <div className="grid gap-4 lg:grid-cols-[0.95fr_1.05fr]">
         <div className="border border-[color:var(--color-ink)] bg-[color:var(--color-night)] p-5 text-[color:var(--color-paper)]">
           <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-[color:var(--color-yellow)]">
@@ -399,7 +528,7 @@ export function MarkdownToDeepDive() {
         <CodeBlock language="canonical IR · abbreviated" code={irExample} />
       </div>
 
-      <SubLabel>4 · Formats, not one universal schema</SubLabel>
+      <SubLabel>5 · Formats, not one universal schema</SubLabel>
       <p className="max-w-prose text-[15px] leading-[1.75] text-[color:var(--color-ink-soft)]">
         “Anything” cannot mean one giant schema, and one file does not need to become every app. The core knows
         documents, assets, ids, references, permissions, source locations, and provenance. A named format adds one
@@ -408,7 +537,114 @@ export function MarkdownToDeepDive() {
       </p>
       <SpecTable headings={['Format', 'Canonical state', 'Live experience']} rows={formatMatrix} />
 
-      <SubLabel>5 · The little-app universe</SubLabel>
+      <SubLabel>6 · Two extension axes: formats and renderers</SubLabel>
+      <p className="max-w-prose text-[15px] leading-[1.75] text-[color:var(--color-ink-soft)]">
+        The ecosystem becomes genuinely extensible only if it separates <strong>what a file means</strong> from
+        <strong> how that meaning is presented</strong>. A format package owns grammar, schema, normalization,
+        migrations, and semantic source patches. A renderer package consumes the format’s canonical IR and declares
+        exactly which views and mutations it supports. They version independently.
+      </p>
+      <div className="mt-5 overflow-hidden border border-[color:var(--color-ink)] bg-[#fffaf0] p-5 sm:p-6">
+        <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-[color:var(--color-accent)]">
+          One contract, many experiences
+        </div>
+        <div className="mt-5 grid gap-3 text-center font-mono text-[10px] uppercase tracking-[0.13em] lg:grid-cols-[0.9fr_auto_1.1fr_auto_1.1fr] lg:items-center">
+          <div className="border border-[color:var(--color-rule)] bg-[color:var(--color-yellow)]/45 p-4">
+            launch.md
+            <br />
+            <span className="normal-case tracking-normal text-[color:var(--color-ink-mute)]">kanban@1 source</span>
+          </div>
+          <div className="text-[color:var(--color-orange)]">→</div>
+          <div className="border border-[color:var(--color-rule)] bg-[color:var(--color-mint)]/30 p-4">
+            Format package
+            <br />
+            <span className="normal-case tracking-normal text-[color:var(--color-ink-mute)]">
+              parse · validate · IR · patch
+            </span>
+          </div>
+          <div className="text-[color:var(--color-orange)]">→</div>
+          <div className="grid gap-px border border-[color:var(--color-rule)] bg-[color:var(--color-rule)]">
+            {['Reference board', 'Accessible list', 'Compact mobile', 'Premium team board'].map((renderer) => (
+              <div key={renderer} className="bg-[color:var(--color-lilac)]/35 px-3 py-2">
+                {renderer}
+              </div>
+            ))}
+          </div>
+        </div>
+        <p className="mt-5 text-[13px] leading-[1.65] text-[color:var(--color-ink-mute)]">
+          Every renderer receives the same typed state and emits the same semantic mutation vocabulary. Visual
+          invention is welcome; reinterpretation of the file is not.
+        </p>
+      </div>
+      <div className="mt-5 grid gap-4 lg:grid-cols-[0.92fr_1.08fr]">
+        <div className="grid gap-px overflow-hidden border border-[color:var(--color-ink)] bg-[color:var(--color-ink)]">
+          {[
+            ['Format SDK', 'Scaffold a namespaced format; define grammar, schema, IR mapping, mutations, migrations, fixtures, and machine-readable docs.'],
+            ['Renderer SDK', 'Build against typed IR; declare accepted versions, read/write capabilities, runtime permissions, exports, and UI entrypoints.'],
+            ['Test harness', 'Run golden documents, invalid fixtures, accessibility checks, unknown-field preservation, and round-trip source assertions locally.'],
+            ['Registry client', 'Sign, publish, resolve, install, pin, audit, deprecate, and mirror immutable packages from CLI, MCP, or code.'],
+          ].map(([title, body]) => (
+            <div key={title} className="bg-[#fffaf0] p-4">
+              <div className="font-medium text-[color:var(--color-ink)]">{title}</div>
+              <p className="mt-2 text-[14px] leading-[1.6] text-[color:var(--color-ink-soft)]">{body}</p>
+            </div>
+          ))}
+        </div>
+        <CodeBlock language="conceptual extension SDK" code={sdkExample} />
+      </div>
+
+      <SubLabel>7 · An open registry with a curated marketplace</SubLabel>
+      <p className="max-w-prose text-[15px] leading-[1.75] text-[color:var(--color-ink-soft)]">
+        A registry and a marketplace should be related but not identical. The registry is open infrastructure:
+        immutable package metadata, namespaces, signatures, compatibility ranges, deprecations, and conformance
+        evidence. The marketplace is the discovery and commercial layer: demos, screenshots, hosted installation,
+        pricing, support, verified badges, and usage analytics. A package must remain installable without buying
+        placement or using Markdown To’s cloud.
+      </p>
+      <SpecTable headings={['Artifact', 'Required contract', 'Ecosystem role']} rows={marketplaceContracts} />
+      <div className="mt-5 grid gap-px overflow-hidden border border-[color:var(--color-ink)] bg-[color:var(--color-ink)] sm:grid-cols-3">
+        {[
+          [
+            'Formats create interoperability',
+            'A community format can become a shared public good. Stable formats need open specs, permissive reference code, fixtures, migrations, and governance that no renderer vendor controls.',
+          ],
+          [
+            'Renderers create competition',
+            'Several free or paid renderers can serve one format: mobile, accessible, enterprise, playful, offline, or domain-specific—without forcing users to migrate their files.',
+          ],
+          [
+            'Services create revenue',
+            'Developers can charge for hosted renderers, collaboration, premium themes, specialist exports, TTS, storage, support, or compute. The portable source remains free to leave.',
+          ],
+        ].map(([title, body], index) => (
+          <div
+            key={title}
+            className={`p-5 ${
+              index === 0
+                ? 'bg-[color:var(--color-yellow)]'
+                : index === 1
+                  ? 'bg-[color:var(--color-mint)]'
+                  : 'bg-[color:var(--color-lilac)]'
+            }`}
+          >
+            <div className="font-mono text-[10px] uppercase tracking-[0.18em]">{title}</div>
+            <p className="mt-3 text-[14px] leading-[1.65] text-[color:var(--color-ink-soft)]">{body}</p>
+          </div>
+        ))}
+      </div>
+      <div className="mt-5 border-l-4 border-[color:var(--color-accent)] bg-[#fffaf0] p-5">
+        <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-[color:var(--color-accent)]">
+          Marketplace rule
+        </div>
+        <p className="mt-2 text-[15px] leading-[1.7] text-[color:var(--color-ink)]">
+          Paid popularity must never redefine a canonical format. Official semantics change through versioned RFCs
+          and fixtures; marketplace ranking only helps users choose among implementations. Start curated for safety,
+          keep the underlying registry mirrorable, and require sandboxing plus explicit permission review before any
+          third-party renderer runs.
+        </p>
+      </div>
+
+      <SubLabel>8 · The little-app universe</SubLabel>
       <div className="grid gap-px overflow-hidden border border-[color:var(--color-ink)] bg-[color:var(--color-ink)] sm:grid-cols-2">
         {formatFamilies.map((family) => (
           <div key={family.label} className="markdown-to-reveal bg-[#fffaf0] p-5 last:sm:col-span-2">
@@ -428,7 +664,7 @@ export function MarkdownToDeepDive() {
         budgets, recipes, brackets, incidents, and branching stories clear that bar in very different ways.
       </p>
 
-      <SubLabel>6 · Rich UI must round-trip safely</SubLabel>
+      <SubLabel>9 · Rich UI must round-trip safely</SubLabel>
       <div className="grid gap-4 lg:grid-cols-[0.92fr_1.08fr]">
         <div className="bg-[color:var(--color-yellow)]/35 p-5">
           <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-[color:var(--color-ink-mute)]">
@@ -444,7 +680,7 @@ export function MarkdownToDeepDive() {
         <CodeBlock language="semantic patch → minimal Markdown diff" code={patchExample} />
       </div>
 
-      <SubLabel>7 · Markdown to audio is a real paid product</SubLabel>
+      <SubLabel>10 · Markdown to audio is a real paid product</SubLabel>
       <div className="grid gap-4 lg:grid-cols-[0.96fr_1.04fr]">
         <div>
           <p className="text-[15px] leading-[1.75] text-[color:var(--color-ink-soft)]">
@@ -483,7 +719,7 @@ export function MarkdownToDeepDive() {
         by source hash so a typo in chapter four never forces the customer to repay for the whole book.
       </p>
 
-      <SubLabel>8 · Agent-native by construction</SubLabel>
+      <SubLabel>11 · Agent-native by construction</SubLabel>
       <p className="max-w-prose text-[15px] leading-[1.75] text-[color:var(--color-ink-soft)]">
         The website is for human understanding; the spec package is for machines. Agents should be able to discover
         the current grammar, fetch only the selected format, scaffold a valid example, run deterministic validation,
@@ -509,7 +745,7 @@ export function MarkdownToDeepDive() {
         ))}
       </div>
 
-      <SubLabel>9 · Reference implementation</SubLabel>
+      <SubLabel>12 · Reference implementation</SubLabel>
       <SpecTable headings={['Package', 'Responsibility', 'Boundary']} rows={packages} />
       <div className="mt-5 border border-[color:var(--color-rule)] bg-[#fffaf0] p-5">
         <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-[color:var(--color-accent)]">
@@ -524,7 +760,7 @@ export function MarkdownToDeepDive() {
         </div>
       </div>
 
-      <SubLabel>10 · Conformance and versioning</SubLabel>
+      <SubLabel>13 · Conformance and versioning</SubLabel>
       <SpecTable headings={['Level', 'Must prove', 'Meaning']} rows={conformanceLevels} />
       <div className="mt-5 grid gap-4 sm:grid-cols-2">
         <div className="bg-[color:var(--color-mint)]/25 p-5">
@@ -544,10 +780,10 @@ export function MarkdownToDeepDive() {
         </div>
       </div>
 
-      <SubLabel>11 · Security is part of the format</SubLabel>
+      <SubLabel>14 · Security is part of the format</SubLabel>
       <SpecTable headings={['Rule', 'Required behavior', 'Why']} rows={securityRules} />
 
-      <SubLabel>12 · Naming and domains</SubLabel>
+      <SubLabel>15 · Naming and domains</SubLabel>
       <div className="border-l-4 border-[color:var(--color-orange)] bg-[color:var(--color-yellow)]/45 p-5">
         <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-[color:var(--color-ink-mute)]">Recommendation</div>
         <h4 className="display mt-3 text-3xl leading-tight sm:text-4xl">
@@ -568,7 +804,7 @@ export function MarkdownToDeepDive() {
         developer-category insurance, and the third is the compact machine-facing alias.
       </p>
 
-      <SubLabel>13 · Adoption and business model</SubLabel>
+      <SubLabel>16 · Adoption and business model</SubLabel>
       <div className="grid gap-px overflow-hidden border border-[color:var(--color-ink)] bg-[color:var(--color-ink)] lg:grid-cols-3">
         {[
           ['Open forever', 'Grammar, formats, IR, schemas, fixtures, core parser, CLI validation, renderer SDK, and conformance tests. Adoption dies if meaning requires an account.'],
@@ -587,7 +823,7 @@ export function MarkdownToDeepDive() {
         tool, render it elsewhere, and leave with the source.
       </p>
 
-      <SubLabel>14 · A build sequence that earns the word “standard”</SubLabel>
+      <SubLabel>17 · A build sequence that earns the word “standard”</SubLabel>
       <div className="overflow-hidden border border-[color:var(--color-rule)] bg-[#fffaf0]">
         {phases.map(([phase, work, exit], index) => (
           <div
@@ -603,7 +839,7 @@ export function MarkdownToDeepDive() {
         ))}
       </div>
 
-      <SubLabel>15 · Decisions this RFC should force</SubLabel>
+      <SubLabel>18 · Decisions this RFC should force</SubLabel>
       <ol className="grid gap-3">
         {[
           'Is GFM the required portable subset, or does the core formally target CommonMark and describe GFM as a bundled extension?',
@@ -612,6 +848,8 @@ export function MarkdownToDeepDive() {
           'After Kanban and audio, which format best proves the family without turning the roadmap into a novelty catalog?',
           'What is the minimum semantic-patch protocol that makes Kanban and calendar editing safe across concurrent source changes?',
           'Who can publish an official format, and when does an experimental format earn a stable namespace?',
+          'Which format and renderer extension points belong in the SDK without allowing packages to bypass the core safety model?',
+          'Should the open registry accept any signed package while the hosted marketplace remains curated, or must both apply the same admission rules?',
           'Can a renderer be conforming if it silently drops supported fields, or must every loss be surfaced in diagnostics and the build receipt?',
           'How much of the hosted product can be proprietary without making the standard feel like a funnel into one vendor?',
         ].map((question, index) => (

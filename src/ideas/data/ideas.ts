@@ -891,6 +891,11 @@ export const ideas: Idea[] = [
           'JSON is better at machine state. It has explicit types, clean nesting, mature schema validation, and predictable parsers. Markdown is better at being an artifact people and agents actually want to touch. It can hold prose beside structure, produces readable diffs, accepts comments and links naturally, and still makes sense when no application recognizes its special format.\n\nThe strongest architecture uses both. Strict Markdown is the portable format at rest. The compiler validates it and emits typed JSON intermediate representation for live renderers, APIs, patches, and tests. A serializer maps supported UI changes back to minimal Markdown diffs. High-write or multi-user data—form responses, analytics, concurrent operation logs—can live in a database or sidecar while the Markdown remains the canonical definition and downloadable snapshot. The product should not pretend a text file is a high-throughput database; it should make ordinary app state unusually ownable.',
       },
       {
+        heading: 'What already exists—and what remains open',
+        body:
+          'The ingredients have substantial prior art. Adaptive Markdown makes one `.md` file into a programmable, agent-editable application containing its own styling and interactivity. Kanbaruu stores project tasks as Markdown, renders Kanban, Gantt, list, and calendar views, syncs with repositories, and exposes MCP. Obsidian Kanban is a mature Markdown-backed board; Markwhen turns a Markdown-like language into timelines and calendars; Pandoc and Quarto cover enormous publishing surfaces; MDX and Markdoc add components and typed semantics; AudioDoc already narrates Markdown.\n\nThat means “Markdown to Kanban” is not the novelty, and neither is the broad statement that a document can become an app. The unresolved opportunity is the standards layer: a public registry of small versioned application formats, a safe shared intermediate representation and mutation protocol, deterministic round-tripping, conformance fixtures, several interchangeable renderers for one format, and agent-native discovery across the entire ecosystem. Kanban should be described as the reference implementation, not as an invention.',
+      },
+      {
         heading: 'A format for every little app',
         body:
           'The obvious formats are only the beginning. Work formats include Kanban, Gantt, calendar, roadmaps, OKRs, incident rooms, runbooks, decision matrices, and release trains. Publishing formats include websites, documentation, books, interactive essays, slides, newsletters, teleprompters, and courses. Media formats include chaptered audio, private podcasts, narrated slides, captioned video, and walking tours.\n\nThe more interesting edge is personal software: a private CRM, habit tracker, household budget, pantry, recipe cook mode, meal plan, workout log, reading queue, wishlist, travel itinerary, family tree, garden plan, or home inventory. Coordination formats could become forms, surveys, polls, RSVPs, event schedules, tournament brackets, seating plans, and catalogs. Playful formats could power branching stories, tabletop campaigns, quest logs, character sheets, museum guides, scavenger hunts, and playlists.\n\nA format earns its place only when it has meaningful structure, benefits from direct manipulation, serializes cleanly, and remains useful as raw text. The goal is not a novelty catalog. It is a coherent ecosystem of small apps with unusually durable state.',
@@ -899,6 +904,11 @@ export const ideas: Idea[] = [
         heading: 'The canonical contract',
         body:
           'Every file starts as safe CommonMark or GitHub Flavored Markdown plus a small YAML frontmatter envelope naming an exact format version, such as `markdownto: kanban@0.1`. The format assigns semantics to familiar structures: headings can become columns, task lists become cards, tables become typed collections, links become relations, and format-owned HTML comments can carry stable ids or sparse metadata without cluttering ordinary rendering. A fenced data block is the escape hatch when natural Markdown cannot express a structure honestly.\n\nThe hard requirements are stable identity, deterministic parsing, source locations, versioned schemas, useful diagnostics, preservation of unknown fields, and no implicit code execution. The compiler produces one canonical JSON IR. The live renderer consumes that IR and emits typed mutation patches; it never reparses or guesses at source. Conformance fixtures define what compatibility means, including the difficult round-trip promise: changing a live app must not reformat unrelated prose or silently drop data.',
+      },
+      {
+        heading: 'An SDK for formats, renderers, and a real ecosystem',
+        body:
+          'The extensibility model should have two independent axes. A format package defines what a file means: its namespaced id and version, accepted core range, grammar, schema, Markdown-to-IR extraction, semantic mutations, serializer, migrations, fixtures, and machine-readable documentation. A renderer package defines one way to experience that meaning: accepted format versions, read-only or round-trip mode, capabilities, runtime target, permission manifest, UI entrypoint, exports, license, and optional price. One canonical format can therefore support several competing renderers without fragmenting user data.\n\nThe SDK should scaffold both package types, provide typed IR and mutation APIs, run golden documents and invalid fixtures, verify unknown-field preservation, test minimal source diffs, and produce signed immutable packages. The public registry records namespaces, owners, versions, digests, compatibility ranges, deprecations, security advisories, and conformance reports. Agents, CLIs, and private enterprise mirrors should all resolve the same metadata.\n\nA marketplace can sit above that open registry. It can offer live demos, screenshots, one-click hosted installation, verified badges, support policies, pricing, reviews, and usage analytics. Format authors can create shared public standards; renderer developers can sell better interfaces, collaboration, specialist exports, hosting, compute, themes, TTS, or support. The governance boundary is essential: marketplace popularity or payment must never redefine a canonical format. Semantics change only through versioned RFCs, migrations, and fixtures, and packages remain installable without the hosted store.',
       },
       {
         heading: 'Kanban as the reference app',
@@ -918,7 +928,7 @@ export const ideas: Idea[] = [
       {
         heading: 'How it becomes a standard',
         body:
-          'The open layer should include the grammar, schemas, intermediate representation, fixtures, parser, validator, renderer SDK, and conformance suite. A format cannot become common if its meaning requires an account or one company\'s cloud. The hosted business sells convenience: beautiful live apps, private links, collaboration, version history, custom domains, themes, high-quality TTS, access controls, managed builds, and API volume.\n\nStart with two deliberately different proofs: `kanban@0.1` demonstrates safe bidirectional app state; `audio@0.1` demonstrates an editorial production workflow with real variable cost. Then ship the TypeScript core, CLI, local MCP, playground, and harness skills. Add more formats only after real files expose what belongs in the core. Governance can move toward public RFCs and third-party format namespaces once multiple implementations exist. The standard should follow demonstrated portability, not lead with a committee.',
+          'The open layer should include the grammar, schemas, intermediate representation, fixtures, parser, validator, format and renderer SDKs, registry client, and conformance suite. A format cannot become common if its meaning requires an account or one company\'s cloud. The hosted business sells convenience: beautiful live apps, marketplace discovery, private links, collaboration, version history, custom domains, themes, high-quality TTS, access controls, managed builds, and API volume.\n\nStart with two deliberately different proofs: `kanban@0.1` demonstrates safe bidirectional app state; `audio@0.1` demonstrates an editorial production workflow with real variable cost. Then ship the TypeScript core, CLI, local MCP, playground, and harness skills. After the contracts stabilize, let third parties publish namespaced experimental formats and alternate renderers; promote only the ones with real files, migrations, multiple implementations, and public conformance evidence. The standard should follow demonstrated portability, not lead with a committee.',
       },
       {
         heading: 'The name and domain',
@@ -928,7 +938,7 @@ export const ideas: Idea[] = [
       {
         heading: 'Open questions',
         body:
-          'Can a strict format remain pleasant to hand-author after stable ids and metadata arrive? Is GFM the portable base, or should the normative core stay at CommonMark with GFM as a bundled extension? Should a file have exactly one format, or can carefully scoped extensions compose without ambiguity? Is hidden HTML-comment metadata preferable to visible attribute syntax or fenced YAML?\n\nWhich formats should be official versus community-owned? What mutation protocol supports conflicts, undo, and concurrent edits without turning the file into an event log? How should a hosted app separate its canonical definition from high-volume runtime data such as form submissions? Can a conformance badge make portability credible across independent renderers? And how much hosted functionality can remain proprietary before the project feels like a funnel rather than a genuine standard?',
+          'Can a strict format remain pleasant to hand-author after stable ids and metadata arrive? Is GFM the portable base, or should the normative core stay at CommonMark with GFM as a bundled extension? Should a file have exactly one format, or can carefully scoped extensions compose without ambiguity? Is hidden HTML-comment metadata preferable to visible attribute syntax or fenced YAML?\n\nWhich formats should be official versus community-owned, and what evidence promotes a community format into the standard namespace? Can renderer permissions and sandboxing make a third-party marketplace safe without destroying extensibility? What mutation protocol supports conflicts, undo, and concurrent edits without turning the file into an event log? How should a hosted app separate its canonical definition from high-volume runtime data such as form submissions? Can conformance badges make portability credible across independent renderers? How are marketplace revenue and rankings prevented from capturing format governance? And how much hosted functionality can remain proprietary before the project feels like a funnel rather than a genuine standard?',
       },
     ],
     references: [
@@ -979,6 +989,36 @@ export const ideas: Idea[] = [
         href: 'https://quarto.org/',
         note:
           'A powerful Markdown-based publishing system spanning articles, presentations, dashboards, websites, blogs, books, PDF, Word, and EPUB.',
+      },
+      {
+        title: 'Adaptive Markdown',
+        href: 'https://github.com/SemiSimpleMath/Adaptive-Markdown',
+        note:
+          'The closest philosophical precedent: a readable Markdown file becomes both the source of truth and a programmable, agent-editable living app.',
+      },
+      {
+        title: 'Kanbaruu',
+        href: 'https://www.kanbaruu.com/',
+        note:
+          'A close product precedent for repository-backed Markdown tasks, multiple project views, and native MCP access for agents.',
+      },
+      {
+        title: 'Obsidian Kanban',
+        href: 'https://github.com/obsidian-community/obsidian-kanban',
+        note:
+          'A mature implementation of Markdown-backed Kanban and important prior art for bidirectional board state.',
+      },
+      {
+        title: 'Markwhen',
+        href: 'https://markwhen.com/',
+        note:
+          'A specialized Markdown-like language that parses time-oriented documents to JSON and multiple timeline or calendar views.',
+      },
+      {
+        title: 'AudioDoc',
+        href: 'https://www.docstoaudio.com/',
+        note:
+          'Evidence that Markdown-to-narration is already useful, leaving room for a deeper canonical audio-production specification and paid workflow.',
       },
       {
         title: 'Model Context Protocol specification',
