@@ -7,6 +7,7 @@ import { HtmlArtifactsDeepDive } from '../components/HtmlArtifactsDeepDive';
 import { PredictionMarketDeepDive } from '../components/PredictionMarketDeepDive';
 import { AIWeeklyMagazineDeepDive } from '../components/AIWeeklyMagazineDeepDive';
 import { AmbientKnowledgeDeepDive } from '../components/AmbientKnowledgeDeepDive';
+import { PersonalKindlePublisherDeepDive } from '../components/PersonalKindlePublisherDeepDive';
 import { NotFound } from './NotFound';
 
 export function IdeaPage() {
@@ -20,7 +21,9 @@ export function IdeaPage() {
 
   const visualAssets = visualsBySlug[idea.slug] ?? [];
   const leadVisual =
-    idea.slug === 'physical-weekly-ai-magazine' ? visualAssets[0] : undefined;
+    idea.slug === 'physical-weekly-ai-magazine' || idea.slug === 'personal-kindle-publishing-pipeline'
+      ? visualAssets[0]
+      : undefined;
   const galleryAssets = leadVisual ? visualAssets.slice(1) : visualAssets;
 
   return (
@@ -130,6 +133,7 @@ export function IdeaPage() {
         {idea.slug === 'mac-omnibar-for-agents' && <MacOmnibarDeepDive />}
         {idea.slug === 'agent-native-html-artifacts' && <HtmlArtifactsDeepDive />}
         {idea.slug === 'ambient-knowledge-agent-for-notes' && <AmbientKnowledgeDeepDive />}
+        {idea.slug === 'personal-kindle-publishing-pipeline' && <PersonalKindlePublisherDeepDive />}
         {idea.slug === 'prediction-market-mispricing-engine' && <PredictionMarketDeepDive />}
         {idea.slug === 'physical-weekly-ai-magazine' && <AIWeeklyMagazineDeepDive />}
         {idea.slug === 'short-term-rental-demand-radar' && (
@@ -355,6 +359,33 @@ Color palette: Warm paper, black ink, muted gray, restrained burnt orange.
 Text constraints: Include small labels: Portable Filesystem, Cross-Harness, Agent Memory, Provenance, Works Anywhere.
 Constraints: No logos for real companies, no detailed protocol diagrams, no people, no robots, no watermark.`;
 
+const personalKindleProductPrompt = `Use case: ui-mockup
+Asset type: Seeking Gradient Ideas notebook product concept board, landscape 16:9
+Primary request: Create a polished, editorial product mockup board for a service that turns a person's learning goals and source materials into custom, source-cited EPUB books and delivers them to an e-reader on a schedule.
+Scene/backdrop: Warm off-white editorial canvas with thin charcoal dividers and restrained cobalt, orange, pale yellow, mint, and lilac accents. No physical room scene.
+Subject: Three adjacent product screens. Screen one is a learning-program setup called "NEW READING PLAN" with a topic field showing "Hinduism: foundations", cadence "Every morning", depth "20-minute chapter", and toggles for "Citations" and "Ask before sending". Screen two is an editorial production queue called "BOOK IN PROGRESS" with steps "Research", "Outline", "Draft", "Fact check", "EPUB", and a small source ledger. Screen three is a delivery/library screen called "YOUR SHELF" showing tasteful fictional book covers titled "Dharma & Daily Life", "Reading a Research Paper", and "The Upanishads: A Map", plus a status label "Delivered to e-reader".
+Style/medium: High-fidelity SaaS UI mockup, expressive personal software, tactile editorial publishing studio rather than a generic dashboard. Crisp readable typography, restrained panels, slightly imperfect printed-paper texture.
+Composition/framing: Wide 16:9 board, three clear screens with varied hierarchy, enough whitespace to understand setup, production, and delivery at a glance.
+Lighting/mood: Thoughtful, calm, trustworthy, intellectually inviting.
+Color palette: Warm paper #f7f1e7, deep violet ink #17152b, cobalt #3154d8, yellow #f8e45c, orange #ff7043, mint #8bd8bd, lilac #d8ccff.
+Text (verbatim): "NEW READING PLAN", "Hinduism: foundations", "Every morning", "20-minute chapter", "Citations", "Ask before sending", "BOOK IN PROGRESS", "Research", "Outline", "Draft", "Fact check", "EPUB", "YOUR SHELF", "Dharma & Daily Life", "Reading a Research Paper", "The Upanishads: A Map", "Delivered to e-reader".
+Constraints: Show no real person names, no real addresses, no Amazon or Kindle logo, no religious deity imagery, no robot faces, no fake testimonials, no pricing, no watermark. Keep every visible label listed above; use abstract lines for any other text.
+Avoid: purple gradients, generic dark-mode analytics dashboard, excessive rounded cards, tiny unreadable paragraphs, distorted device frames, AI sparkle motifs.`;
+
+const personalKindleReadingPrompt = `Use case: product-mockup
+Asset type: Seeking Gradient Ideas notebook editorial lifestyle image, landscape 16:9
+Primary request: Create a photorealistic editorial product photograph that makes a scheduled, custom learning book on an e-reader feel tangible and desirable.
+Scene/backdrop: Quiet early-morning reading table beside a window, warm natural light, subtle paper grain and lived-in realism. A ceramic cup, one pencil, and a small paper source note may sit nearby, but keep the scene sparse.
+Subject: A slim unbranded e-ink reader is the clear focal point. Its screen shows a beautifully typeset personal book chapter with the title "DHARMA & DAILY LIFE", subtitle "Chapter 4 — Duty, action, and context", a short readable pull quote "A tradition is not a single answer.", a small progress marker "18 min", and discreet footnote markers. Beside it is a single narrow printed source card titled "SOURCES" with three abstract citation lines. No person or hands.
+Style/medium: Photorealistic high-end editorial product photography, tactile and calm, real e-ink texture, understated intellectual magazine aesthetic, not a tech advertisement.
+Composition/framing: Wide landscape 16:9, slightly elevated three-quarter view, e-reader large enough for the title to be legible, modest negative space around the objects.
+Lighting/mood: Warm morning light, contemplative, distraction-free, personal, inviting; the feeling that a thoughtful new chapter arrived before breakfast.
+Color palette: Warm cream, soft graphite, deep cobalt book accent, muted yellow sunlight, tiny mint detail.
+Materials/textures: Matte e-ink screen, lightly worn wood or linen table surface, unglazed ceramic, natural paper.
+Text (verbatim): "DHARMA & DAILY LIFE", "Chapter 4 — Duty, action, and context", "A tradition is not a single answer.", "18 min", "SOURCES".
+Constraints: Unbranded device; no Amazon or Kindle logo; no real person names; no religious deity imagery or sacred symbols; no visible copyrighted book text; no other readable prose; no people or hands; no watermark.
+Avoid: glossy CGI, floating holograms, robot motifs, fake app chrome, excessive props, dark moody lighting, purple gradients, stock-photo perfection, distorted screen text.`;
+
 const visualsBySlug: Record<string, VisualAsset[]> = {
   'icloud-album-printer': [
     {
@@ -529,6 +560,22 @@ const visualsBySlug: Record<string, VisualAsset[]> = {
       caption: 'A deliberately light concept board for a portable agent filesystem exposed through CLI, MCP, and skills.',
       alt: 'Concept board for agentsfs.ai showing a central portable filesystem tree connected to CLI, MCP, and skills surfaces.',
       prompt: agentsfsPrompt,
+    },
+  ],
+  'personal-kindle-publishing-pipeline': [
+    {
+      src: '/mockups/specific/personal-kindle-publisher-reading.png',
+      title: 'A chapter waiting before breakfast',
+      caption: 'The product promise made physical: a short, cited, personal chapter on a quiet reading device rather than another browser tab.',
+      alt: 'Unbranded e-reader on a warm morning table displaying a custom chapter titled Dharma and Daily Life beside a source card.',
+      prompt: personalKindleReadingPrompt,
+    },
+    {
+      src: '/mockups/specific/personal-kindle-publisher-product.png',
+      title: 'Reading plan to personal shelf',
+      caption: 'A topic and cadence become an editorial production run, a checked EPUB, and a durable shelf of personal learning books.',
+      alt: 'Three-screen product board showing a new reading plan, book production pipeline, and personal e-reader shelf.',
+      prompt: personalKindleProductPrompt,
     },
   ],
 };

@@ -620,6 +620,104 @@ export const ideas: Idea[] = [
       },
     ],
   },
+  {
+    slug: 'personal-kindle-publishing-pipeline',
+    number: 'N° 016',
+    title: 'A personal publishing pipeline for Kindle',
+    tagline: 'An agent that turns learning goals and source material into cited, serialized books delivered to your e-reader.',
+    domain: 'Learning tools · Personal publishing',
+    status: 'seed',
+    year: '2026',
+    tags: ['Kindle', 'EPUB', 'agents', 'learning', 'research', 'personal publishing', 'read-it-later'],
+    summary:
+      'A Kindle is excellent at making long-form reading feel finite, portable, and separate from the rest of the internet. The missing product is a personal press that keeps its shelf supplied: give it a paper, a reading list, a question, or a subject you want to learn; it researches and writes a source-cited book, packages it as EPUB, and delivers new editions on a schedule. The Kindle address is a destination, not the product. The real product is a persistent curriculum and a trustworthy publishing pipeline that turns intention into a reading habit.',
+    sections: [
+      {
+        heading: 'The idea',
+        body:
+          'Imagine registering a private e-reader destination, choosing a subject, and waking up to a book that was made for the exact thing you are trying to understand. A research paper could become a patient 6,000-word explainer. A folder of saved articles could become a weekly field guide. A broad intention such as “teach me the foundations of Hinduism” could become a bounded course, one carefully sequenced chapter at a time.\n\nThis is not a feed pushed onto another screen. The service should produce books: a cover, a real table of contents, chapters with shape, footnotes, a glossary, a bibliography, and a durable file the reader owns. The e-reader matters because it changes the posture from checking to reading.',
+      },
+      {
+        heading: 'The problem with today’s reading pipeline',
+        body:
+          'The internet makes acquisition effortless and completion difficult. Papers accumulate in browser tabs. Newsletters disappear beneath newer newsletters. Model-generated explainers remain trapped in chat histories even when they are good enough to deserve a quieter reading surface.\n\nRead-it-later tools solve transfer and organization. They generally do not own the intellectual work of turning a learning goal into a sequence: choosing prerequisites, finding sources, reconciling disagreement, maintaining continuity across chapters, and deciding when the book is complete. That editorial state is the opportunity.',
+      },
+      {
+        heading: 'What the product does',
+        body:
+          'A reader creates a program with a topic, current knowledge, desired depth, chapter length, cadence, source policy, and destination. The system proposes a curriculum and source plan. On each run it assembles a bounded evidence pack, drafts the next artifact with citations, checks claims and continuity, validates an EPUB, and either asks for approval or delivers it.\n\nThe most useful modes are paper-to-explainer, personal course, weekly work briefing, and living field guide. The system keeps an internal shelf where every edition can be downloaded again, corrected, combined into a final volume, or sent to a different reading device.',
+      },
+      {
+        heading: 'The Hinduism example',
+        body:
+          '“Teach me Hinduism” is exactly the kind of request that reveals whether the product is serious. A weak system would generate a single smooth story that collapses thousands of years, many philosophical schools, regional traditions, devotional practices, and contested interpretations into one voice.\n\nA good program would begin by clarifying the reader’s goal, name the traditions it is discussing, use primary texts alongside modern scholarship, distinguish historical description from living practice, and surface disagreement without turning every chapter into a disclaimer. A possible sequence might move from vocabulary and historical framing to the Vedas and Upanishads, dharma and karma, major philosophical schools, bhakti traditions, temple and household practice, modern reform movements, and the limits of treating “Hinduism” as one system. The personalization is in pace, prerequisites, examples, and questions—not in inventing a more convenient tradition.',
+      },
+      {
+        heading: 'Why it might work',
+        body:
+          'The addressable audience is not every Kindle owner. It is the smaller group that already wants to read more deeply for work or self-directed learning but has a broken intake-to-completion loop. Existing paid tools prove that people will pay to get newsletters, articles, PDFs, and EPUBs onto an e-reader. The new value is editorial coherence and continuity.\n\nThe habit could be unusually sticky when it is bounded. Instead of subscribing forever to an infinite stream, a reader starts a six-week course, receives one weekly volume, finishes with a clean omnibus, and chooses the next subject. Completion becomes part of the product.',
+      },
+      {
+        heading: 'The platform constraint',
+        body:
+          'Amazon offers a personal-document delivery workflow, not a general commercial publishing API. Users can approve sender addresses and receive supported files, including EPUB, but Amazon also warns about recipient limits, throttling, and personal/non-commercial use. That makes a shared bulk-sender shortcut too fragile to be the foundation of the business.\n\nThe safest early design is user-controlled delivery: a local companion or user-authorized mailbox sends from the reader’s own approved address, with ordinary EPUB download always available. Public Kindle Store publishing through KDP is a separate workflow with rights, quality, and AI-disclosure obligations; it should never happen automatically just because a private edition was generated.',
+      },
+      {
+        heading: 'Product decisions',
+        body:
+          'EPUB should be canonical and Kindle should be an adapter. Every edition should be immutable, checksummed, versioned, and portable. Because a service cannot reliably append a new chapter inside an existing Kindle personal document, the recommended cadence is a weekly compiled volume, with daily chapter documents as an opt-in and a polished final book at the end.\n\nAutomatic delivery should be earned. The first three editions of a program stay in review mode. Once the reader trusts the source quality, voice, length, and framing, the program can graduate to automatic delivery. A single correction or changed topic can put it back into review.',
+      },
+      {
+        heading: 'Open questions',
+        body:
+          'Does the winning wedge begin with uploaded research papers, where the value is concrete, or with personal courses, where the retention might be better? Will readers pay for books generated from sources they already have, or is expert curation the part they actually value? How much delivery automation can be offered without relying on an unsupported use of Amazon’s personal-document system?\n\nMost importantly: does receiving more material cause more reading, or only move the backlog to a nicer screen? The first pilot should measure completed chapters and completed courses, not books generated.',
+      },
+    ],
+    references: [
+      {
+        title: 'Pew Research Center — U.S. book-reading formats, 2025',
+        href: 'https://www.pewresearch.org/short-reads/2026/04/09/americans-still-opt-for-print-books-over-digital-or-audio-versions-few-are-in-book-clubs/',
+        note:
+          'Survey evidence for e-book usage: 31% of U.S. adults read an e-book in the previous year, including 42% of college graduates.',
+      },
+      {
+        title: 'Amazon — 2024 Kindle lineup and sales signal',
+        href: 'https://press.aboutamazon.com/2024/10/amazon-launches-entirely-new-kindle-lineup-including-reimagined-kindle-scribe-and-first-ever-color-kindle',
+        note:
+          'Amazon said Kindle device sales had reached a decade high and that most purchases came from first-time Kindle owners.',
+      },
+      {
+        title: 'Amazon — supported Send to Kindle files',
+        href: 'https://digprjsurvey.amazon.com/csad/help/node/TCUBEdEkbIhK07ysFu',
+        note:
+          'Official support page listing EPUB and other supported personal-document formats, with a 200 MB web-transfer limit.',
+      },
+      {
+        title: 'Amazon — Send to Kindle delivery errors and limits',
+        href: 'https://digprjsurvey.amazon.co.uk/csad/help/node/T48rsVm3gY7KeGkKUk',
+        note:
+          'Official troubleshooting guidance covering approved senders, recipient limits, throttling, suspension, and personal-use restrictions.',
+      },
+      {
+        title: 'KTool pricing',
+        href: 'https://ktool.io/pricing',
+        note:
+          'A direct market reference for paid Kindle delivery, newsletter bundling, document conversion, and EPUB download.',
+      },
+      {
+        title: 'Readwise Reader',
+        href: 'https://readwise.io/read/',
+        note:
+          'A broader power-reading subscription that can send documents to Kindle and anchors willingness to pay above simple delivery utility.',
+      },
+      {
+        title: 'Amazon KDP content guidelines',
+        href: 'https://kdp.amazon.com/en_US/help/topic/G200672390',
+        note:
+          'The separate public-publishing path: Amazon requires disclosure of AI-generated content and makes publishers responsible for rights and quality.',
+      },
+    ],
+  },
 ];
 
 export const ideaBySlug = (slug: string) => ideas.find((i) => i.slug === slug);

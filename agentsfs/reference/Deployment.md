@@ -24,3 +24,7 @@ Live publishing:
 - Pushing `main` triggers the Cloudflare Pages deployment.
 - After a push, public routes may briefly return stale responses or 404 until the deployment finishes propagating.
 
+Default completion policy:
+
+- Completed substantive work, especially new or materially updated [[Ideas Notebook]] entries, should be verified, committed with tracked `dist/` output, pushed to `main`, and checked on the production domain unless the user asks for local-only work or review before publishing.
+- Commits must stay task-scoped when unrelated user changes are present.

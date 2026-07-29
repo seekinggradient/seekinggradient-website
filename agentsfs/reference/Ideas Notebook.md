@@ -28,4 +28,4 @@ Publishing rules:
 
 Current newest entry:
 
-- [[Ambient Knowledge Agent for Notes]] is `N° 015`.
+- [[Personal Kindle Publishing Pipeline]] is `N° 016`.
