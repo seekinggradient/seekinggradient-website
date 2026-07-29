@@ -28,4 +28,4 @@ Publishing rules:
 
 Current newest entry:
 
-- [[Personal Kindle Publishing Pipeline]] is `N° 016`.
+- [[Agent Fantasy Football Competition]] is `N° 017`.

@@ -8,6 +8,7 @@ import { PredictionMarketDeepDive } from '../components/PredictionMarketDeepDive
 import { AIWeeklyMagazineDeepDive } from '../components/AIWeeklyMagazineDeepDive';
 import { AmbientKnowledgeDeepDive } from '../components/AmbientKnowledgeDeepDive';
 import { PersonalKindlePublisherDeepDive } from '../components/PersonalKindlePublisherDeepDive';
+import { AgentFantasyFootballDeepDive } from '../components/AgentFantasyFootballDeepDive';
 import { NotFound } from './NotFound';
 
 export function IdeaPage() {
@@ -21,7 +22,9 @@ export function IdeaPage() {
 
   const visualAssets = visualsBySlug[idea.slug] ?? [];
   const leadVisual =
-    idea.slug === 'physical-weekly-ai-magazine' || idea.slug === 'personal-kindle-publishing-pipeline'
+    idea.slug === 'physical-weekly-ai-magazine' ||
+    idea.slug === 'personal-kindle-publishing-pipeline' ||
+    idea.slug === 'agent-fantasy-football-competition'
       ? visualAssets[0]
       : undefined;
   const galleryAssets = leadVisual ? visualAssets.slice(1) : visualAssets;
@@ -134,6 +137,7 @@ export function IdeaPage() {
         {idea.slug === 'agent-native-html-artifacts' && <HtmlArtifactsDeepDive />}
         {idea.slug === 'ambient-knowledge-agent-for-notes' && <AmbientKnowledgeDeepDive />}
         {idea.slug === 'personal-kindle-publishing-pipeline' && <PersonalKindlePublisherDeepDive />}
+        {idea.slug === 'agent-fantasy-football-competition' && <AgentFantasyFootballDeepDive />}
         {idea.slug === 'prediction-market-mispricing-engine' && <PredictionMarketDeepDive />}
         {idea.slug === 'physical-weekly-ai-magazine' && <AIWeeklyMagazineDeepDive />}
         {idea.slug === 'short-term-rental-demand-radar' && (
@@ -386,6 +390,36 @@ Text (verbatim): "DHARMA & DAILY LIFE", "Chapter 4 — Duty, action, and context
 Constraints: Unbranded device; no Amazon or Kindle logo; no real person names; no religious deity imagery or sacred symbols; no visible copyrighted book text; no other readable prose; no people or hands; no watermark.
 Avoid: glossy CGI, floating holograms, robot motifs, fake app chrome, excessive props, dark moody lighting, purple gradients, stock-photo perfection, distorted screen text.`;
 
+const agentFantasyDraftRoomPrompt = `Use case: photorealistic-natural
+Asset type: Seeking Gradient Ideas notebook hero visual, landscape 16:9
+Primary request: Create a cinematic editorial photograph of an autonomous fantasy-football competition draft night, visualized as a real modern football strategy room built for software agents rather than people.
+Scene/backdrop: A quiet after-hours draft war room overlooking a dimly lit American football field. A long dark table holds twelve compact unbranded terminal displays arranged like team stations. A large wall display at the far end shows an abstract snake-draft board made of colored blocks and simple position abbreviations, not real player names. A narrow ticker shows generic activity such as PICK, TRADE, WAIVER, LINEUP.
+Subject: The room itself is the protagonist: twelve agent stations, one orchestration screen, a physical draft clock, paper roster sheets, subtle cables, and the distant field under stadium lights. No humans, no humanoid robots.
+Style/medium: Photorealistic high-end editorial sports photography with tactile realism; sophisticated sports documentary mood crossed with a serious technical research lab. Not glossy sci-fi concept art.
+Composition/framing: Wide 16:9 horizontal frame, slightly elevated three-quarter perspective looking down the table toward the draft board and field. Strong central vanishing point. Leave some calm dark negative space in the upper left for webpage breathing room, but do not embed headline text.
+Lighting/mood: Late-evening stadium light spilling through glass, warm tungsten table lamps, restrained monitor glow, anticipatory and intelligent, like a consequential live draft is about to begin.
+Color palette: Deep field green, warm paper cream, graphite black, cobalt blue accents, burnt orange draft clock, small pale yellow indicators.
+Materials/textures: Matte metal, dark stained wood, real paper, slightly dusty glass, soft monitor reflections, subtle field turf.
+Text constraints: Only short generic interface labels may be visible: "DRAFT", "PICK", "TRADE", "WAIVER", "LINEUP", position abbreviations such as QB, RB, WR, TE. No player names, team names, scores, logos, or long readable text.
+Constraints: No real league, NFL, team, player, platform, or sponsor logos. No real personal names. No people, hands, robot bodies, helmets, trophies, gambling chips, money, cryptocurrency, betting odds, or watermark. No split-screen, collage, card grid, fake browser frame, or floating holograms.
+Avoid: neon cyberpunk, purple gradients, humanoid AI clichés, casino energy, generic server room, cluttered UI, distorted text, branded sports uniforms.`;
+
+const agentFantasyProductPrompt = `Use case: ui-mockup
+Asset type: Seeking Gradient Ideas notebook product concept board, landscape 16:9
+Primary request: Create a polished editorial product mockup board for an agent-only American fantasy-football competition that runs as a public season-long research league.
+Scene/backdrop: Warm off-white paper canvas with thin ink dividers and subtle registration marks, like a sports almanac crossed with a serious agent-evaluation notebook. No physical room scene.
+Subject: Three adjacent high-fidelity product screens, each visually distinct but part of one system.
+Screen 1: "LIVE DRAFT" — a twelve-slot snake draft room with a large draft clock, a sparse roster rail, position-colored pick blocks, and a current-turn status. Use fictional agent names only, such as Fourth & Long, Waiver Wire, Sunday Process, and Null Blitz.
+Screen 2: "TRADE ROOM" — a private negotiation thread between two agents, one structured trade proposal, accept / counter / decline states, and a small sealed "decision receipt" indicator. Show only generic player placeholders such as WR-17 and RB-08, never real athlete names.
+Screen 3: "THE TABLE" — a public leaderboard and forum surface with standings, weekly points, reliability, cost, and small links for "Trace", "Postmortem", and "Strategy version". Include one short public forum post titled "Why the waiver bid moved".
+Style/medium: High-fidelity responsive web product UI, expressive personal software, transparent evaluation dashboard, sports editorial information design. Crisp legible typography and realistic spacing; useful rather than decorative.
+Composition/framing: Wide 16:9 presentation board, three screens placed edge-to-edge with generous outer margins, no device frames, no browser chrome. Screen 1 slightly wider than screens 2 and 3. Each screen should be readable as a real product screenshot.
+Lighting/mood: Bright, rigorous, lively, trustworthy; the atmosphere of a public competition where every action can be audited.
+Color palette: Warm paper #f7f1e7, deep violet-black #17152b, field green #1f6a4a, cobalt #3154d8, scoreboard orange #ff7043, pale yellow #f8e45c, restrained mint and lilac accents.
+Text (verbatim): "LIVE DRAFT", "TRADE ROOM", "THE TABLE", "ON THE CLOCK", "PICK", "COUNTER", "ACCEPT", "DECLINE", "DECISION RECEIPT SEALED", "Trace", "Postmortem", "Strategy version", "Why the waiver bid moved", "Fourth & Long", "Waiver Wire", "Sunday Process", "Null Blitz".
+Constraints: No real personal names, player names, team names, NFL or fantasy-platform logos, sponsor logos, betting odds, money, crypto, gambling cues, people, hands, robots, trophies, or watermark. Use only generic player IDs and position abbreviations. Keep all interface language neutral and research-oriented.
+Avoid: generic dark-mode analytics dashboard, purple gradients, excessive rounded cards, mobile phone frames, glassmorphism, sci-fi holograms, AI sparkle motifs, tiny unreadable paragraphs, fake social-media branding, visual clutter.`;
+
 const visualsBySlug: Record<string, VisualAsset[]> = {
   'icloud-album-printer': [
     {
@@ -576,6 +610,24 @@ const visualsBySlug: Record<string, VisualAsset[]> = {
       caption: 'A topic and cadence become an editorial production run, a checked EPUB, and a durable shelf of personal learning books.',
       alt: 'Three-screen product board showing a new reading plan, book production pipeline, and personal e-reader shelf.',
       prompt: personalKindleProductPrompt,
+    },
+  ],
+  'agent-fantasy-football-competition': [
+    {
+      src: '/mockups/specific/agent-fantasy-football-draft-room.png',
+      title: 'Twelve agents, one draft clock',
+      caption:
+        'The flagship as a live sporting event: twelve agent stations, a shared snake-draft board, deterministic orchestration, and a real season waiting outside.',
+      alt: 'Nighttime fantasy football draft room with twelve unbranded agent terminals, a snake draft board, a draft clock, and an empty football field beyond the windows.',
+      prompt: agentFantasyDraftRoomPrompt,
+    },
+    {
+      src: '/mockups/specific/agent-fantasy-football-product.png',
+      title: 'Draft, negotiate, explain',
+      caption:
+        'The three public surfaces that make the system watchable and auditable: a live draft, a structured trade room, and a leaderboard/forum with decision evidence.',
+      alt: 'Three-screen product board for an agent fantasy football research league showing a live draft, trade negotiation, and public standings with traces.',
+      prompt: agentFantasyProductPrompt,
     },
   ],
 };

@@ -21,7 +21,8 @@ Important repo facts:
 
 Recent state:
 
-- The newest idea is [[Personal Kindle Publishing Pipeline]], added as `N° 016` with slug `personal-kindle-publishing-pipeline`. It includes market research, an RFC-style technical/product deep dive, two generated visuals with public prompt provenance, and a code-native architecture diagram.
+- The newest idea is [[Agent Fantasy Football Competition]], added as `N° 017`. It frames a 2026 agent-only NFL fantasy league as both a public sporting event and a season-long agent evaluation environment, with full mechanics, launch plan, agent API, integrity policy, competition research, two generated visuals with public prompt provenance, and a durable 2027 trajectory-learning plan.
+- The previous entry is [[Personal Kindle Publishing Pipeline]], added as `N° 016` with slug `personal-kindle-publishing-pipeline`. It includes market research, an RFC-style technical/product deep dive, two generated visuals with public prompt provenance, and a code-native architecture diagram.
 - A shared in-repo agentsfs was initialized at `agentsfs/` and connected through the root `AGENTS.md` connection block.
 - The Writing archive now includes “The Loop Is the Easy Part” dated July 15, 2026 and “Fly Machines, Sprites, and Session Sandboxes” dated July 25, 2026. Their 16 embedded editorial diagrams live under `public/images/blog/` with reproducible prompt sidecars.
 - Blog publication dates render in the `UTC` timezone on archive and article pages so date-only content values do not shift backward for visitors in negative UTC offsets.

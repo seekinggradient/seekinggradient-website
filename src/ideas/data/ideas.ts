@@ -718,6 +718,145 @@ export const ideas: Idea[] = [
       },
     ],
   },
+  {
+    slug: 'agent-fantasy-football-competition',
+    number: 'N° 017',
+    title: 'A fantasy football league for agents',
+    tagline: 'A season-long public competition where agents draft, trade, negotiate, manage rosters, and leave behind a dataset of how they learned.',
+    domain: 'Agent competitions · Sports',
+    status: 'exploring',
+    year: '2026',
+    tags: [
+      'fantasy football',
+      'agents',
+      'competition',
+      'agent evals',
+      'sports',
+      'trajectories',
+      'agentsfs',
+      'multi-agent systems',
+    ],
+    summary:
+      'Fantasy football is a nearly perfect live environment for studying agents. It combines a fixed ruleset with incomplete information, delayed rewards, scarce resources, deadlines, negotiation, changing world state, and seventeen weeks of opportunities to learn. The proposal is to launch an agent-only NFL fantasy competition in 2026: one flagship league people can follow like a sport, a small set of open leagues for builders, and an immutable decision record that turns the season into a replayable benchmark rather than a disposable stunt.',
+    sections: [
+      {
+        heading: 'The proposition',
+        body:
+          'People do not manage teams directly. They build or configure an agent, give it a strategy and a set of tools, and let it enter a real fantasy season. The agents participate in a live snake draft, set weekly lineups, submit blind waiver bids, propose and negotiate trades, react to injuries and bye weeks, and speak in a public league forum. Humans watch, improve their systems between allowed checkpoints, and own the resulting agent—not the individual picks.\n\nThe public surface should feel like a hybrid of a fantasy league, a Kaggle competition, and a documentary. Standings answer who is winning. Decision receipts explain what each agent believed without demanding private chain-of-thought. Version history shows what the builder changed. Weekly postmortems turn good and bad decisions into an unfolding story.',
+      },
+      {
+        heading: 'Why this is a real agent test',
+        body:
+          'Most agent benchmarks are short, solitary, and easy to reset. A fantasy season is none of those things. Draft mistakes persist. A bad trade helps an opponent. Waiver money spent in September cannot be spent in December. Advice goes stale as depth charts, injuries, weather, and usage change. An agent has to operate under time pressure, maintain a durable model of its roster and rivals, and distinguish signal from a week of noisy outcomes.\n\nThe social layer matters just as much as prediction. Trades test persuasion, valuation, identity, and adversarial communication. The forum tests whether agents can make claims publicly without leaking secrets or swallowing prompt injection from a rival. Reliability becomes part of competence: the smartest system in the league still loses if it misses a lineup lock.',
+      },
+      {
+        heading: 'The 2026 opening',
+        body:
+          'The 2026 NFL season opens on Wednesday, September 9. From July 28, that leaves 43 days—not enough time to build a universal fantasy platform, but enough for a deliberately narrow pilot. The right target is a twelve-agent flagship league plus four twelve-agent public divisions: sixty agents total, one ruleset, one live scoring feed, one open event log, and no entry fee.\n\nThe category is already being validated. The Bot League, Agents XI, AgenticLeague, and Fantopy are all exploring agent-native fantasy sports in 2026. Their existence makes speed useful, but also sharpens the differentiation: the durable opportunity is not merely agents selecting a squad. It is an NFL-length environment with unique player ownership, negotiation, failure recovery, controlled baselines, and a dataset designed to reveal which agent systems actually improve.',
+      },
+      {
+        heading: 'Recommended first season',
+        body:
+          'Use a mainstream redraft format so the experiment tests agents rather than obscure rules: twelve teams, fifteen-round snake draft, full PPR scoring, nine starters and six bench spots, a $100 blind FAAB budget, individual-player lineup locks, and six-team playoffs in Weeks 15–17. The competition engine should be owned and deterministic; a licensed data provider supplies player status and official scoring inputs.\n\nYear one should have two different scoreboards. League standings determine the sporting winner. A separate research scorecard reports reliability, lineup regret, waiver efficiency, trade surplus, calibration, cost, and improvement over a stateless replay. Never combine those measurements into one mystical “agent score.” The football result should remain legible, while the research result explains why it happened.',
+      },
+      {
+        heading: 'What should survive the season',
+        body:
+          'The durable artifact is a frozen 2026 world: every rules version, state snapshot, legal action, message, transaction, lineup, score correction, decision receipt, agent version, and delayed outcome. With builder consent, richer trajectory bundles can include tool summaries, source references, cost, latency, and the compact memories or playbooks the agent carried forward.\n\nThat corpus can power a replay environment in which the same agent runs with and without prior experience on the same historical decision points. It can seed regression tasks, identify tactics and traps, and make 2027 better before registration opens. The annual competition then compounds: a public sporting event on the surface, a growing longitudinal benchmark underneath.',
+      },
+      {
+        heading: 'The open questions',
+        body:
+          'Can a small team license sufficiently reliable live scoring data before the draft? Will builders submit a stable endpoint for seventeen weeks, or should the platform host standardized agent containers? How much external data and compute should the open division permit, and what must be disclosed? Can private trade negotiation remain strategically interesting without becoming an unbounded prompt-injection channel?\n\nThe largest product question is whether the audience follows agents as characters. A technically fair league can still be boring. The draft, trade negotiations, weekly reveals, rivalries, and postmortems must create a story worth returning to—even for someone who never writes an agent.',
+      },
+    ],
+    references: [
+      {
+        title: 'NFL — 2026 regular-season kickoff',
+        href: 'https://www.nfl.com/news/seahawks-to-kick-off-2026-nfl-regular-season-on-wednesday-sept-9-in-seattle',
+        note:
+          'The 2026 season begins Wednesday, September 9 at 8:20 p.m. ET, establishing the immovable launch deadline.',
+      },
+      {
+        title: 'NFL Fantasy — league types and default settings',
+        href: 'https://support.nfl.com/hc/en-us/articles/35869678503060-League-Types-Settings',
+        note:
+          'Primary reference for ordinary roster sizes, league sizes, waiver systems, trades, lineup locks, and custom settings.',
+      },
+      {
+        title: 'NFL Fantasy — scoring',
+        href: 'https://support.nfl.com/hc/en-us/articles/35869730981140-Scoring',
+        note:
+          'Primary reference for head-to-head play, fractional scoring, official stat corrections, and default point values.',
+      },
+      {
+        title: 'NFL Fantasy — draft basics',
+        href: 'https://support.nfl.com/hc/en-us/articles/35869693560980-The-Basics',
+        note:
+          'Explains snake, linear, salary-cap, keeper, live, offline, and autopick draft mechanics.',
+      },
+      {
+        title: 'NFL Fantasy — fair play and user conduct',
+        href: 'https://support.nfl.com/hc/en-us/articles/35869738994068-Fair-Play-and-User-Conduct-Policy',
+        note:
+          'A useful baseline for collusion, multi-team ownership, roster dumping, and communication policy.',
+      },
+      {
+        title: 'Sleeper — public fantasy API',
+        href: 'https://docs.sleeper.com/',
+        note:
+          'A strong read surface for leagues, drafts, rosters, matchups, and transactions; the official API is explicitly read-only.',
+      },
+      {
+        title: 'Yahoo — Fantasy Sports API',
+        href: 'https://developer.yahoo.com/fantasysports/guide/',
+        note:
+          'A mature fantasy data model with OAuth and read/write scopes, useful as an integration reference even if the competition owns its engine.',
+      },
+      {
+        title: 'The Bot League',
+        href: 'https://www.thebotleague.com/',
+        note:
+          'A 2026 agent-only World Cup fantasy competition using a REST API, deterministic scoring, progressive pick reveals, and an open engine.',
+      },
+      {
+        title: 'Agents XI',
+        href: 'https://agentsxi.com/',
+        note:
+          'A 2026 agent-native football competition with bring-your-own-key agents, public decision traces, and separate fantasy and prediction boards.',
+      },
+      {
+        title: 'Fantopy',
+        href: 'https://about.fantopy.ai/',
+        note:
+          'A consumer and creator-league thesis for agent-vs-agent fantasy sports, with autonomous managers and conversational human oversight.',
+      },
+      {
+        title: 'AgenticLeague',
+        href: 'https://www.agenticleague.us/',
+        note:
+          'An early multi-sport fantasy platform whose agents register and join leagues through a SKILL.md-guided API flow.',
+      },
+      {
+        title: 'Agent2Agent protocol specification',
+        href: 'https://google-a2a.github.io/A2A/specification/',
+        note:
+          'Reference vocabulary for agent identity, capabilities, authenticated messages, tasks, and artifacts; useful for interoperability, not required for the first engine.',
+      },
+      {
+        title: '31 U.S.C. § 5362',
+        href: 'https://uscode.house.gov/view.xhtml?edition=prelim&num=0&req=granuleid%3AUSC-prelim-title31-section5362',
+        note:
+          'Federal statutory conditions relevant to fantasy contests, including advance prize disclosure, skill, and aggregated multi-event athlete statistics. State law and contest counsel still matter.',
+      },
+      {
+        title: 'IRS Publication 525',
+        href: 'https://www.irs.gov/publications/p525',
+        note:
+          'Official tax guidance stating that prizes and awards are generally taxable and specifically discussing fantasy-sports winnings.',
+      },
+    ],
+  },
 ];
 
 export const ideaBySlug = (slug: string) => ideas.find((i) => i.slug === slug);
