@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500" role="img" aria-labelledby="title desc">
+  <title id="title">Two different meanings of multimodal model adaptation</title>
+  <desc id="desc">A comparison of vision-language understanding models and image-generation diffusion models, including their inputs, trainable components, objectives, and evaluations.</desc>
+  <rect width="1200" height="1500" fill="#f7f3ea"/>
+  <style>
+    .title{font:700 54px system-ui,sans-serif;fill:#17242b}.sub{font:32px system-ui,sans-serif;fill:#45565e}.head{font:700 36px system-ui,sans-serif;fill:#17242b}.body{font:30px system-ui,sans-serif;fill:#2b3a40}.small{font:27px system-ui,sans-serif;fill:#53646b}.left{fill:#e0eeeb;stroke:#006d77;stroke-width:4}.right{fill:#ece6dc;stroke:#9b5b31;stroke-width:4}.pill{fill:#fffdf8;stroke:#53646b;stroke-width:2}
+  </style>
+  <text x="72" y="92" class="title">“Multimodal” hides two different jobs</text>
+  <text x="72" y="145" class="sub">Understanding pixels is not the same training problem as generating them.</text>
+
+  <rect x="65" y="220" width="515" height="1130" rx="28" class="left"/>
+  <text x="110" y="285" class="head">Vision-language model</text>
+  <text x="110" y="333" class="body">Image + text → text</text>
+  <rect x="110" y="390" width="425" height="135" rx="18" class="pill"/>
+  <text x="145" y="440" class="head">Information path</text>
+  <text x="145" y="485" class="body">pixels → encoder → projector</text>
+  <rect x="110" y="560" width="425" height="210" rx="18" class="pill"/>
+  <text x="145" y="610" class="head">What you adapt</text>
+  <text x="145" y="658" class="body">projector first</text>
+  <text x="145" y="703" class="body">then language model</text>
+  <text x="145" y="748" class="small">vision encoder often frozen</text>
+  <rect x="110" y="805" width="425" height="205" rx="18" class="pill"/>
+  <text x="145" y="855" class="head">Learning signal</text>
+  <text x="145" y="903" class="body">answer tokens grounded</text>
+  <text x="145" y="948" class="body">in the paired image</text>
+  <rect x="110" y="1045" width="425" height="235" rx="18" class="pill"/>
+  <text x="145" y="1095" class="head">Evaluate</text>
+  <text x="145" y="1143" class="body">grounding · OCR · spatial</text>
+  <text x="145" y="1188" class="body">reasoning · hallucination</text>
+  <text x="145" y="1233" class="small">plus ordinary language retention</text>
+
+  <rect x="620" y="220" width="515" height="1130" rx="28" class="right"/>
+  <text x="665" y="285" class="head">Image generator</text>
+  <text x="665" y="333" class="body">Text + noise → image</text>
+  <rect x="665" y="390" width="425" height="135" rx="18" class="pill"/>
+  <text x="700" y="440" class="head">Information path</text>
+  <text x="700" y="485" class="body">caption → denoiser → latent</text>
+  <rect x="665" y="560" width="425" height="210" rx="18" class="pill"/>
+  <text x="700" y="610" class="head">What you adapt</text>
+  <text x="700" y="658" class="body">denoiser LoRA</text>
+  <text x="700" y="703" class="body">text encoder or controls</text>
+  <text x="700" y="748" class="small">VAE commonly stays frozen</text>
+  <rect x="665" y="805" width="425" height="205" rx="18" class="pill"/>
+  <text x="700" y="855" class="head">Learning signal</text>
+  <text x="700" y="903" class="body">predict noise, velocity,</text>
+  <text x="700" y="948" class="body">or another diffusion target</text>
+  <rect x="665" y="1045" width="425" height="235" rx="18" class="pill"/>
+  <text x="700" y="1095" class="head">Evaluate</text>
+  <text x="700" y="1143" class="body">prompt adherence · identity</text>
+  <text x="700" y="1188" class="body">quality · diversity · safety</text>
+  <text x="700" y="1233" class="small">human review remains essential</text>
+
+  <text x="72" y="1420" class="sub">Same word, different architecture, loss, data pipeline, and failure modes.</text>
+</svg>

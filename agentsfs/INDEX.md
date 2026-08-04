@@ -11,5 +11,5 @@ Start with:
 - [[Seeking Gradient Website]] for repo purpose, constraints, and current operating facts.
 - [[Ideas Notebook]] for how idea pages are represented and published.
 - [[Deployment]] for build and publish behavior.
+- [[Books Library]] for the public ebook library, foundation-model series, and online reader architecture.
 - [[Ambient Knowledge Agent for Notes]] for the newest idea added before this agentsfs was initialized.
-

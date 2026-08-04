@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500" role="img" aria-labelledby="title desc">
+  <title id="title">What occupies GPU memory during training</title>
+  <desc id="desc">A memory stack separating parameters, gradients, optimizer states, activations, and temporary buffers, with practical levers for each.</desc>
+  <rect width="1200" height="1500" fill="#f7f3ea"/>
+  <style>
+    .title{font:700 54px system-ui,sans-serif;fill:#17242b}.sub{font:32px system-ui,sans-serif;fill:#45565e}.head{font:700 34px system-ui,sans-serif;fill:#17242b}.body{font:30px system-ui,sans-serif;fill:#2b3a40}.small{font:27px system-ui,sans-serif;fill:#53646b}.box{stroke:#263a42;stroke-width:3}.call{fill:#fffdf8;stroke:#006d77;stroke-width:4}
+  </style>
+  <text x="72" y="92" class="title">Training memory is a stack, not “model size”</text>
+  <text x="72" y="145" class="sub">The checkpoint is only the bottom layer of the bill.</text>
+
+  <rect x="90" y="220" width="680" height="185" rx="20" fill="#d8eee9" class="box"/>
+  <text x="130" y="275" class="head">Temporary buffers and fragmentation</text>
+  <text x="130" y="323" class="body">Attention workspaces, kernels, allocator slack</text>
+  <text x="130" y="365" class="small">Lever: efficient kernels; leave safety headroom</text>
+
+  <rect x="90" y="420" width="680" height="220" rx="20" fill="#b9ddd6" class="box"/>
+  <text x="130" y="475" class="head">Saved activations</text>
+  <text x="130" y="523" class="body">Depends on batch, sequence length, width, depth</text>
+  <text x="130" y="565" class="small">Levers: checkpointing, microbatch, sequence length</text>
+  <text x="130" y="607" class="small">This is the shape-shifter—and often the surprise.</text>
+
+  <rect x="90" y="655" width="680" height="185" rx="20" fill="#91c8bd" class="box"/>
+  <text x="130" y="710" class="head">Optimizer states</text>
+  <text x="130" y="758" class="body">Adam often keeps two moments</text>
+  <text x="130" y="800" class="small">per trained weight · lever: 8-bit states or sharding</text>
+
+  <rect x="90" y="855" width="680" height="175" rx="20" fill="#68ad9f" class="box"/>
+  <text x="130" y="910" class="head">Gradients</text>
+  <text x="130" y="958" class="body">One gradient per trainable parameter</text>
+  <text x="130" y="1000" class="small">Levers: LoRA/QLoRA, ZeRO/FSDP</text>
+
+  <rect x="90" y="1045" width="680" height="175" rx="20" fill="#3d8278" class="box"/>
+  <text x="130" y="1100" font-family="system-ui,sans-serif" font-size="34" font-weight="700" fill="#ffffff">Parameters</text>
+  <text x="130" y="1148" font-family="system-ui,sans-serif" font-size="30" fill="#ffffff">Frozen plus trainable weights</text>
+  <text x="130" y="1190" font-family="system-ui,sans-serif" font-size="27" fill="#ffffff">Lever: lower precision or quantized frozen base</text>
+
+  <rect x="815" y="310" width="310" height="620" rx="28" class="call"/>
+  <text x="855" y="370" class="head">The 6ND rule</text>
+  <text x="855" y="425" class="body">A first-order</text>
+  <text x="855" y="465" class="body">estimate for</text>
+  <text x="855" y="505" class="body">dense training:</text>
+  <text x="855" y="585" font-family="ui-monospace,monospace" font-size="47" font-weight="700" fill="#006d77">6 × N × D</text>
+  <text x="855" y="650" class="body">floating-point</text>
+  <text x="855" y="690" class="body">operations</text>
+  <line x1="855" y1="735" x2="1085" y2="735" stroke="#9aa9ae" stroke-width="2"/>
+  <text x="855" y="790" class="small">N = parameters</text>
+  <text x="855" y="835" class="small">D = processed tokens</text>
+  <text x="855" y="885" class="small">Not a VRAM formula.</text>
+
+  <rect x="90" y="1275" width="1035" height="140" rx="22" fill="#17242b"/>
+  <text x="135" y="1330" font-family="system-ui,sans-serif" font-size="31" font-weight="700" fill="#ffffff">Fit in this order:</text>
+  <text x="135" y="1380" font-family="system-ui,sans-serif" font-size="29" fill="#ffffff">precision → batch/sequence → checkpointing → adapters → sharding</text>
+</svg>

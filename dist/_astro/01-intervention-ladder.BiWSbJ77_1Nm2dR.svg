@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500" role="img" aria-labelledby="title desc">
+  <title id="title">The model adaptation ladder</title>
+  <desc id="desc">A decision ladder from prompting through retrieval, supervised fine-tuning, continued pretraining, preference optimization, reinforcement learning, and training from scratch.</desc>
+  <rect width="1200" height="1500" fill="#f7f3ea"/>
+  <style>
+    .title{font:700 54px system-ui,sans-serif;fill:#17242b}.sub{font:32px system-ui,sans-serif;fill:#45565e}.head{font:700 34px system-ui,sans-serif;fill:#17242b}.body{font:30px system-ui,sans-serif;fill:#2b3a40}.small{font:27px system-ui,sans-serif;fill:#53646b}.label{font:700 28px system-ui,sans-serif;letter-spacing:1px;fill:#006d77}.box{fill:#fffdf8;stroke:#334950;stroke-width:3}.arrow{stroke:#006d77;stroke-width:6;fill:none;marker-end:url(#a)}
+  </style>
+  <defs><marker id="a" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 Z" fill="#006d77"/></marker></defs>
+  <text x="72" y="92" class="title">The adaptation ladder</text>
+  <text x="72" y="145" class="sub">Move downward only when evaluation shows the rung above is insufficient.</text>
+
+  <rect x="95" y="220" width="810" height="128" rx="22" class="box"/>
+  <text x="135" y="270" class="head">1 · Prompting and structured context</text>
+  <text x="135" y="316" class="body">Change instructions, examples, tools, or output constraints.</text>
+
+  <rect x="145" y="390" width="810" height="128" rx="22" class="box"/>
+  <text x="185" y="440" class="head">2 · Retrieval</text>
+  <text x="185" y="486" class="body">Supply changing or private knowledge at inference time.</text>
+
+  <rect x="195" y="560" width="810" height="128" rx="22" class="box"/>
+  <text x="235" y="610" class="head">3 · Supervised fine-tuning</text>
+  <text x="235" y="656" class="body">Teach stable behavior from demonstrations.</text>
+
+  <rect x="245" y="730" width="810" height="128" rx="22" class="box"/>
+  <text x="285" y="780" class="head">4 · Continued pretraining</text>
+  <text x="285" y="826" class="body">Adapt the model to a domain distribution and vocabulary.</text>
+
+  <rect x="295" y="900" width="760" height="128" rx="22" class="box"/>
+  <text x="335" y="950" class="head">5 · Preference optimization</text>
+  <text x="335" y="996" class="body">Learn from chosen/rejected comparisons.</text>
+
+  <rect x="345" y="1070" width="710" height="128" rx="22" class="box"/>
+  <text x="385" y="1120" class="head">6 · Online RL with a verifier</text>
+  <text x="385" y="1166" class="body">Use when rewards are reliable and auditable.</text>
+
+  <rect x="395" y="1240" width="650" height="128" rx="22" fill="#17242b" stroke="#17242b" stroke-width="3"/>
+  <text x="435" y="1290" font-family="system-ui,sans-serif" font-size="34" font-weight="700" fill="#ffffff">7 · Pretrain from scratch</text>
+  <text x="435" y="1336" font-family="system-ui,sans-serif" font-size="30" fill="#ffffff">Use for a genuinely new foundation.</text>
+
+  <path d="M1145 250 C1180 380 1180 1130 1100 1230" class="arrow"/>
+  <text x="1085" y="500" class="label" transform="rotate(90 1085 500)">MORE DATA · COMPUTE · RISK</text>
+  <text x="95" y="1438" class="small">Every rung begins with the same artifact: a held-out evaluation that describes success.</text>
+</svg>

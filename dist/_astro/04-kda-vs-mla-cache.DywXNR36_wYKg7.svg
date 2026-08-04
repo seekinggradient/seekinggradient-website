@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1880" viewBox="0 0 1200 1880" role="img" aria-labelledby="title desc">
+  <title id="title">KDA fixed state versus production and public MLA caches</title>
+  <desc id="desc">A portrait comparison for one K3 layer. KDA has one fixed 96 by 128 by 128 recurrent state. Production MLA adds a 576-value payload per token. The public Hugging Face reference expands each token to 96 by 192 key values plus 96 by 128 value values before caching, or 30,720 values per token.</desc>
+  <defs>
+    <style>
+      .title { font: 700 52px Helvetica, Arial, sans-serif; fill: #111; }
+      .subtitle { font: 34px Helvetica, Arial, sans-serif; fill: #333; }
+      .heading { font: 700 42px Helvetica, Arial, sans-serif; fill: #111; }
+      .body { font: 32px Helvetica, Arial, sans-serif; fill: #171717; }
+      .equation { font: 34px Georgia, Times, serif; fill: #111; }
+      .strong { font: 700 32px Helvetica, Arial, sans-serif; fill: #111; }
+      .white { fill: #fff; }
+      .card { fill: #fff; stroke: #202020; stroke-width: 5; }
+      .light { fill: #e6e6e6; }
+      .mid { fill: #cecece; }
+      .dark { fill: #a8a8a8; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="1880" fill="#f1f1f1"/>
+  <rect x="38" y="38" width="1124" height="1804" rx="30" fill="#fafafa" stroke="#111" stroke-width="5"/>
+  <text x="90" y="120" class="title">What one layer keeps during decode</text>
+  <text x="90" y="176" class="subtitle">Fixed sequence state and per-token cache are different bargains.</text>
+
+  <rect x="90" y="235" width="1020" height="400" rx="26" class="card"/>
+  <path d="M116 235 H1084 Q1110 235 1110 261 V335 H90 V261 Q90 235 116 235 Z" class="light"/>
+  <text x="130" y="305" class="heading">KDA · FIXED WITH SEQUENCE LENGTH</text>
+  <text x="130" y="398" class="equation">96 heads × 128 × 128 = 1,572,864 values</text>
+  <text x="130" y="464" class="body">One recurrent matrix per head summarizes the whole prefix.</text>
+  <text x="130" y="516" class="body">After T tokens: still 1,572,864 values in this layer.</text>
+  <text x="130" y="580" class="body">Tradeoff: bounded state, but arbitrary old tokens are not separate.</text>
+
+  <rect x="90" y="685" width="1020" height="440" rx="26" class="card"/>
+  <path d="M116 685 H1084 Q1110 685 1110 711 V785 H90 V711 Q90 685 116 685 Z" class="mid"/>
+  <text x="130" y="742" class="heading">PRODUCTION MLA</text>
+  <text x="130" y="780" class="strong">COMPRESSED PAYLOAD PER TOKEN</text>
+  <text x="130" y="848" class="equation">512 latent + 64 shared key = 576 values / token</text>
+  <text x="130" y="914" class="body">Projection absorption keeps this compressed payload in cache.</text>
+  <text x="130" y="966" class="equation">After T tokens: 576T cached values in this layer</text>
+  <text x="130" y="1030" class="body">Tradeoff: token entries remain addressable, so storage grows with T.</text>
+
+  <rect x="90" y="1175" width="1020" height="470" rx="26" class="card"/>
+  <path d="M116 1175 H1084 Q1110 1175 1110 1201 V1275 H90 V1201 Q90 1175 116 1175 Z" class="dark"/>
+  <text x="130" y="1232" class="heading">PUBLIC HF PYTHON</text>
+  <text x="130" y="1270" class="strong">EXPANDED KEY/VALUE CACHE PER TOKEN</text>
+  <text x="130" y="1338" class="equation">K: 96 × 192   +   V: 96 × 128</text>
+  <text x="130" y="1400" class="equation">= 30,720 cached values / token</text>
+  <text x="130" y="1466" class="body">Reference code expands per-head K/V before cache update.</text>
+  <text x="130" y="1518" class="equation">After T tokens: 30,720T cached values in this layer</text>
+  <text x="130" y="1582" class="body">Readable inference code; not the production latent-cache footprint.</text>
+
+  <rect x="135" y="1705" width="930" height="95" rx="20" fill="#292929"/>
+  <text x="600" y="1745" text-anchor="middle" class="strong white">KDA compresses across tokens.</text>
+  <text x="600" y="1784" text-anchor="middle" class="strong white">Production MLA compresses within each token.</text>
+</svg>

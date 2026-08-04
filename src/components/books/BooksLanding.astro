@@ -1,0 +1,132 @@
+---
+import { books, series } from '../../books/books';
+---
+
+<section class="books-hero" aria-labelledby="books-title">
+  <div class="books-hero-inner">
+    <div class="books-intro">
+      <div>
+        <p class="eyebrow books-kicker">A library for learning in public</p>
+        <h1 id="books-title" class="display">Foundation Models,<br /><em>from code to frontier.</em></h1>
+      </div>
+      <p class="books-deck">{series.description}</p>
+    </div>
+
+    <div class="book-shelf" aria-label="The four books in this series">
+      <div class="shelf-books">
+        {books.map((book, index) => (
+          <a
+            class={`shelf-book shelf-book-${index + 1}`}
+            href={`/books/foundation-models/${book.slug}`}
+            aria-label={`Open ${book.title}`}
+          >
+            <img src={book.cover} alt={`Cover of ${book.title}`} width="1600" height="2560" loading={index === 1 ? 'eager' : 'lazy'} />
+          </a>
+        ))}
+      </div>
+      <div class="shelf-plank"><span></span><span></span></div>
+    </div>
+  </div>
+</section>
+
+<section class="reading-path" id="foundation-models" aria-labelledby="path-title">
+  <div class="path-shell">
+    <div class="path-heading">
+      <p class="eyebrow">Series 01 · {series.verified}</p>
+      <h2 id="path-title" class="display">Read it as a path.</h2>
+      <p>The sequence moves from first principles to a small implementation you can hold in your head, through the practice of training, and finally to the architecture of a frontier model.</p>
+    </div>
+
+    <ol class="path-list">
+      {books.map((book) => (
+        <li>
+          <a href={`/books/foundation-models/${book.slug}`}>
+            <span class="path-number">0{book.order}</span>
+            <div class="path-copy">
+              <span class="path-eyebrow">{book.eyebrow}</span>
+              <h3>{book.title}</h3>
+              <p>{book.description}</p>
+              <span class="path-meta">{book.readingMinutes} min · {book.chapterLabel}</span>
+            </div>
+            <span class="path-arrow" aria-hidden="true">↗</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<section class="made-section" aria-labelledby="made-title">
+  <div class="made-shell">
+    <p class="eyebrow">How these editions are made</p>
+    <h2 id="made-title" class="display">Built by agents.<br />Kept accountable.</h2>
+    <div class="made-copy">
+      <p>Each book begins as a learning question, then moves through source research, technical review, revision, illustration, and a final publication proof.</p>
+      <p>The Markdown is the editable source. The EPUB is the validated reading edition. Verification dates and primary references travel with both.</p>
+      <a href={`/books/foundation-models/${books[0].slug}`} class="made-link arrow-shift">Start with book one <span class="arrow">→</span></a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .books-hero { overflow: hidden; border-bottom: 1px solid color-mix(in srgb, var(--color-ink), transparent 78%); background: #fffaf3; }
+  .books-hero-inner { min-height: calc(100svh - 72px); max-width: 90rem; margin: 0 auto; padding: clamp(3rem, 5vw, 5.25rem) clamp(1.25rem, 4vw, 3.5rem) 0; }
+  .books-intro { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(17rem, 0.7fr); gap: 3rem; align-items: end; }
+  .books-kicker { margin: 0 0 1.2rem; color: var(--color-orange); }
+  .books-intro h1 { max-width: 67rem; margin: 0; font-size: clamp(4rem, 7.4vw, 7rem); line-height: 0.88; letter-spacing: -0.055em; }
+  .books-intro h1 em { color: var(--color-accent); font-weight: 400; }
+  .books-deck { max-width: 27rem; margin: 0 0 0.45rem; border-top: 3px solid var(--color-orange); padding-top: 1.35rem; font-family: var(--font-serif); font-size: clamp(1.15rem, 1.7vw, 1.5rem); line-height: 1.42; }
+  .book-shelf { position: relative; margin-top: clamp(2.5rem, 5.5vw, 5.5rem); }
+  .shelf-books { display: flex; position: relative; z-index: 1; min-height: clamp(20rem, 42vw, 35rem); align-items: end; justify-content: space-around; gap: clamp(1rem, 4vw, 5rem); padding: 0 clamp(1rem, 5vw, 6rem); }
+  .shelf-book { display: block; width: clamp(10rem, 19vw, 17rem); transform-origin: bottom center; filter: drop-shadow(-1.3rem 1.15rem 1rem rgb(23 21 43 / 0.2)); transition: transform 260ms cubic-bezier(.2,.8,.2,1), filter 260ms ease; animation: shelf-arrive 700ms both cubic-bezier(.2,.8,.2,1); }
+  .shelf-book-1 { animation-delay: 80ms; transform: rotate(-1.2deg); }
+  .shelf-book-2 { animation-delay: 180ms; width: clamp(11rem, 21vw, 18.5rem); }
+  .shelf-book-3 { animation-delay: 280ms; transform: rotate(1.2deg); }
+  .shelf-book-4 { animation-delay: 380ms; transform: rotate(0.8deg); }
+  .shelf-book:hover, .shelf-book:focus-visible { z-index: 2; transform: translateY(-1.15rem) rotate(0); filter: drop-shadow(-1.8rem 1.7rem 1.2rem rgb(23 21 43 / 0.23)); }
+  .shelf-book img { display: block; width: 100%; height: auto; border-radius: 0.15rem; }
+  .shelf-plank { position: relative; height: 2.1rem; background: var(--color-accent); box-shadow: 0 1.2rem 1.7rem rgb(23 21 43 / 0.22); }
+  .shelf-plank::after { content: ''; position: absolute; inset: 100% 0 auto; height: 0.45rem; background: #213ca8; clip-path: polygon(0 0, 100% 0, 98.7% 100%, 1.3% 100%); }
+  .shelf-plank span { position: absolute; top: 100%; width: 1.1rem; height: 3.8rem; background: #213ca8; }
+  .shelf-plank span:first-child { left: 7%; transform: skewX(8deg); }
+  .shelf-plank span:last-child { right: 7%; transform: skewX(-8deg); }
+  .reading-path { background: var(--color-paper); }
+  .path-shell { max-width: 80rem; margin: 0 auto; padding: clamp(5rem, 9vw, 8rem) clamp(1.25rem, 4vw, 2rem); }
+  .path-heading { display: grid; grid-template-columns: minmax(0, 0.55fr) minmax(0, 1.45fr); column-gap: 3rem; align-items: end; margin-bottom: 4rem; }
+  .path-heading > .eyebrow { grid-column: 1 / -1; margin: 0 0 1rem; color: var(--color-accent); }
+  .path-heading h2 { margin: 0; font-size: clamp(3.5rem, 6vw, 5.5rem); }
+  .path-heading > p:last-child { max-width: 39rem; margin: 0 0 0.45rem; color: var(--color-ink-mute); line-height: 1.75; }
+  .path-list { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--color-rule); }
+  .path-list li { border-bottom: 1px solid var(--color-rule); }
+  .path-list a { display: grid; grid-template-columns: 8rem minmax(0, 1fr) auto; gap: 2rem; align-items: center; padding: 2.5rem 0; transition: padding 220ms ease, background 220ms ease; }
+  .path-list a:hover { padding-inline: 1.25rem; background: #fffaf3; }
+  .path-number { font-family: var(--font-serif); font-size: clamp(4.2rem, 7vw, 6.5rem); line-height: 0.8; color: var(--color-accent); }
+  .path-eyebrow { display: block; margin-bottom: 0.65rem; font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.13em; text-transform: uppercase; color: var(--color-orange); }
+  .path-copy h3 { max-width: 52rem; margin: 0; font-family: var(--font-serif); font-size: clamp(1.7rem, 3vw, 2.5rem); font-weight: 500; line-height: 1.06; }
+  .path-copy p { max-width: 48rem; margin: 0.75rem 0 0; color: var(--color-ink-mute); font-size: 0.9rem; line-height: 1.65; }
+  .path-meta { display: block; margin-top: 1rem; font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.06em; text-transform: uppercase; }
+  .path-arrow { font-size: 1.5rem; transition: transform 180ms ease; }
+  .path-list a:hover .path-arrow { transform: translate(0.35rem, -0.35rem); }
+  .made-section { background: var(--color-night); color: white; }
+  .made-shell { display: grid; max-width: 80rem; margin: 0 auto; padding: clamp(5rem, 9vw, 8rem) clamp(1.25rem, 4vw, 2rem); grid-template-columns: 1fr 1fr; gap: 1rem 4rem; }
+  .made-shell > .eyebrow { grid-column: 1 / -1; margin: 0 0 1.5rem; color: var(--color-yellow); }
+  .made-shell h2 { margin: 0; font-size: clamp(3.7rem, 6.5vw, 6rem); color: var(--color-yellow); }
+  .made-copy { max-width: 35rem; padding-top: 0.4rem; }
+  .made-copy p { margin: 0 0 1.4rem; color: rgb(255 255 255 / 0.72); line-height: 1.8; }
+  .made-link { display: inline-flex; align-items: center; gap: 0.6rem; margin-top: 1.5rem; border-bottom: 2px solid var(--color-yellow); padding-bottom: 0.3rem; color: var(--color-yellow); font-weight: 700; }
+  @keyframes shelf-arrive { from { opacity: 0; transform: translateY(3rem) rotate(0); } to { opacity: 1; } }
+  @media (max-width: 780px) {
+    .books-hero-inner { min-height: auto; padding-top: 2.5rem; }
+    .books-intro { grid-template-columns: 1fr; gap: 1.5rem; }
+    .books-intro h1 { font-size: clamp(3.45rem, 14vw, 5.5rem); }
+    .books-deck { max-width: 32rem; }
+    .shelf-books { overflow-x: auto; justify-content: flex-start; min-height: 24rem; margin-inline: -1.25rem; padding: 0 2rem; scroll-snap-type: x mandatory; }
+    .shelf-book, .shelf-book-2 { flex: 0 0 12.5rem; width: 12.5rem; scroll-snap-align: center; }
+    .path-heading { grid-template-columns: 1fr; gap: 1.5rem; }
+    .path-list a { grid-template-columns: 4.5rem minmax(0, 1fr); gap: 1rem; }
+    .path-number { font-size: 3.6rem; }
+    .path-arrow { display: none; }
+    .made-shell { grid-template-columns: 1fr; gap: 2rem; }
+  }
+  @media (prefers-reduced-motion: reduce) { .shelf-book { animation: none; } }
+</style>

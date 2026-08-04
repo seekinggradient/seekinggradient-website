@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500" role="img" aria-labelledby="title desc">
+  <title id="title">A staged model adaptation pipeline</title>
+  <desc id="desc">Continued pretraining, supervised fine-tuning, preference optimization, and reinforcement learning connected by evaluation and retention gates.</desc>
+  <rect width="1200" height="1500" fill="#f7f3ea"/>
+  <style>
+    .title{font:700 54px system-ui,sans-serif;fill:#17242b}.sub{font:32px system-ui,sans-serif;fill:#45565e}.head{font:700 35px system-ui,sans-serif;fill:#17242b}.body{font:30px system-ui,sans-serif;fill:#2b3a40}.small{font:27px system-ui,sans-serif;fill:#53646b}.stage{fill:#fffdf8;stroke:#263a42;stroke-width:3}.gate{fill:#d8eee9;stroke:#006d77;stroke-width:4}.arrow{stroke:#006d77;stroke-width:6;fill:none;marker-end:url(#a)}
+  </style>
+  <defs><marker id="a" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 Z" fill="#006d77"/></marker></defs>
+  <text x="72" y="92" class="title">Four stages teach four different things</text>
+  <text x="72" y="145" class="sub">A stage is earned by evidence; it is not a ritual.</text>
+
+  <rect x="105" y="225" width="780" height="170" rx="24" class="stage"/>
+  <text x="150" y="280" class="head">1 · Continued pretraining (CPT)</text>
+  <text x="150" y="330" class="body">Learn domain language, distribution, and regularities.</text>
+  <text x="150" y="370" class="small">Signal: next-token prediction on curated domain text.</text>
+  <path d="M495 395 L495 465" class="arrow"/>
+
+  <rect x="105" y="470" width="780" height="170" rx="24" class="stage"/>
+  <text x="150" y="525" class="head">2 · Supervised fine-tuning (SFT)</text>
+  <text x="150" y="575" class="body">Learn demonstrations, formats, tool use, and behavior.</text>
+  <text x="150" y="615" class="small">Signal: loss on the tokens you want the model to produce.</text>
+  <path d="M495 640 L495 710" class="arrow"/>
+
+  <rect x="105" y="715" width="780" height="170" rx="24" class="stage"/>
+  <text x="150" y="770" class="head">3 · Preference optimization</text>
+  <text x="150" y="820" class="body">Learn which plausible response is better.</text>
+  <text x="150" y="860" class="small">Signal: chosen/rejected comparisons or scored candidates.</text>
+  <path d="M495 885 L495 955" class="arrow"/>
+
+  <rect x="105" y="960" width="780" height="170" rx="24" class="stage"/>
+  <text x="150" y="1015" class="head">4 · Online RL</text>
+  <text x="150" y="1065" class="body">Optimize outcomes through sampled attempts.</text>
+  <text x="150" y="1105" class="small">Use only when reward is hard to game and easy to audit.</text>
+
+  <rect x="930" y="355" width="230" height="610" rx="28" class="gate"/>
+  <text x="970" y="415" class="head">Gate</text>
+  <text x="970" y="480" class="body">Target</text><text x="970" y="520" class="body">quality</text>
+  <line x1="970" y1="560" x2="1120" y2="560" stroke="#7b969e" stroke-width="2"/>
+  <text x="970" y="625" class="body">General</text><text x="970" y="665" class="body">retention</text>
+  <line x1="970" y1="705" x2="1120" y2="705" stroke="#7b969e" stroke-width="2"/>
+  <text x="970" y="770" class="body">Safety</text>
+  <line x1="970" y1="810" x2="1120" y2="810" stroke="#7b969e" stroke-width="2"/>
+  <text x="970" y="875" class="body">Cost</text>
+  <path d="M930 660 C865 660 850 660 810 660" class="arrow"/>
+
+  <rect x="105" y="1220" width="1055" height="180" rx="24" fill="#17242b"/>
+  <text x="150" y="1280" font-family="system-ui,sans-serif" font-size="34" font-weight="700" fill="#ffffff">Keep the base checkpoint and every evaluation set.</text>
+  <text x="150" y="1330" font-family="system-ui,sans-serif" font-size="30" fill="#ffffff">Each new stage must beat the prior stage on its intended axis</text>
+  <text x="150" y="1372" font-family="system-ui,sans-serif" font-size="30" fill="#ffffff">without crossing your retention, safety, or budget boundary.</text>
+</svg>

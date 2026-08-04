@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import { ideas } from '../ideas/data/ideas';
+import { books } from '../books/books';
 
 const posts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
@@ -23,7 +24,7 @@ const formatDate = (date: Date) =>
 
 <Layout
 	title="Seeking Gradient"
-	description="The personal homepage of Seeking Gradient: writing about AI agents, software, infrastructure, and projects in progress."
+	description="The personal homepage of Seeking Gradient: writing, agent-created learning books, software, infrastructure, and projects in progress."
 	canonicalPath="/"
 	ogType="website"
 	fullBleed
@@ -50,7 +51,7 @@ const formatDate = (date: Date) =>
 				</h1>
 				<div class="hero-bottom">
 					<p>
-						This is my home on the internet: part blog, part project shelf, and part notebook for ideas that are still becoming something.
+						This is my home on the internet: part blog, part learning library, and part project shelf for ideas that are still becoming something.
 					</p>
 					<div class="hero-actions">
 						<a href={`/blog/${latestPosts[0].slug}`} class="primary-link arrow-shift">Read my latest post <span class="arrow" aria-hidden="true">→</span></a>
@@ -91,6 +92,32 @@ const formatDate = (date: Date) =>
 						</li>
 					))}
 				</ol>
+			</div>
+		</section>
+
+		<section class="home-books" id="books">
+			<div class="home-books-shell">
+				<div class="home-books-heading">
+					<div>
+						<p class="eyebrow">New · The learning library</p>
+						<h2 class="display">Foundation Models,<br /><em>from code to frontier.</em></h2>
+					</div>
+					<div class="home-books-copy">
+						<p>Four agent-created books about how Transformers work, how their code fits together, how to train them, and where frontier architecture is heading.</p>
+						<a href="/books" class="arrow-shift">Explore the library <span class="arrow">→</span></a>
+					</div>
+				</div>
+
+				<div class="home-mini-shelf">
+					<div class="home-cover-row">
+						{books.map((book) => (
+							<a href={`/books/foundation-models/${book.slug}`} aria-label={`Open ${book.title}`}>
+								<img src={book.cover} alt={`Cover of ${book.title}`} width="1600" height="2560" loading="lazy" />
+							</a>
+						))}
+					</div>
+					<div class="home-shelf-plank" aria-hidden="true"></div>
+				</div>
 			</div>
 		</section>
 
@@ -258,6 +285,24 @@ const formatDate = (date: Date) =>
 	.post-meta span { font-size: 1rem; transition: transform 180ms ease; }
 	.writing-link:hover .post-meta span { transform: translate(0.2rem, -0.2rem); }
 
+	.home-books { overflow: hidden; background: var(--color-accent); color: white; }
+	.home-books-shell { max-width: 80rem; margin: 0 auto; padding: clamp(5rem, 8vw, 7rem) clamp(1.25rem, 4vw, 2rem) 0; }
+	.home-books-heading { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(17rem, 0.65fr); gap: 3rem; align-items: end; }
+	.home-books-heading .eyebrow { margin: 0 0 1.2rem; color: var(--color-yellow); }
+	.home-books-heading h2 { margin: 0; font-size: clamp(3.7rem, 6.5vw, 6.5rem); line-height: 0.9; letter-spacing: -0.045em; }
+	.home-books-heading h2 em { color: var(--color-yellow); font-weight: 400; }
+	.home-books-copy { max-width: 30rem; border-top: 2px solid var(--color-orange); padding-top: 1.2rem; }
+	.home-books-copy p { margin: 0; color: rgb(255 255 255 / 0.76); line-height: 1.75; }
+	.home-books-copy a { display: inline-flex; align-items: center; gap: 0.55rem; margin-top: 1.5rem; border-bottom: 2px solid var(--color-yellow); padding-bottom: 0.25rem; color: var(--color-yellow); font-weight: 700; }
+	.home-mini-shelf { position: relative; margin-top: clamp(3rem, 6vw, 5.5rem); }
+	.home-cover-row { display: flex; min-height: clamp(17rem, 32vw, 27rem); align-items: end; justify-content: space-around; gap: clamp(1rem, 3vw, 3.5rem); padding-inline: clamp(0.5rem, 4vw, 4rem); }
+	.home-cover-row a { display: block; width: clamp(8.5rem, 15vw, 13rem); filter: drop-shadow(-0.8rem 0.8rem 0.65rem rgb(14 20 63 / 0.35)); transition: transform 220ms cubic-bezier(.2,.8,.2,1); }
+	.home-cover-row a:nth-child(odd) { transform: rotate(-1deg); }
+	.home-cover-row a:nth-child(even) { transform: rotate(1deg); }
+	.home-cover-row a:hover { z-index: 2; transform: translateY(-0.8rem) rotate(0); }
+	.home-cover-row img { display: block; width: 100%; height: auto; }
+	.home-shelf-plank { height: 1.8rem; margin-inline: -3rem; background: var(--color-orange); box-shadow: 0 1rem 1.5rem rgb(14 20 63 / 0.35); }
+
 	.projects-section { background: var(--color-paper); }
 	.projects-heading h2 { color: var(--color-accent); }
 	.project-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border: 1px solid var(--color-ink); }
@@ -300,6 +345,9 @@ const formatDate = (date: Date) =>
 		.section-heading { align-items: start; flex-direction: column; }
 		.writing-link { grid-template-columns: 2.4rem minmax(0, 1fr); gap: 0.75rem; }
 		.post-meta { grid-column: 2; justify-content: flex-start; }
+		.home-books-heading { grid-template-columns: 1fr; }
+		.home-cover-row { overflow-x: auto; justify-content: flex-start; min-height: 21rem; margin-inline: -1.25rem; padding-inline: 2rem; scroll-snap-type: x mandatory; }
+		.home-cover-row a { flex: 0 0 10.5rem; width: 10.5rem; scroll-snap-align: center; }
 		.project-grid { grid-template-columns: 1fr; }
 		.project-tile { min-height: 20rem; border-right: 0 !important; border-bottom: 1px solid var(--color-ink) !important; }
 		.project-tile:last-child { border-bottom: 0 !important; }

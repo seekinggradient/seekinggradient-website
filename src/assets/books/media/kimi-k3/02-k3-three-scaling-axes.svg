@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1850" viewBox="0 0 1200 1850" role="img" aria-labelledby="title desc">
+  <title id="title">Kimi K3's sequence, depth, and width scaling axes</title>
+  <desc id="desc">A portrait diagram separating Kimi K3's three main scaling axes. KDA and Gated MLA manage sequence history, Attention Residuals select computation from earlier depth within the current forward call, and Stable LatentMoE selects 16 of 896 routed experts plus two shared experts in each MoE layer.</desc>
+  <defs>
+    <style>
+      .title { font: 700 54px Helvetica, Arial, sans-serif; fill: #111; }
+      .subtitle { font: 34px Helvetica, Arial, sans-serif; fill: #333; }
+      .axis { font: 700 44px Helvetica, Arial, sans-serif; fill: #111; }
+      .question { font: 700 34px Helvetica, Arial, sans-serif; fill: #111; }
+      .body { font: 32px Helvetica, Arial, sans-serif; fill: #171717; }
+      .label { font: 700 32px Helvetica, Arial, sans-serif; fill: #111; }
+      .white { fill: #fff; }
+      .card { fill: #fff; stroke: #202020; stroke-width: 5; }
+      .band1 { fill: #dedede; }
+      .band2 { fill: #c9c9c9; }
+      .band3 { fill: #adadad; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="1850" fill="#f1f1f1"/>
+  <rect x="38" y="38" width="1124" height="1774" rx="30" fill="#fafafa" stroke="#111" stroke-width="5"/>
+
+  <text x="90" y="120" class="title">Three axes, three bottlenecks</text>
+  <text x="90" y="176" class="subtitle">K3 does not ask one mechanism to solve every scaling problem.</text>
+
+  <rect x="90" y="235" width="1020" height="465" rx="26" class="card"/>
+  <path d="M116 235 H1084 Q1110 235 1110 261 V335 H90 V261 Q90 235 116 235 Z" class="band1"/>
+  <text x="130" y="304" class="axis">SEQUENCE</text>
+  <text x="130" y="392" class="question">What from earlier tokens remains accessible?</text>
+  <text x="130" y="462" class="label">KDA</text>
+  <text x="265" y="462" class="body">Fixed-size, editable recurrent whiteboard</text>
+  <text x="130" y="522" class="label">Gated MLA</text>
+  <text x="365" y="522" class="body">Global archive of token entries</text>
+  <text x="130" y="590" class="body">Production MLA caches latent entries; the public Python</text>
+  <text x="130" y="638" class="body">expands per-head K/V. Both grow with sequence length.</text>
+
+  <rect x="90" y="745" width="1020" height="415" rx="26" class="card"/>
+  <path d="M116 745 H1084 Q1110 745 1110 771 V845 H90 V771 Q90 745 116 745 Z" class="band2"/>
+  <text x="130" y="814" class="axis">DEPTH</text>
+  <text x="130" y="902" class="question">Which earlier computational stage is useful now?</text>
+  <text x="130" y="976" class="label">Attention Residuals</text>
+  <text x="130" y="1034" class="body">Select block representations built during this model</text>
+  <text x="130" y="1082" class="body">forward call. They are not autoregressive cache state.</text>
+
+  <rect x="90" y="1205" width="1020" height="465" rx="26" class="card"/>
+  <path d="M116 1205 H1084 Q1110 1205 1110 1231 V1305 H90 V1231 Q90 1205 116 1205 Z" class="band3"/>
+  <text x="130" y="1274" class="axis">WIDTH</text>
+  <text x="130" y="1362" class="question">Which specialists should transform this token?</text>
+  <text x="130" y="1436" class="label">Stable LatentMoE</text>
+  <text x="130" y="1494" class="body">In each of 92 MoE layers: select 16 of 896 routed</text>
+  <text x="130" y="1542" class="body">experts, plus 2 shared experts, in a latent width.</text>
+  <text x="130" y="1610" class="body">2.78T total parameters · 104.2B activated per token</text>
+
+  <rect x="150" y="1720" width="900" height="78" rx="20" fill="#292929"/>
+  <text x="600" y="1770" text-anchor="middle" class="label white">One model · complementary forms of capacity</text>
+</svg>

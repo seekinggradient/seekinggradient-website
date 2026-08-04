@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1900" viewBox="0 0 1200 1900" role="img" aria-labelledby="title desc">
+  <title id="title">Attention Residual sources live for one model forward call</title>
+  <desc id="desc">A portrait decode timeline. Token t enters with persistent KDA recurrent state and MLA cache. During its 93-layer forward call, Attention Residuals build and select embedding, completed block, and current-prefix depth sources. At the end those depth sources are discarded, while updated KDA and MLA sequence state persists. Token t plus one starts a fresh depth stack.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#202020"/>
+    </marker>
+    <style>
+      .title { font: 700 52px Helvetica, Arial, sans-serif; fill: #111; }
+      .subtitle { font: 34px Helvetica, Arial, sans-serif; fill: #333; }
+      .heading { font: 700 42px Helvetica, Arial, sans-serif; fill: #111; }
+      .body { font: 32px Helvetica, Arial, sans-serif; fill: #171717; }
+      .strong { font: 700 32px Helvetica, Arial, sans-serif; fill: #111; }
+      .white { fill: #fff; }
+      .card { fill: #fff; stroke: #202020; stroke-width: 5; }
+      .soft { fill: #e4e4e4; stroke: #333; stroke-width: 4; }
+      .dark { fill: #292929; stroke: #111; stroke-width: 4; }
+      .line { fill: none; stroke: #202020; stroke-width: 5; marker-end: url(#arrow); }
+      .dash { fill: none; stroke: #555; stroke-width: 4; stroke-dasharray: 12 10; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="1900" fill="#f1f1f1"/>
+  <rect x="38" y="38" width="1124" height="1824" rx="30" fill="#fafafa" stroke="#111" stroke-width="5"/>
+  <text x="90" y="120" class="title">AttnRes: depth memory for one call</text>
+  <text x="90" y="176" class="subtitle">Decode persists sequence state, not the depth-source stack.</text>
+
+  <rect x="130" y="230" width="940" height="130" rx="22" class="dark"/>
+  <text x="600" y="284" text-anchor="middle" class="strong white">PERSISTENT INPUT TO DECODE CALL t</text>
+  <text x="600" y="332" text-anchor="middle" class="body white">KDA recurrent state + MLA token cache</text>
+
+  <path d="M600 360 L600 425" class="line"/>
+
+  <rect x="90" y="445" width="1020" height="770" rx="28" class="card"/>
+  <text x="130" y="512" class="heading">MODEL FORWARD CALL FOR TOKEN t</text>
+  <text x="130" y="566" class="body">Starts with block_residual = None</text>
+
+  <rect x="140" y="620" width="920" height="145" rx="20" class="soft"/>
+  <text x="180" y="675" class="strong">DEPTH SOURCES BUILT AS THE TOKEN ASCENDS</text>
+  <text x="180" y="728" class="body">embedding · completed block sums · current partial sum</text>
+
+  <path d="M600 765 L600 825" class="line"/>
+
+  <rect x="140" y="845" width="920" height="150" rx="20" class="soft"/>
+  <text x="180" y="902" class="strong">ATTNRES #1 AND #2 IN EACH DECODER LAYER</text>
+  <text x="180" y="956" class="body">Select depth sources before attention and before FFN/MoE.</text>
+
+  <path d="M600 995 L600 1055" class="line"/>
+
+  <rect x="140" y="1075" width="920" height="95" rx="20" fill="#d0d0d0" stroke="#333" stroke-width="4"/>
+  <text x="600" y="1135" text-anchor="middle" class="strong">93 layers later: logits and updated sequence state</text>
+
+  <path d="M600 1215 L600 1280" class="line"/>
+
+  <rect x="90" y="1300" width="490" height="220" rx="24" class="card"/>
+  <text x="335" y="1360" text-anchor="middle" class="heading">PERSISTS</text>
+  <text x="335" y="1420" text-anchor="middle" class="body">Updated KDA state</text>
+  <text x="335" y="1470" text-anchor="middle" class="body">Updated MLA cache</text>
+
+  <rect x="620" y="1300" width="490" height="220" rx="24" class="card"/>
+  <text x="865" y="1360" text-anchor="middle" class="heading">DISCARDED</text>
+  <text x="865" y="1420" text-anchor="middle" class="body">AttnRes block sources</text>
+  <text x="865" y="1470" text-anchor="middle" class="body">Current prefix sum</text>
+
+  <path d="M335 1520 L335 1610 L600 1610 L600 1650" class="line"/>
+  <path d="M865 1520 L865 1585" class="dash"/>
+  <text x="865" y="1635" text-anchor="middle" class="body">No path to next call</text>
+
+  <rect x="130" y="1670" width="940" height="130" rx="22" class="dark"/>
+  <text x="600" y="1724" text-anchor="middle" class="strong white">DECODE CALL t+1</text>
+  <text x="600" y="1772" text-anchor="middle" class="body white">Persistent KDA/MLA state; fresh block_residual = None</text>
+</svg>

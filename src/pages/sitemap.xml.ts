@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import { ideas } from '../ideas/data/ideas';
+import { books } from '../books/books';
 
 const SITE_URL = 'https://seekinggradient.com';
 
@@ -14,6 +15,12 @@ export const GET: APIRoute = async () => {
     '<url><loc>https://seekinggradient.com/ideas</loc></url>',
     '<url><loc>https://seekinggradient.com/ideas/about</loc></url>',
     '<url><loc>https://seekinggradient.com/ideas/mockups</loc></url>',
+    '<url><loc>https://seekinggradient.com/books</loc></url>',
+    '<url><loc>https://seekinggradient.com/books/foundation-models</loc></url>',
+    ...books.flatMap((book) => [
+      `<url><loc>${SITE_URL}/books/foundation-models/${book.slug}</loc></url>`,
+      `<url><loc>${SITE_URL}/books/foundation-models/${book.slug}/read</loc></url>`,
+    ]),
     ...ideas.map((idea) => `<url><loc>${SITE_URL}/ideas/${idea.slug}</loc></url>`),
     ...posts.map((post) => {
       const loc = `${SITE_URL}/blog/${post.slug}`;

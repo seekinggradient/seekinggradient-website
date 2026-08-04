@@ -5,6 +5,7 @@ interface Props {
 	canonicalPath?: string;
 	ogType?: 'website' | 'article';
 	fullBleed?: boolean;
+	image?: string;
 }
 
 const {
@@ -13,10 +14,12 @@ const {
 	canonicalPath = '/',
 	ogType = 'website',
 	fullBleed = false,
+	image,
 } = Astro.props;
 
 const SITE_URL = 'https://seekinggradient.com';
 const canonicalUrl = new URL(canonicalPath, SITE_URL).toString();
+const imageUrl = image ? new URL(image, SITE_URL).toString() : undefined;
 ---
 
 <!doctype html>
@@ -36,10 +39,12 @@ const canonicalUrl = new URL(canonicalPath, SITE_URL).toString();
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
 		<meta property="og:url" content={canonicalUrl} />
+		{imageUrl && <meta property="og:image" content={imageUrl} />}
 
-		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:card" content={imageUrl ? 'summary_large_image' : 'summary'} />
 		<meta name="twitter:title" content={title} />
 		<meta name="twitter:description" content={description} />
+		{imageUrl && <meta name="twitter:image" content={imageUrl} />}
 
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -256,6 +261,7 @@ const canonicalUrl = new URL(canonicalPath, SITE_URL).toString();
 				</a>
 				<div class="hidden md:flex items-center gap-7 text-[13px] font-medium text-[color:var(--color-ink-soft)]">
 					<a href="/essays" class="link-underline pb-0.5 hover:text-[color:var(--color-ink)]">Writing</a>
+					<a href="/books" class="link-underline pb-0.5 hover:text-[color:var(--color-ink)]">Books</a>
 					<a href="/ideas" class="link-underline pb-0.5 hover:text-[color:var(--color-ink)]">Projects</a>
 					<a href="/#about" class="link-underline pb-0.5 hover:text-[color:var(--color-ink)]">About</a>
 					<a href="mailto:seekinggradient@gmail.com" class="nav-email px-3 py-1.5 bg-[color:var(--color-yellow)] text-[color:var(--color-ink)] transition-transform hover:-rotate-2">Email ↗</a>
@@ -264,6 +270,7 @@ const canonicalUrl = new URL(canonicalPath, SITE_URL).toString();
 					<summary class="eyebrow border border-[color:var(--color-rule)] px-3 py-2">Menu</summary>
 					<div class="absolute right-0 top-[calc(100%+0.75rem)] w-48 border border-[color:var(--color-rule)] bg-[color:var(--color-paper)] p-2 shadow-[0_20px_50px_rgb(21_23_22/0.12)]">
 						<a href="/essays" class="block px-3 py-2.5 text-sm hover:bg-[color:var(--color-paper-deep)]">Writing</a>
+						<a href="/books" class="block px-3 py-2.5 text-sm hover:bg-[color:var(--color-paper-deep)]">Books</a>
 						<a href="/ideas" class="block px-3 py-2.5 text-sm hover:bg-[color:var(--color-paper-deep)]">Projects</a>
 						<a href="/#about" class="block px-3 py-2.5 text-sm hover:bg-[color:var(--color-paper-deep)]">About</a>
 						<a href="mailto:seekinggradient@gmail.com" class="block px-3 py-2.5 text-sm text-[color:var(--color-accent)] hover:bg-[color:var(--color-paper-deep)]">Email</a>
@@ -289,6 +296,7 @@ const canonicalUrl = new URL(canonicalPath, SITE_URL).toString();
 						<div>
 							<ul class="flex flex-wrap gap-x-6 gap-y-3 text-sm md:justify-end">
 								<li><a href="/essays" class="link-underline pb-0.5">Writing</a></li>
+								<li><a href="/books" class="link-underline pb-0.5">Books</a></li>
 								<li><a href="/ideas" class="link-underline pb-0.5">Projects</a></li>
 								<li><a href="/tracking" class="link-underline pb-0.5">Tracking</a></li>
 								<li><a href="mailto:seekinggradient@gmail.com" class="link-underline pb-0.5">Email</a></li>

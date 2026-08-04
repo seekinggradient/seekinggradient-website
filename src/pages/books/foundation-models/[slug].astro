@@ -1,0 +1,186 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { books, getBook, series } from '../../../books/books';
+
+export function getStaticPaths() {
+  return books.map((book) => ({ params: { slug: book.slug } }));
+}
+
+const book = getBook(Astro.params.slug ?? '');
+if (!book) return Astro.redirect('/books');
+
+const previous = books[book.order - 2];
+const next = books[book.order];
+const markdownPath = `/books/foundation-models/${book.slug}.md`;
+---
+
+<Layout
+  title={`${book.title} | Seeking Gradient`}
+  description={book.description}
+  canonicalPath={`/books/foundation-models/${book.slug}`}
+  image={book.cover}
+  ogType="article"
+  fullBleed
+>
+  <article class={`book-page accent-${book.accent}`}>
+    <section class="book-hero">
+      <div class="book-hero-shell">
+        <div class="book-stage">
+          <img src={book.cover} alt={`Cover of ${book.title}`} width="1600" height="2560" />
+          <div class="book-stage-shelf" aria-hidden="true"></div>
+        </div>
+
+        <div class="book-overview">
+          <a href="/books" class="back-link arrow-shift"><span class="arrow" aria-hidden="true">←</span> The library</a>
+          <div class="mobile-book-stage" aria-hidden="true">
+            <img src={book.cover} alt="" width="1600" height="2560" />
+            <span></span>
+          </div>
+          <p class="eyebrow series-label">Foundation Models · Book 0{book.order} of 04</p>
+          <h1 class="display">{book.title}</h1>
+          <p class="book-description">{book.description}</p>
+          <p class="book-audience">{book.audience}</p>
+
+          <dl class="book-facts">
+            <div><dt>Reading time</dt><dd>{book.readingMinutes} minutes</dd></div>
+            <div><dt>Contents</dt><dd>{book.chapterLabel}</dd></div>
+            <div><dt>Verified</dt><dd>{series.verified}</dd></div>
+          </dl>
+
+          <div class="book-actions">
+            <a class="read-action" href={`/books/foundation-models/${book.slug}/read`}>
+              <span aria-hidden="true">◫</span> Read online
+            </a>
+            <a class="download-action" href={book.epub} download>
+              <span aria-hidden="true">↓</span> Download EPUB <small>{book.downloadSize}</small>
+            </a>
+            <a class="source-action" href={markdownPath} download>Markdown source ↘</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="inside-section" aria-labelledby="inside-title">
+      <div class="inside-shell">
+        <div class="inside-heading">
+          <p class="eyebrow">A guided route through the book</p>
+          <h2 id="inside-title" class="display">Inside the book.</h2>
+        </div>
+        <ol class="inside-list">
+          {book.parts.map((part, index) => (
+            <li>
+              <a href={`/books/foundation-models/${book.slug}/read#${part.anchor}`}>
+                <span>0{index + 1}</span>
+                <strong>{part.label}</strong>
+                <span aria-hidden="true">→</span>
+              </a>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <section class="series-continuation" aria-labelledby="series-title">
+      <div class="series-shell">
+        <div>
+          <p class="eyebrow">The complete learning path</p>
+          <h2 id="series-title" class="display">In this series.</h2>
+        </div>
+        <div class="series-neighbors">
+          {previous ? (
+            <a href={`/books/foundation-models/${previous.slug}`} class="neighbor-link">
+              <img src={previous.cover} alt="" width="1600" height="2560" loading="lazy" />
+              <span><small>Book 0{previous.order} · Previous</small><strong>{previous.shortTitle}</strong></span>
+            </a>
+          ) : (
+            <span class="neighbor-placeholder">You’re at the beginning.</span>
+          )}
+          {next ? (
+            <a href={`/books/foundation-models/${next.slug}`} class="neighbor-link">
+              <img src={next.cover} alt="" width="1600" height="2560" loading="lazy" />
+              <span><small>Book 0{next.order} · Next</small><strong>{next.shortTitle}</strong></span>
+            </a>
+          ) : (
+            <span class="neighbor-placeholder">You’ve reached the frontier.</span>
+          )}
+        </div>
+      </div>
+    </section>
+  </article>
+</Layout>
+
+<style>
+  .book-page { --book-accent: var(--color-mint); }
+  .book-page.accent-yellow { --book-accent: var(--color-yellow); }
+  .book-page.accent-lilac { --book-accent: var(--color-lilac); }
+  .book-hero { overflow: hidden; background: #fffaf3; }
+  .book-hero-shell { display: grid; min-height: clamp(42rem, calc(85svh - 72px), 50rem); max-width: 88rem; margin: 0 auto; padding: clamp(2.5rem, 5vw, 5rem) clamp(1.25rem, 4vw, 3rem) 0; grid-template-columns: minmax(20rem, 0.84fr) minmax(0, 1.16fr); gap: clamp(3rem, 7vw, 8rem); align-items: center; }
+  .book-stage { display: flex; position: relative; height: 100%; min-height: 38rem; align-items: end; justify-content: center; padding-bottom: 2.3rem; }
+  .book-stage::before { content: ''; position: absolute; left: 2%; bottom: 1.8rem; width: 70%; height: 66%; background: rgb(23 21 43 / 0.18); filter: blur(1.6rem); transform: skewY(-35deg) translate(-2.4rem, -1rem); transform-origin: bottom right; }
+  .book-stage img { position: relative; z-index: 2; width: min(100%, 24rem); height: auto; filter: drop-shadow(-1rem 1rem 0.8rem rgb(23 21 43 / 0.16)); animation: book-rise 700ms cubic-bezier(.2,.8,.2,1) both; }
+  .book-stage-shelf { position: absolute; z-index: 1; right: -10%; bottom: 0; left: -10%; height: 2.4rem; background: var(--color-accent); box-shadow: 0 1rem 1.5rem rgb(23 21 43 / 0.18); }
+  .book-overview { align-self: center; padding-bottom: 2rem; }
+  .mobile-book-stage { display: none; }
+  .back-link { display: inline-flex; align-items: center; gap: 0.55rem; margin-bottom: clamp(2.5rem, 5vw, 4rem); font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink-mute); }
+  .series-label { margin: 0 0 1.2rem; color: var(--color-orange); }
+  .book-overview h1 { max-width: 48rem; margin: 0; font-size: clamp(3.6rem, 5.9vw, 6.15rem); line-height: 0.9; letter-spacing: -0.05em; }
+  .book-description { max-width: 46rem; margin: 1.8rem 0 0; font-family: var(--font-serif); font-size: clamp(1.25rem, 1.9vw, 1.6rem); line-height: 1.48; }
+  .book-audience { max-width: 42rem; margin: 1rem 0 0; color: var(--color-ink-mute); line-height: 1.7; }
+  .book-facts { display: flex; flex-wrap: wrap; gap: 0; margin: 2.3rem 0 0; border-block: 1px solid var(--color-rule); }
+  .book-facts div { min-width: 10rem; padding: 1rem 1.2rem 1rem 0; }
+  .book-facts div + div { border-left: 1px solid var(--color-rule); padding-left: 1.2rem; }
+  .book-facts dt { margin-bottom: 0.32rem; font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.11em; text-transform: uppercase; color: var(--color-ink-mute); }
+  .book-facts dd { margin: 0; font-family: var(--font-serif); font-size: 0.95rem; }
+  .book-actions { display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: center; margin-top: 2rem; }
+  .book-actions > a { display: inline-flex; min-height: 3.35rem; align-items: center; justify-content: center; gap: 0.6rem; padding: 0 1.2rem; font-size: 0.84rem; font-weight: 700; }
+  .read-action { background: var(--color-accent); color: white; box-shadow: 4px 4px 0 var(--color-ink); }
+  .download-action { border: 1px solid var(--color-orange); color: var(--color-orange); }
+  .download-action small { font-family: var(--font-mono); font-size: 0.58rem; font-weight: 400; }
+  .source-action { min-height: auto !important; padding: 0.6rem 0.35rem !important; color: var(--color-ink-mute); font-family: var(--font-mono); font-size: 0.65rem !important; }
+  .book-actions > a { transition: transform 180ms ease, background 180ms ease; }
+  .book-actions > a:hover { transform: translateY(-0.2rem); }
+  .inside-section { background: var(--color-paper); }
+  .inside-shell { display: grid; max-width: 80rem; margin: 0 auto; padding: clamp(5rem, 8vw, 7rem) clamp(1.25rem, 4vw, 2rem); grid-template-columns: minmax(16rem, 0.65fr) minmax(0, 1.35fr); gap: 4rem; }
+  .inside-heading { position: sticky; top: 7rem; align-self: start; }
+  .inside-heading .eyebrow { color: var(--color-accent); }
+  .inside-heading h2 { margin: 1.2rem 0 0; font-size: clamp(3.4rem, 5vw, 5rem); }
+  .inside-list { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--color-rule); }
+  .inside-list li { border-bottom: 1px solid var(--color-rule); }
+  .inside-list a { display: grid; grid-template-columns: 3rem minmax(0, 1fr) auto; gap: 1.2rem; align-items: center; padding: 1.35rem 0; transition: padding 180ms ease, background 180ms ease; }
+  .inside-list a:hover { padding-inline: 1rem; background: var(--book-accent); }
+  .inside-list span:first-child { font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-orange); }
+  .inside-list strong { font-family: var(--font-serif); font-size: clamp(1.1rem, 2vw, 1.35rem); font-weight: 500; }
+  .series-continuation { background: var(--book-accent); }
+  .series-shell { display: grid; max-width: 80rem; margin: 0 auto; padding: clamp(5rem, 8vw, 7rem) clamp(1.25rem, 4vw, 2rem); grid-template-columns: minmax(16rem, 0.65fr) minmax(0, 1.35fr); gap: 4rem; }
+  .series-shell h2 { margin: 1.1rem 0 0; font-size: clamp(3.4rem, 5vw, 5rem); }
+  .series-neighbors { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem; }
+  .neighbor-link { display: grid; grid-template-columns: 7rem minmax(0, 1fr); gap: 1.3rem; align-items: end; border-top: 1px solid var(--color-ink); padding-top: 1.4rem; }
+  .neighbor-link img { width: 100%; height: auto; filter: drop-shadow(-0.6rem 0.7rem 0.5rem rgb(23 21 43 / 0.18)); transition: transform 200ms ease; }
+  .neighbor-link:hover img { transform: translateY(-0.5rem) rotate(-1deg); }
+  .neighbor-link small { display: block; margin-bottom: 0.5rem; font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--color-orange); }
+  .neighbor-link strong { font-family: var(--font-serif); font-size: 1.3rem; font-weight: 500; line-height: 1.1; }
+  .neighbor-placeholder { display: flex; min-height: 11rem; align-items: end; border-top: 1px solid var(--color-ink); padding-top: 1.4rem; color: var(--color-ink-mute); font-family: var(--font-serif); }
+  @keyframes book-rise { from { opacity: 0; transform: translateY(3rem) rotate(-1deg); } to { opacity: 1; transform: translateY(0); } }
+  @media (max-width: 900px) {
+    .book-hero-shell { min-height: auto; grid-template-columns: 1fr; gap: 0; padding-top: 2.5rem; }
+    .book-stage { display: none; }
+    .mobile-book-stage { display: flex; position: relative; height: 20rem; align-items: end; justify-content: center; margin: -0.5rem 0 2.8rem; }
+    .mobile-book-stage img { position: relative; z-index: 1; width: min(45vw, 12.5rem); height: auto; filter: drop-shadow(-0.8rem 0.85rem 0.65rem rgb(23 21 43 / 0.2)); }
+    .mobile-book-stage span { position: absolute; right: -1.25rem; bottom: -0.15rem; left: -1.25rem; height: 1.25rem; background: var(--color-accent); box-shadow: 0 0.7rem 1rem rgb(23 21 43 / 0.2); }
+    .book-overview { padding-bottom: 4rem; }
+    .inside-shell, .series-shell { grid-template-columns: 1fr; gap: 2.5rem; }
+    .inside-heading { position: static; }
+  }
+  @media (max-width: 600px) {
+    .book-overview h1 { font-size: clamp(3.2rem, 14vw, 4.8rem); }
+    .book-facts { display: grid; grid-template-columns: 1fr 1fr; }
+    .book-facts div { min-width: 0; }
+    .book-facts div + div { border-left: 0; padding-left: 0; }
+    .book-facts div:nth-child(2) { border-left: 1px solid var(--color-rule); padding-left: 1rem; }
+    .book-facts div:last-child { grid-column: 1 / -1; border-top: 1px solid var(--color-rule); }
+    .book-actions { align-items: stretch; flex-direction: column; }
+    .inside-list a { grid-template-columns: 2.5rem minmax(0, 1fr) auto; }
+    .series-neighbors { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) { .book-stage img { animation: none; } }
+</style>

@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500" role="img" aria-labelledby="title desc">
+  <title id="title">The target quality and general retention frontier</title>
+  <desc id="desc">A qualitative tradeoff plot showing that stronger domain adaptation can improve target performance while harming general ability, and how replay or regularization can move the frontier.</desc>
+  <rect width="1200" height="1500" fill="#f7f3ea"/>
+  <style>
+    .title{font:700 54px system-ui,sans-serif;fill:#17242b}.sub{font:32px system-ui,sans-serif;fill:#45565e}.head{font:700 34px system-ui,sans-serif;fill:#17242b}.body{font:30px system-ui,sans-serif;fill:#2b3a40}.small{font:27px system-ui,sans-serif;fill:#53646b}.axis{stroke:#263a42;stroke-width:5}.grid{stroke:#b9c1c4;stroke-width:2;stroke-dasharray:10 12}.base{fill:#17242b}.domain{fill:#c56632}.mix{fill:#006d77}.front{fill:none;stroke:#006d77;stroke-width:6;stroke-dasharray:14 11}
+  </style>
+  <text x="72" y="92" class="title">Optimize a frontier, not one score</text>
+  <text x="72" y="145" class="sub">Domain gains count only while general capability remains above your floor.</text>
+
+  <line x1="155" y1="1100" x2="1080" y2="1100" class="axis"/>
+  <line x1="155" y1="1100" x2="155" y2="250" class="axis"/>
+  <line x1="155" y1="900" x2="1080" y2="900" class="grid"/>
+  <line x1="155" y1="700" x2="1080" y2="700" class="grid"/>
+  <line x1="155" y1="500" x2="1080" y2="500" class="grid"/>
+  <line x1="390" y1="250" x2="390" y2="1100" class="grid"/>
+  <line x1="625" y1="250" x2="625" y2="1100" class="grid"/>
+  <line x1="860" y1="250" x2="860" y2="1100" class="grid"/>
+  <text x="430" y="1180" class="head">Target-domain quality →</text>
+  <text x="55" y="835" class="head" transform="rotate(-90 55 835)">General retention →</text>
+
+  <line x1="155" y1="530" x2="1080" y2="530" stroke="#9b5b31" stroke-width="4" stroke-dasharray="20 12"/>
+  <text x="250" y="475" class="small" style="fill:#9b5b31">minimum acceptable retention</text>
+
+  <circle cx="355" cy="430" r="22" class="base"/>
+  <text x="250" y="385" class="body">base model</text>
+
+  <circle cx="930" cy="875" r="24" class="domain"/>
+  <text x="750" y="945" class="body">domain-only CPT</text>
+  <text x="750" y="985" class="small">high target · severe forgetting</text>
+
+  <circle cx="745" cy="510" r="24" class="mix"/>
+  <text x="780" y="560" class="body">replay mixture</text>
+  <text x="780" y="600" class="small">near the retention floor</text>
+
+  <circle cx="650" cy="400" r="24" class="mix"/>
+  <text x="690" y="365" class="body">adapter / lower LR</text>
+
+  <path d="M355 430 C520 350 660 355 790 470 C900 565 955 700 985 805" class="front"/>
+  <text x="560" y="300" class="small">better methods move the frontier up and right</text>
+
+  <rect x="125" y="1235" width="970" height="170" rx="24" fill="#17242b"/>
+  <text x="170" y="1292" font-family="system-ui,sans-serif" font-size="31" font-weight="700" fill="#ffffff">Run two views of the replay experiment:</text>
+  <text x="170" y="1340" font-family="system-ui,sans-serif" font-size="29" fill="#ffffff">(A) fixed total tokens — fair cost comparison</text>
+  <text x="170" y="1380" font-family="system-ui,sans-serif" font-size="29" fill="#ffffff">(B) fixed domain tokens — fair domain-exposure comparison</text>
+</svg>

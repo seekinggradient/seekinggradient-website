@@ -1,0 +1,162 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '../../../../layouts/Layout.astro';
+import { books, series, type Book } from '../../../../books/books';
+import 'katex/dist/katex.min.css';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('books');
+
+  return books.map((book) => {
+    const entry = entries.find((candidate) => candidate.slug === book.contentSlug);
+    if (!entry) throw new Error(`Missing content entry for ${book.contentSlug}`);
+
+    return {
+      params: { slug: book.slug },
+      props: { book, entry },
+    };
+  });
+}
+
+const { book, entry } = Astro.props as { book: Book; entry: Awaited<ReturnType<typeof getCollection<'books'>>>[number] };
+const { Content, headings } = await render(entry);
+const chapterHeadings = headings.filter((heading) => heading.depth === 2);
+---
+
+<Layout
+  title={`Read ${book.title} | Seeking Gradient`}
+  description={`Read the complete online edition of ${book.title}.`}
+  canonicalPath={`/books/foundation-models/${book.slug}/read`}
+  image={book.cover}
+  ogType="article"
+  fullBleed
+>
+  <div class="reader-progress" aria-hidden="true"><span></span></div>
+
+  <header class="reader-header">
+    <div class="reader-header-shell">
+      <div>
+        <a href={`/books/foundation-models/${book.slug}`} class="reader-back arrow-shift"><span class="arrow" aria-hidden="true">←</span> Book overview</a>
+        <p class="eyebrow">Foundation Models · Book 0{book.order} of 04</p>
+        <h1 class="display">{book.title}</h1>
+      </div>
+      <div class="reader-edition">
+        <img src={book.cover} alt="" width="1600" height="2560" />
+        <p><strong>Online edition</strong><span>{book.readingMinutes} minutes · Verified {series.verified}</span></p>
+        <a href={book.epub} download>EPUB ↓</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="reader-layout">
+    <aside class="reader-toc" aria-label="Book contents">
+      <p class="eyebrow">Contents</p>
+      <ol>
+        {chapterHeadings.map((heading, index) => (
+          <li><a href={`#${heading.slug}`}><span>{String(index + 1).padStart(2, '0')}</span>{heading.text}</a></li>
+        ))}
+      </ol>
+    </aside>
+
+    <main class="reader-main" id="reader-content">
+      <article class="book-body prose prose-lg max-w-none">
+        <Content />
+      </article>
+
+      <footer class="reader-end">
+        <p class="eyebrow">End of book 0{book.order}</p>
+        <h2 class="display">Keep following the path.</h2>
+        {books[book.order] ? (
+          <a href={`/books/foundation-models/${books[book.order].slug}`}>Next: {books[book.order].title} →</a>
+        ) : (
+          <a href="/books">Return to the library →</a>
+        )}
+      </footer>
+    </main>
+  </div>
+</Layout>
+
+<script>
+  const progressBar = document.querySelector<HTMLElement>('.reader-progress span');
+  const updateProgress = () => {
+    if (!progressBar) return;
+    const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = scrollable > 0 ? Math.min(1, window.scrollY / scrollable) : 0;
+    progressBar.style.transform = `scaleX(${progress})`;
+  };
+  updateProgress();
+  window.addEventListener('scroll', updateProgress, { passive: true });
+</script>
+
+<style is:global>
+  .reader-progress { position: fixed; z-index: 60; inset: 0 0 auto; height: 0.22rem; background: transparent; pointer-events: none; }
+  .reader-progress span { display: block; width: 100%; height: 100%; background: var(--color-orange); transform: scaleX(0); transform-origin: left; will-change: transform; }
+  .reader-header { border-bottom: 1px solid var(--color-rule); background: var(--color-yellow); }
+  .reader-header-shell { display: grid; max-width: 80rem; margin: 0 auto; padding: clamp(3.5rem, 6vw, 5.5rem) clamp(1.25rem, 4vw, 2rem); grid-template-columns: minmax(0, 1.4fr) minmax(17rem, 0.6fr); gap: 4rem; align-items: end; }
+  .reader-back { display: inline-flex; align-items: center; gap: 0.55rem; margin-bottom: 2.8rem; font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; }
+  .reader-header .eyebrow { margin: 0 0 1rem; color: var(--color-accent); }
+  .reader-header h1 { max-width: 58rem; margin: 0; font-size: clamp(3.6rem, 6.5vw, 6.4rem); line-height: 0.9; letter-spacing: -0.05em; }
+  .reader-edition { display: grid; grid-template-columns: 4.7rem minmax(0, 1fr) auto; gap: 1rem; align-items: end; border-top: 1px solid var(--color-ink); padding-top: 1rem; }
+  .reader-edition img { width: 100%; height: auto; box-shadow: -0.4rem 0.45rem 0 rgb(49 84 216 / 0.2); }
+  .reader-edition p { margin: 0; font-size: 0.72rem; line-height: 1.5; }
+  .reader-edition strong, .reader-edition span { display: block; }
+  .reader-edition span { color: var(--color-ink-mute); }
+  .reader-edition > a { border-bottom: 1px solid currentColor; padding-bottom: 0.15rem; font-family: var(--font-mono); font-size: 0.65rem; }
+  .reader-layout { display: grid; max-width: 88rem; margin: 0 auto; padding: 0 clamp(1.25rem, 4vw, 2rem); grid-template-columns: 17rem minmax(0, 50rem); gap: clamp(3rem, 7vw, 7rem); justify-content: center; align-items: start; }
+  .reader-toc { position: sticky; top: 6.5rem; max-height: calc(100svh - 8rem); overflow-y: auto; padding: 4.5rem 0 3rem; scrollbar-width: thin; }
+  .reader-toc > .eyebrow { margin: 0 0 1.3rem; color: var(--color-accent); }
+  .reader-toc ol { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--color-rule); }
+  .reader-toc li { border-bottom: 1px solid color-mix(in srgb, var(--color-rule), transparent 35%); }
+  .reader-toc a { display: grid; grid-template-columns: 2rem 1fr; gap: 0.65rem; padding: 0.72rem 0; color: var(--color-ink-mute); font-size: 0.7rem; line-height: 1.35; transition: color 160ms ease, padding 160ms ease; }
+  .reader-toc a:hover { padding-left: 0.35rem; color: var(--color-accent); }
+  .reader-toc a span { font-family: var(--font-mono); font-size: 0.57rem; color: var(--color-orange); }
+  .reader-main { min-width: 0; padding: 4.5rem 0 0; }
+  article.book-body > h1:first-child { display: none; }
+  article.book-body { color: var(--color-ink-soft); }
+  article.book-body p { margin: 0 0 1.55em !important; color: var(--color-ink-soft) !important; font-size: 1.0625rem !important; font-weight: 400 !important; line-height: 1.86 !important; }
+  article.book-body > p:first-of-type { border-left: 3px solid var(--color-orange); padding-left: 1.25rem; color: var(--color-ink) !important; font-family: var(--font-serif); font-size: 1.3rem !important; line-height: 1.65 !important; }
+  article.book-body strong { color: var(--color-ink) !important; font-weight: 650 !important; }
+  article.book-body a { color: var(--color-accent) !important; text-decoration: underline !important; text-decoration-color: color-mix(in srgb, var(--color-accent), transparent 60%) !important; text-underline-offset: 3px; }
+  article.book-body h2 { scroll-margin-top: 6rem; margin: 3.2em 0 0.8em !important; border-top: 1px solid var(--color-rule); padding-top: 1.1em; color: var(--color-ink) !important; font-family: var(--font-serif) !important; font-size: clamp(2.35rem, 5vw, 3.7rem) !important; font-weight: 500 !important; letter-spacing: -0.025em !important; line-height: 1.04 !important; }
+  article.book-body h3 { scroll-margin-top: 6rem; margin: 2.4em 0 0.7em !important; color: var(--color-ink) !important; font-family: var(--font-serif) !important; font-size: 1.65rem !important; font-weight: 500 !important; line-height: 1.2 !important; }
+  article.book-body h4 { margin: 2em 0 0.6em !important; color: var(--color-ink) !important; font-size: 1.05rem !important; font-weight: 700 !important; }
+  article.book-body ul, article.book-body ol { margin: 0.8rem 0 1.7rem !important; padding-left: 1.5rem !important; }
+  article.book-body ul { list-style: disc !important; }
+  article.book-body ol { list-style: decimal !important; }
+  article.book-body li { display: list-item !important; margin: 0.4rem 0 !important; color: var(--color-ink-soft) !important; font-size: 1.025rem !important; line-height: 1.75 !important; }
+  article.book-body blockquote { margin: 2rem 0 !important; border: 0 !important; border-left: 4px solid var(--color-accent) !important; background: var(--color-lilac) !important; padding: 1.35rem 1.5rem !important; font-style: normal !important; }
+  article.book-body blockquote p { margin-bottom: 0.6rem !important; color: var(--color-ink) !important; font-size: 0.98rem !important; }
+  article.book-body blockquote p:last-child { margin-bottom: 0 !important; }
+  article.book-body hr { height: 1px !important; margin: 3.5rem 0 !important; border: 0 !important; background: var(--color-rule) !important; }
+  article.book-body :not(pre) > code { border: 1px solid var(--color-rule) !important; border-radius: 0.2rem !important; background: var(--color-paper-deep) !important; padding: 0.13em 0.38em !important; color: var(--color-accent) !important; font-size: 0.85em !important; font-weight: 500 !important; }
+  article.book-body pre { overflow-x: auto !important; margin: 1.6rem 0 2.1rem !important; border-radius: 0 !important; background: var(--color-ink) !important; padding: 1.3rem 1.5rem !important; box-shadow: 0.45rem 0.45rem 0 var(--color-accent) !important; font-size: 0.84rem !important; line-height: 1.7 !important; }
+  article.book-body pre code { border: 0 !important; background: transparent !important; padding: 0 !important; color: #edf1ff !important; }
+  article.book-body table { display: block; overflow-x: auto; width: 100% !important; margin: 1.8rem 0 2.3rem !important; border: 1px solid var(--color-rule) !important; border-collapse: collapse !important; font-size: 0.88rem !important; }
+  article.book-body th { border-bottom: 1px solid var(--color-ink) !important; background: var(--color-yellow) !important; padding: 0.75rem 0.9rem !important; color: var(--color-ink) !important; font-family: var(--font-mono) !important; font-size: 0.7rem !important; font-weight: 500 !important; text-align: left !important; }
+  article.book-body td { border-bottom: 1px solid var(--color-rule) !important; padding: 0.75rem 0.9rem !important; vertical-align: top; }
+  article.book-body img { display: block; width: 100%; height: auto; margin: 2.5rem auto !important; border: 1px solid var(--color-rule); background: #fffaf3; }
+  article.book-body .katex-display { overflow-x: auto; overflow-y: hidden; margin: 1.8rem 0 2.2rem; padding: 1rem 0; }
+  article.book-body .katex { color: var(--color-ink); font-size: 1.03em; }
+  .reader-end { margin-top: 6rem; border-top: 1px solid var(--color-ink); padding: 4rem 0 6rem; }
+  .reader-end .eyebrow { color: var(--color-orange); }
+  .reader-end h2 { margin: 1rem 0 2rem; font-size: clamp(3rem, 5vw, 4.5rem); }
+  .reader-end a { display: inline-block; border-bottom: 2px solid currentColor; padding-bottom: 0.3rem; color: var(--color-accent); font-weight: 700; }
+  @media (max-width: 900px) {
+    .reader-header-shell { grid-template-columns: 1fr; gap: 2.5rem; }
+    .reader-edition { max-width: 29rem; }
+    .reader-layout { grid-template-columns: 1fr; }
+    .reader-toc { position: relative; top: auto; max-height: none; padding: 2.5rem 0 0; }
+    .reader-toc ol { columns: 2; column-gap: 2rem; }
+    .reader-toc li { break-inside: avoid; }
+    .reader-main { padding-top: 2rem; }
+  }
+  @media (max-width: 600px) {
+    .reader-header h1 { font-size: clamp(3.1rem, 14vw, 4.8rem); }
+    .reader-edition { grid-template-columns: 3.8rem minmax(0, 1fr) auto; }
+    .reader-toc ol { columns: 1; }
+    article.book-body p, article.book-body li { font-size: 1rem !important; }
+    article.book-body h2 { font-size: 2rem !important; }
+    article.book-body h3 { font-size: 1.4rem !important; }
+    article.book-body pre { margin-inline: -0.5rem !important; padding: 1rem !important; box-shadow: 0.25rem 0.25rem 0 var(--color-accent) !important; }
+  }
+</style>

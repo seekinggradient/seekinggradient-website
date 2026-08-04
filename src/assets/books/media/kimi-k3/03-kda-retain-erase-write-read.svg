@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1900" viewBox="0 0 1200 1900" role="img" aria-labelledby="title desc">
+  <title id="title">KDA retain, erase, write, and read update</title>
+  <desc id="desc">A portrait diagram for one KDA head. A fixed d-k by d-v state is retained channel by channel, corrected by erasing its current prediction along a normalized key, updated with the new key-value association, and read using the current query.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#202020"/>
+    </marker>
+    <style>
+      .title { font: 700 54px Helvetica, Arial, sans-serif; fill: #111; }
+      .subtitle { font: 34px Helvetica, Arial, sans-serif; fill: #333; }
+      .step { font: 700 42px Helvetica, Arial, sans-serif; fill: #111; }
+      .body { font: 32px Helvetica, Arial, sans-serif; fill: #171717; }
+      .equation { font: 34px Georgia, Times, serif; fill: #111; }
+      .strong { font: 700 32px Helvetica, Arial, sans-serif; fill: #111; }
+      .white { fill: #fff; }
+      .card { fill: #fff; stroke: #202020; stroke-width: 5; }
+      .band { fill: #d7d7d7; }
+      .soft { fill: #ededed; stroke: #333; stroke-width: 4; }
+      .line { fill: none; stroke: #202020; stroke-width: 5; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect width="1200" height="1900" fill="#f1f1f1"/>
+  <rect x="38" y="38" width="1124" height="1824" rx="30" fill="#fafafa" stroke="#111" stroke-width="5"/>
+  <text x="90" y="120" class="title">KDA: update one fixed-size state</text>
+  <text x="90" y="176" class="subtitle">One head, one token step; tensor shapes never grow with history.</text>
+
+  <rect x="90" y="230" width="1020" height="180" rx="24" class="soft"/>
+  <text x="130" y="286" class="strong">INPUTS AT TOKEN t</text>
+  <text x="130" y="344" class="body">S(t−1): d_k × d_v state   ·   α: d_k retention vector   ·   β: scalar</text>
+  <text x="130" y="391" class="body">k, q: d_k normalized vectors   ·   v: d_v value vector</text>
+
+  <path d="M600 410 L600 470" class="line"/>
+
+  <rect x="90" y="490" width="1020" height="245" rx="24" class="card"/>
+  <path d="M116 490 H1084 Q1110 490 1110 516 V574 H90 V516 Q90 490 116 490 Z" class="band"/>
+  <text x="130" y="550" class="step">1 · RETAIN</text>
+  <text x="130" y="631" class="equation">R = Diag(α) S(t−1)</text>
+  <text x="130" y="688" class="body">Scale each state row independently. R stays d_k × d_v.</text>
+
+  <path d="M600 735 L600 795" class="line"/>
+
+  <rect x="90" y="815" width="1020" height="275" rx="24" class="card"/>
+  <path d="M116 815 H1084 Q1110 815 1110 841 V899 H90 V841 Q90 815 116 815 Z" class="band"/>
+  <text x="130" y="875" class="step">2 · ERASE THE OLD PREDICTION</text>
+  <text x="130" y="956" class="equation">p = Rᵀk  ∈ R(d_v)</text>
+  <text x="130" y="1012" class="equation">E = R − β k pᵀ  ∈ R(d_k × d_v)</text>
+  <text x="130" y="1065" class="body">Subtract what retained memory currently predicts along this key.</text>
+
+  <path d="M600 1090 L600 1150" class="line"/>
+
+  <rect x="90" y="1170" width="1020" height="240" rx="24" class="card"/>
+  <path d="M116 1170 H1084 Q1110 1170 1110 1196 V1254 H90 V1196 Q90 1170 116 1170 Z" class="band"/>
+  <text x="130" y="1230" class="step">3 · WRITE THE NEW ASSOCIATION</text>
+  <text x="130" y="1332" class="equation">S(t) = E + β k vᵀ  ∈ R(d_k × d_v)</text>
+  <text x="130" y="1382" class="body">The same fixed matrix now contains the corrected association.</text>
+
+  <path d="M600 1410 L600 1470" class="line"/>
+
+  <rect x="90" y="1490" width="1020" height="230" rx="24" class="card"/>
+  <path d="M116 1490 H1084 Q1110 1490 1110 1516 V1574 H90 V1516 Q90 1490 116 1490 Z" class="band"/>
+  <text x="130" y="1550" class="step">4 · READ</text>
+  <text x="130" y="1651" class="equation">õ(t) = S(t)ᵀq  ∈ R(d_v)</text>
+  <text x="130" y="1701" class="body">The query reads the updated state for this token’s output.</text>
+
+  <rect x="135" y="1755" width="930" height="105" rx="18" fill="#292929"/>
+  <text x="600" y="1798" text-anchor="middle" class="strong white">Sequence length changes the state’s contents,</text>
+  <text x="600" y="1838" text-anchor="middle" class="strong white">not its tensor shape.</text>
+</svg>

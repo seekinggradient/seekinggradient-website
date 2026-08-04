@@ -29,6 +29,27 @@ Images and diagrams used by the notebook live in `public/mockups/` and
 `public/diagrams/`. The notebook is mounted as a React island inside Astro, so
 the main site and ideas archive can deploy together from this single repo.
 
+## Books Library
+
+The public books library lives at `/books`. The first collection, *Building
+Foundation Models*, presents four agent-created learning books in a deliberate
+reading order, beginning with *Inside a Transformer, slowly*.
+
+Book metadata and reader navigation live in `src/books/books.ts`. The committed
+Markdown manuscripts are in `src/content/books/`, with their local diagrams in
+`src/assets/books/`. Downloadable EPUBs and extracted covers are published from
+`public/books/`.
+
+Each title has three public surfaces:
+
+- a book detail page at `/books/foundation-models/<slug>`;
+- a complete web reader at `/books/foundation-models/<slug>/read`;
+- downloadable EPUB and Markdown editions linked from the detail page.
+
+Generated-asset provenance and reproducible prompts are documented in
+`src/books/GENERATED-ASSET-PROMPTS.md` and
+`public/books/foundation-models/ASSET-PROVENANCE.md`.
+
 ---
 
 ## Text-to-Speech (TTS) for Blog Posts
