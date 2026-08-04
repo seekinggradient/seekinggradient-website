@@ -6,8 +6,8 @@ import { books, series } from '../../books/books';
   <div class="books-hero-inner">
     <div class="books-intro">
       <div>
-        <p class="eyebrow books-kicker">A library for learning in public</p>
-        <h1 id="books-title" class="display">Foundation Models,<br /><em>from code to frontier.</em></h1>
+        <p class="eyebrow books-kicker">Series 01 · Building Foundation Models</p>
+        <h1 id="books-title" class="display">Foundation Models,<br /><span>from code to frontier.</span></h1>
       </div>
       <p class="books-deck">{series.description}</p>
     </div>
@@ -20,7 +20,9 @@ import { books, series } from '../../books/books';
             href={`/books/foundation-models/${book.slug}`}
             aria-label={`Open ${book.title}`}
           >
-            <img src={book.cover} alt={`Cover of ${book.title}`} width="1600" height="2560" loading={index === 1 ? 'eager' : 'lazy'} />
+            <span class="book-volume">
+              <img src={book.cover} alt={`Cover of ${book.title}`} width="1600" height="2560" loading={index === 0 ? 'eager' : 'lazy'} />
+            </span>
           </a>
         ))}
       </div>
@@ -69,43 +71,52 @@ import { books, series } from '../../books/books';
 </section>
 
 <style>
-  .books-hero { overflow: hidden; border-bottom: 1px solid color-mix(in srgb, var(--color-ink), transparent 78%); background: #fffaf3; }
-  .books-hero-inner { min-height: calc(100svh - 72px); max-width: 90rem; margin: 0 auto; padding: clamp(3rem, 5vw, 5.25rem) clamp(1.25rem, 4vw, 3.5rem) 0; }
-  .books-intro { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(17rem, 0.7fr); gap: 3rem; align-items: end; }
+  .books-hero { position: relative; overflow: hidden; border-bottom: 1px solid color-mix(in srgb, var(--color-ink), transparent 78%); background: #fffaf3; isolation: isolate; }
+  .books-hero::before { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: 0.045; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.72'/%3E%3C/svg%3E"); mix-blend-mode: multiply; }
+  .books-hero-inner { max-width: 90rem; margin: 0 auto; padding: clamp(2.8rem, 4vw, 4.25rem) clamp(1.25rem, 4vw, 3.5rem) 0; }
+  .books-intro { display: grid; grid-template-columns: minmax(0, 1.62fr) minmax(18rem, 0.62fr); gap: clamp(2.5rem, 5vw, 5.5rem); align-items: end; animation: intro-arrive 650ms both cubic-bezier(.2,.8,.2,1); }
   .books-kicker { margin: 0 0 1.2rem; color: var(--color-orange); }
-  .books-intro h1 { max-width: 67rem; margin: 0; font-size: clamp(4rem, 7.4vw, 7rem); line-height: 0.88; letter-spacing: -0.055em; }
-  .books-intro h1 em { color: var(--color-accent); font-weight: 400; }
-  .books-deck { max-width: 27rem; margin: 0 0 0.45rem; border-top: 3px solid var(--color-orange); padding-top: 1.35rem; font-family: var(--font-serif); font-size: clamp(1.15rem, 1.7vw, 1.5rem); line-height: 1.42; }
-  .book-shelf { position: relative; margin-top: clamp(2.5rem, 5.5vw, 5.5rem); }
-  .shelf-books { display: flex; position: relative; z-index: 1; min-height: clamp(20rem, 42vw, 35rem); align-items: end; justify-content: space-around; gap: clamp(1rem, 4vw, 5rem); padding: 0 clamp(1rem, 5vw, 6rem); }
-  .shelf-book { display: block; width: clamp(10rem, 19vw, 17rem); transform-origin: bottom center; filter: drop-shadow(-1.3rem 1.15rem 1rem rgb(23 21 43 / 0.2)); transition: transform 260ms cubic-bezier(.2,.8,.2,1), filter 260ms ease; animation: shelf-arrive 700ms both cubic-bezier(.2,.8,.2,1); }
-  .shelf-book-1 { animation-delay: 80ms; transform: rotate(-1.2deg); }
-  .shelf-book-2 { animation-delay: 180ms; width: clamp(11rem, 21vw, 18.5rem); }
-  .shelf-book-3 { animation-delay: 280ms; transform: rotate(1.2deg); }
-  .shelf-book-4 { animation-delay: 380ms; transform: rotate(0.8deg); }
-  .shelf-book:hover, .shelf-book:focus-visible { z-index: 2; transform: translateY(-1.15rem) rotate(0); filter: drop-shadow(-1.8rem 1.7rem 1.2rem rgb(23 21 43 / 0.23)); }
-  .shelf-book img { display: block; width: 100%; height: auto; border-radius: 0.15rem; }
-  .shelf-plank { position: relative; height: 2.1rem; background: var(--color-accent); box-shadow: 0 1.2rem 1.7rem rgb(23 21 43 / 0.22); }
-  .shelf-plank::after { content: ''; position: absolute; inset: 100% 0 auto; height: 0.45rem; background: #213ca8; clip-path: polygon(0 0, 100% 0, 98.7% 100%, 1.3% 100%); }
-  .shelf-plank span { position: absolute; top: 100%; width: 1.1rem; height: 3.8rem; background: #213ca8; }
-  .shelf-plank span:first-child { left: 7%; transform: skewX(8deg); }
-  .shelf-plank span:last-child { right: 7%; transform: skewX(-8deg); }
+  .books-intro h1 { max-width: 64rem; margin: 0; font-size: clamp(3.9rem, 6.7vw, 6.6rem); line-height: 0.91; letter-spacing: -0.052em; text-wrap: balance; }
+  .books-intro h1 span { font-weight: 400; }
+  .books-deck { position: relative; max-width: 28rem; margin: 0 0 0.5rem; border-top: 0; padding-top: 2.5rem; font-family: var(--font-serif); font-size: clamp(1.08rem, 1.55vw, 1.4rem); line-height: 1.5; }
+  .books-deck::before { content: '〰'; position: absolute; top: -0.7rem; left: 0; color: var(--color-orange); font-family: var(--font-sans); font-size: 3rem; font-weight: 700; letter-spacing: -0.35em; transform: scaleX(1.45); transform-origin: left center; }
+  .book-shelf { position: relative; margin-top: clamp(2.25rem, 3.4vw, 3.6rem); padding-bottom: 4.5rem; }
+  .shelf-books { display: flex; position: relative; z-index: 2; min-height: clamp(18.5rem, 28vw, 28rem); align-items: end; justify-content: space-between; gap: clamp(1.5rem, 4vw, 5rem); padding: 0 clamp(1rem, 3vw, 3.25rem); perspective: 1200px; }
+  .shelf-book { --tilt: 0deg; position: relative; display: block; width: clamp(9.75rem, 15vw, 15.25rem); transform: rotate(var(--tilt)); transform-origin: bottom center; transition: transform 280ms cubic-bezier(.2,.8,.2,1), filter 280ms ease; animation: shelf-arrive 720ms both cubic-bezier(.2,.8,.2,1); }
+  .shelf-book::after { content: ''; position: absolute; z-index: -2; right: -12%; bottom: -0.6rem; left: 5%; height: 1.6rem; border-radius: 50%; background: rgb(19 25 45 / 0.32); filter: blur(0.65rem); transform: skewX(-18deg); transition: transform 280ms ease, opacity 280ms ease; }
+  .shelf-book-1 { --tilt: -0.65deg; animation-delay: 80ms; }
+  .shelf-book-2 { --tilt: 0.35deg; animation-delay: 180ms; }
+  .shelf-book-3 { --tilt: -0.25deg; animation-delay: 280ms; }
+  .shelf-book-4 { --tilt: 0.55deg; animation-delay: 380ms; }
+  .shelf-book:hover, .shelf-book:focus-visible { z-index: 3; transform: translateY(-0.9rem) rotate(0) rotateY(-2deg); }
+  .shelf-book:hover::after, .shelf-book:focus-visible::after { opacity: 0.72; transform: translateY(0.65rem) scaleX(1.06) skewX(-18deg); }
+  .book-volume { position: relative; display: block; background: #f7f3ea; box-shadow: -0.85rem 0.8rem 1.3rem rgb(27 27 38 / 0.2), 0 0 0 1px rgb(23 21 43 / 0.08); transform-style: preserve-3d; }
+  .book-volume::before { content: ''; position: absolute; z-index: -1; top: 0.28rem; bottom: 0.15rem; left: -0.62rem; width: 0.7rem; border-radius: 0.15rem 0 0 0.15rem; background: linear-gradient(90deg, #20342f 0%, #44635a 42%, #1d302b 100%); box-shadow: inset -1px 0 rgb(255 255 255 / 0.24), -0.2rem 0.3rem 0.35rem rgb(23 21 43 / 0.16); transform: skewY(-4deg); transform-origin: right center; }
+  .book-volume::after { content: ''; position: absolute; z-index: -1; top: 0.45rem; right: -0.36rem; bottom: 0.18rem; width: 0.38rem; background: repeating-linear-gradient(0deg, #e5dfd3 0 2px, #f8f4ec 2px 4px); border-right: 1px solid rgb(23 21 43 / 0.16); transform: skewY(3deg); transform-origin: left center; }
+  .shelf-book img { position: relative; z-index: 1; display: block; width: 100%; height: auto; border-radius: 0.08rem; }
+  .shelf-plank { position: relative; z-index: 1; height: 2.9rem; margin-inline: -0.75rem; border-top: 3px solid #5875ec; background: linear-gradient(180deg, #3159e2 0%, #294bc6 100%); box-shadow: 0 1.1rem 1.6rem rgb(23 21 43 / 0.25), inset 0 -0.3rem rgb(18 42 139 / 0.35); }
+  .shelf-plank::after { content: ''; position: absolute; inset: 100% 0 auto; height: 0.65rem; background: #1f3ba5; clip-path: polygon(0 0, 100% 0, 98.8% 100%, 1.2% 100%); }
+  .shelf-plank span { position: absolute; top: calc(100% + 0.55rem); width: 2.2rem; height: 3.75rem; background: linear-gradient(90deg, #203da7, #294dc4); clip-path: polygon(0 0, 100% 0, 76% 100%, 20% 100%); filter: drop-shadow(0.45rem 0.55rem 0.35rem rgb(23 21 43 / 0.2)); }
+  .shelf-plank span::after { content: ''; position: absolute; top: 0.85rem; left: 50%; width: 0.38rem; height: 0.38rem; border-radius: 50%; background: #142b82; box-shadow: 0 1.35rem #142b82; transform: translateX(-50%); }
+  .shelf-plank span:first-child { left: 7.5%; transform: skewX(5deg); }
+  .shelf-plank span:last-child { right: 7.5%; transform: skewX(-5deg); }
   .reading-path { background: var(--color-paper); }
-  .path-shell { max-width: 80rem; margin: 0 auto; padding: clamp(5rem, 9vw, 8rem) clamp(1.25rem, 4vw, 2rem); }
+  .path-shell { max-width: 86rem; margin: 0 auto; padding: clamp(4.5rem, 7vw, 6.5rem) clamp(1.25rem, 4vw, 2rem) clamp(5.5rem, 8vw, 8rem); }
   .path-heading { display: grid; grid-template-columns: minmax(0, 0.55fr) minmax(0, 1.45fr); column-gap: 3rem; align-items: end; margin-bottom: 4rem; }
   .path-heading > .eyebrow { grid-column: 1 / -1; margin: 0 0 1rem; color: var(--color-accent); }
   .path-heading h2 { margin: 0; font-size: clamp(3.5rem, 6vw, 5.5rem); }
   .path-heading > p:last-child { max-width: 39rem; margin: 0 0 0.45rem; color: var(--color-ink-mute); line-height: 1.75; }
-  .path-list { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--color-rule); }
-  .path-list li { border-bottom: 1px solid var(--color-rule); }
-  .path-list a { display: grid; grid-template-columns: 8rem minmax(0, 1fr) auto; gap: 2rem; align-items: center; padding: 2.5rem 0; transition: padding 220ms ease, background 220ms ease; }
-  .path-list a:hover { padding-inline: 1.25rem; background: #fffaf3; }
-  .path-number { font-family: var(--font-serif); font-size: clamp(4.2rem, 7vw, 6.5rem); line-height: 0.8; color: var(--color-accent); }
+  .path-list { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0; padding: 0; list-style: none; border-block: 1px solid var(--color-rule); }
+  .path-list li { min-width: 0; border-right: 1px solid var(--color-rule); }
+  .path-list li:last-child { border-right: 0; }
+  .path-list a { display: flex; min-height: 23rem; padding: 2rem 1.5rem 1.6rem; flex-direction: column; align-items: flex-start; transition: background 220ms ease, transform 220ms cubic-bezier(.2,.8,.2,1); }
+  .path-list a:hover { background: #fffaf3; transform: translateY(-0.4rem); }
+  .path-number { margin-bottom: 2rem; font-family: var(--font-serif); font-size: clamp(4.2rem, 6vw, 6rem); line-height: 0.8; color: var(--color-accent); }
   .path-eyebrow { display: block; margin-bottom: 0.65rem; font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.13em; text-transform: uppercase; color: var(--color-orange); }
-  .path-copy h3 { max-width: 52rem; margin: 0; font-family: var(--font-serif); font-size: clamp(1.7rem, 3vw, 2.5rem); font-weight: 500; line-height: 1.06; }
-  .path-copy p { max-width: 48rem; margin: 0.75rem 0 0; color: var(--color-ink-mute); font-size: 0.9rem; line-height: 1.65; }
+  .path-copy h3 { margin: 0; font-family: var(--font-serif); font-size: clamp(1.55rem, 2.2vw, 2rem); font-weight: 500; line-height: 1.08; }
+  .path-copy p { margin: 0.75rem 0 0; color: var(--color-ink-mute); font-size: 0.83rem; line-height: 1.62; }
   .path-meta { display: block; margin-top: 1rem; font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.06em; text-transform: uppercase; }
-  .path-arrow { font-size: 1.5rem; transition: transform 180ms ease; }
+  .path-arrow { align-self: flex-end; margin-top: auto; padding-top: 1.5rem; font-size: 1.5rem; transition: transform 180ms ease; }
   .path-list a:hover .path-arrow { transform: translate(0.35rem, -0.35rem); }
   .made-section { background: var(--color-night); color: white; }
   .made-shell { display: grid; max-width: 80rem; margin: 0 auto; padding: clamp(5rem, 9vw, 8rem) clamp(1.25rem, 4vw, 2rem); grid-template-columns: 1fr 1fr; gap: 1rem 4rem; }
@@ -114,19 +125,33 @@ import { books, series } from '../../books/books';
   .made-copy { max-width: 35rem; padding-top: 0.4rem; }
   .made-copy p { margin: 0 0 1.4rem; color: rgb(255 255 255 / 0.72); line-height: 1.8; }
   .made-link { display: inline-flex; align-items: center; gap: 0.6rem; margin-top: 1.5rem; border-bottom: 2px solid var(--color-yellow); padding-bottom: 0.3rem; color: var(--color-yellow); font-weight: 700; }
-  @keyframes shelf-arrive { from { opacity: 0; transform: translateY(3rem) rotate(0); } to { opacity: 1; } }
+  @keyframes intro-arrive { from { opacity: 0; transform: translateY(1.2rem); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes shelf-arrive { from { opacity: 0; transform: translateY(2.5rem) rotate(0); } to { opacity: 1; } }
+  @media (max-width: 980px) and (min-width: 781px) {
+    .path-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .path-list li { border-bottom: 1px solid var(--color-rule); }
+    .path-list li:nth-child(even) { border-right: 0; }
+    .path-list li:nth-last-child(-n + 2) { border-bottom: 0; }
+  }
   @media (max-width: 780px) {
-    .books-hero-inner { min-height: auto; padding-top: 2.5rem; }
+    .books-hero-inner { padding-top: 2.5rem; }
     .books-intro { grid-template-columns: 1fr; gap: 1.5rem; }
     .books-intro h1 { font-size: clamp(3.45rem, 14vw, 5.5rem); }
     .books-deck { max-width: 32rem; }
-    .shelf-books { overflow-x: auto; justify-content: flex-start; min-height: 24rem; margin-inline: -1.25rem; padding: 0 2rem; scroll-snap-type: x mandatory; }
-    .shelf-book, .shelf-book-2 { flex: 0 0 12.5rem; width: 12.5rem; scroll-snap-align: center; }
+    .book-shelf { margin-top: 2rem; padding-bottom: 3.75rem; }
+    .shelf-books { overflow-x: auto; justify-content: flex-start; min-height: 17.75rem; margin-inline: -1.25rem; gap: 1.75rem; padding: 0 2.25rem; scroll-snap-type: x mandatory; scrollbar-width: none; }
+    .shelf-books::-webkit-scrollbar { display: none; }
+    .shelf-book { flex: 0 0 10.25rem; width: 10.25rem; scroll-snap-align: center; }
+    .shelf-plank { height: 2.35rem; margin-inline: -1.25rem; }
+    .shelf-plank span { width: 1.7rem; height: 3rem; }
     .path-heading { grid-template-columns: 1fr; gap: 1.5rem; }
-    .path-list a { grid-template-columns: 4.5rem minmax(0, 1fr); gap: 1rem; }
-    .path-number { font-size: 3.6rem; }
+    .path-list { grid-template-columns: 1fr; }
+    .path-list li { border-right: 0; border-bottom: 1px solid var(--color-rule); }
+    .path-list li:last-child { border-bottom: 0; }
+    .path-list a { display: grid; min-height: auto; grid-template-columns: 4.5rem minmax(0, 1fr); gap: 1rem; padding: 2rem 0; }
+    .path-number { margin: 0; font-size: 3.6rem; }
     .path-arrow { display: none; }
     .made-shell { grid-template-columns: 1fr; gap: 2rem; }
   }
-  @media (prefers-reduced-motion: reduce) { .shelf-book { animation: none; } }
+  @media (prefers-reduced-motion: reduce) { .books-intro, .shelf-book { animation: none; } }
 </style>

@@ -20,6 +20,7 @@ const {
 const SITE_URL = 'https://seekinggradient.com';
 const canonicalUrl = new URL(canonicalPath, SITE_URL).toString();
 const imageUrl = image ? new URL(image, SITE_URL).toString() : undefined;
+const isBooks = canonicalPath.startsWith('/books');
 ---
 
 <!doctype html>
@@ -200,6 +201,22 @@ const imageUrl = image ? new URL(image, SITE_URL).toString() : undefined;
 				box-shadow: 3px 3px 0 var(--color-ink);
 			}
 
+			.nav-section-active {
+				border-bottom: 3px solid var(--color-orange);
+				background-size: 0 0 !important;
+				color: var(--color-ink);
+			}
+
+			.nav-context {
+				min-height: 2.55rem;
+				border: 1px solid color-mix(in srgb, var(--color-orange), transparent 12%);
+				border-radius: 0.45rem;
+				padding: 0 1rem;
+				color: var(--color-orange);
+				font-size: 0.72rem;
+				letter-spacing: 0.015em;
+			}
+
 			.footer-color {
 				background: var(--color-yellow);
 				color: var(--color-ink);
@@ -250,7 +267,7 @@ const imageUrl = image ? new URL(image, SITE_URL).toString() : undefined;
 	</head>
 	<body class="overflow-x-hidden leading-normal">
 		<nav class="sticky top-0 z-50 bg-[color:var(--color-paper)]/88 backdrop-blur-xl border-b border-[color:var(--color-ink)]/15">
-			<div class="max-w-7xl mx-auto px-5 sm:px-8 h-[72px] flex justify-between items-center gap-5">
+			<div class={`${isBooks ? 'max-w-[90rem]' : 'max-w-7xl'} mx-auto px-5 sm:px-8 h-[72px] flex justify-between items-center gap-5`}>
 				<a href="/" class="group flex items-center gap-2.5" aria-label="Seeking Gradient home">
 					<div class="brand-mark w-9 h-9 rounded-full bg-[color:var(--color-orange)] flex items-center justify-center text-[color:var(--color-ink)] transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:rotate-[-7deg]">
 						<span class="font-serif italic text-[17px] leading-none">sg</span>
@@ -261,10 +278,14 @@ const imageUrl = image ? new URL(image, SITE_URL).toString() : undefined;
 				</a>
 				<div class="hidden md:flex items-center gap-7 text-[13px] font-medium text-[color:var(--color-ink-soft)]">
 					<a href="/essays" class="link-underline pb-0.5 hover:text-[color:var(--color-ink)]">Writing</a>
-					<a href="/books" class="link-underline pb-0.5 hover:text-[color:var(--color-ink)]">Books</a>
+					<a href="/books" class:list={["link-underline pb-0.5 hover:text-[color:var(--color-ink)]", isBooks && "nav-section-active"]} aria-current={isBooks ? 'page' : undefined}>Books</a>
 					<a href="/ideas" class="link-underline pb-0.5 hover:text-[color:var(--color-ink)]">Projects</a>
 					<a href="/#about" class="link-underline pb-0.5 hover:text-[color:var(--color-ink)]">About</a>
-					<a href="mailto:seekinggradient@gmail.com" class="nav-email px-3 py-1.5 bg-[color:var(--color-yellow)] text-[color:var(--color-ink)] transition-transform hover:-rotate-2">Email ↗</a>
+					{isBooks ? (
+						<span class="nav-context hidden lg:inline-flex items-center gap-4">A library for learning in public <span aria-hidden="true">✳</span></span>
+					) : (
+						<a href="mailto:seekinggradient@gmail.com" class="nav-email px-3 py-1.5 bg-[color:var(--color-yellow)] text-[color:var(--color-ink)] transition-transform hover:-rotate-2">Email ↗</a>
+					)}
 				</div>
 				<details class="site-menu md:hidden relative">
 					<summary class="eyebrow border border-[color:var(--color-rule)] px-3 py-2">Menu</summary>

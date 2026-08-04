@@ -33,7 +33,7 @@ Each book has a detail page under `/books/foundation-models/<slug>`, a complete 
 
 ## Visual system
 
-The design adapts the site's existing warm paper and marker colors into a tactile technical library. Real cover images stand on code-native cobalt shelves with long soft shadows. The library landing page is a full-bleed poster followed by a cardless numbered reading path. Detail pages foreground one physical cover and large editorial title; mobile pages bring the cover into the first viewport. The homepage includes a dedicated cobalt library feature.
+The design adapts the site's existing warm paper and marker colors into a tactile technical library. Real cover images stand at a uniform size inside code-native physical wrappers with dark spines, page edges, contact shadows, and a dimensional cobalt shelf with visible brackets. The library hero deliberately ends above the desktop fold so the cardless four-column reading path peeks into the first viewport. On mobile, the smaller covers scroll horizontally and the shelf edge remains visible at 390 × 844. Book routes use a contextual library callout in the shared header. Detail pages foreground one physical cover and large editorial title; mobile pages bring the cover into the first viewport. The homepage includes a dedicated cobalt library feature.
 
 Generated UI mockups were used only as design studies and were not added to the site. Live interface visuals are HTML/CSS plus the validated book covers and manuscript illustrations. Faithful normalized prompts for the two AI-generated conceptual illustrations are stored in `src/books/GENERATED-ASSET-PROMPTS.md`.
 
@@ -42,7 +42,7 @@ Generated UI mockups were used only as design studies and were not added to the 
 Normal publication verification includes:
 
 - `npx astro build` with tracked `dist/` output;
-- desktop and mobile browser checks at 1440px and 390px;
+- desktop and mobile browser checks at 2048 × 1287, 1440px, and 390 × 844;
 - no horizontal overflow on library, detail, or reader pages;
 - every curated detail-page section anchor resolves in the corresponding reader;
 - EPUB ZIP integrity checks;
