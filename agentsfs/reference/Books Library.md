@@ -26,10 +26,10 @@ Each book has a detail page under `/books/foundation-models/<slug>`, a complete 
 ## Reader implementation
 
 - The `books` Astro content collection validates the existing AgentsFS frontmatter without forcing publication metadata into the source manuscripts.
-- `remark-math`, `rehype-katex`, and `katex` render inline and display equations.
+- Publication snapshots use remark-math's portable `$...$` and `$$...$$` delimiters; `remark-math`, `rehype-katex`, and `katex` render inline and display equations.
 - Local source illustrations live in `src/assets/books/media/` so Astro optimizes them during the static build.
 - The raw Markdown endpoint restores the canonical `../../media/` paths before returning a download.
-- A sticky chapter rail, top reading-progress line, previous/next path, and EPUB affordance make the long web editions navigable.
+- A sticky chapter rail tracks the active `h2` while the reader scrolls, and its current link carries `aria-current="location"`. A top reading-progress line, previous/next path, and EPUB affordance make the long web editions navigable.
 
 ## Visual system
 

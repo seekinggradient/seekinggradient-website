@@ -136,7 +136,7 @@ next token
 
 ![The tensor shape changes from token IDs to embeddings, remains stable through the Transformer blocks, and expands to one logit per vocabulary entry](../../../assets/books/media/transformer-foundations/11-tensor-shape-journey.png)
 
-*The same model viewed only through tensor shapes. During training, all \(T\) positions contribute a prediction. During generation, the sampler reads the \(V\) logits at the final position.*
+*The same model viewed only through tensor shapes. During training, all $T$ positions contribute a prediction. During generation, the sampler reads the $V$ logits at the final position.*
 
 During training, one more arrow runs backward:
 
@@ -574,15 +574,15 @@ $$
 E \in \mathbb{R}^{V \times d}
 $$
 
-Read this as: a table with \(V\) rows, one for every vocabulary token, and \(d\) columns, one for every feature in the model’s internal vector space.
+Read this as: a table with $V$ rows, one for every vocabulary token, and $d$ columns, one for every feature in the model’s internal vector space.
 
-If token ID \(t\) appears, the model retrieves row \(E_t\):
+If token ID $t$ appears, the model retrieves row $E_t$:
 
 $$
 x = E_t
 $$
 
-This is a lookup, not a calculation based on the numeric size of \(t\).
+This is a lookup, not a calculation based on the numeric size of $t$.
 
 Imagine a toy vocabulary of six tokens and an embedding width of four:
 
@@ -625,13 +625,13 @@ and
 
 contain the same tokens but mean different things. A model needs information about order.
 
-GPT-2 adds a learned position vector \(P_i\) to each token embedding:
+GPT-2 adds a learned position vector $P_i$ to each token embedding:
 
 $$
 x_i = E_{t_i} + P_i
 $$
 
-Read this as: the starting representation at position \(i\) says both **which token this is** and **where it appears**.
+Read this as: the starting representation at position $i$ says both **which token this is** and **where it appears**.
 
 Many newer models use rotary position embeddings, or RoPE, which encode relative position inside attention rather than simply adding a position vector at the entrance. Kimi K3 goes further: its KDA layers are inherently position- and recency-sensitive, while its periodic MLA layers use no explicit positional encoding. Those details matter later. The foundational need is unchanged: the network must distinguish order somehow.
 
@@ -661,13 +661,13 @@ In spoken language: four token IDs enter. Each becomes a vector of 768 numbers. 
 one sequence × four positions × 768 features
 ```
 
-That tensor \(x\) is what the first Transformer block receives.
+That tensor $x$ is what the first Transformer block receives.
 
 > **Practice lens — embeddings have a visible budget**
 >
-> With a 50,000-token vocabulary and width 768, the token table contains \(50{,}000 \times 768 = 38.4\) million parameters. Stored in 16-bit form, those values alone occupy about 76.8 MB before optimizer state or gradients. An untied vocabulary-output matrix would add another table of similar size.
+> With a 50,000-token vocabulary and width 768, the token table contains $50{,}000 \times 768 = 38.4$ million parameters. Stored in 16-bit form, those values alone occupy about 76.8 MB before optimizer state or gradients. An untied vocabulary-output matrix would add another table of similar size.
 >
-> This is why vocabulary size is not a free tokenizer setting. It changes sequence lengths, but it also changes parameter count, checkpoint size, and the cost of scoring the vocabulary. In code, print `token_embedding.weight.shape` and count its elements; the abstract \(V \times d\) immediately becomes an object with a storage cost.
+> This is why vocabulary size is not a free tokenizer setting. It changes sequence lengths, but it also changes parameter count, checkpoint size, and the cost of scoring the vocabulary. In code, print `token_embedding.weight.shape` and count its elements; the abstract $V \times d$ immediately becomes an object with a storage cost.
 
 ---
 
@@ -715,9 +715,9 @@ A causal mask prevents each position from seeing its own target or anything afte
 
 ### Every position becomes a supervised example
 
-This training arrangement is a form of **teacher forcing**. The input at position \(i\) is the real prefix from the dataset, not a prefix corrupted by the model’s own earlier samples.
+This training arrangement is a form of **teacher forcing**. The input at position $i$ is the real prefix from the dataset, not a prefix corrupted by the model’s own earlier samples.
 
-For a sequence of length \(T\), one forward pass can produce \(T-1\) next-token losses:
+For a sequence of length $T$, one forward pass can produce $T-1$ next-token losses:
 
 $$
 L
@@ -739,7 +739,7 @@ The model is trained on clean ground-truth prefixes but deployed on prefixes con
 
 > **Practice lens — count tokens, not just batches**
 >
-> If one device processes \(B\) rows of length \(T\), one micro-batch contains \(B \times T\) token positions. With \(D\) devices and \(G\) gradient-accumulation steps, one optimizer update covers roughly:
+> If one device processes $B$ rows of length $T$, one micro-batch contains $B \times T$ token positions. With $D$ devices and $G$ gradient-accumulation steps, one optimizer update covers roughly:
 >
 > $$
 > B \times T \times D \times G
@@ -757,9 +757,9 @@ $$
 
 Here:
 
-- \(h\) is the final hidden vector for the current position;
-- \(W_U\) is sometimes called the unembedding or vocabulary-projection matrix;
-- \(z\) is the vector of raw scores, called **logits**.
+- $h$ is the final hidden vector for the current position;
+- $W_U$ is sometimes called the unembedding or vocabulary-projection matrix;
+- $z$ is the vector of raw scores, called **logits**.
 
 From a traditional-ML perspective, the output layer is multinomial logistic regression on top of an extraordinarily learned feature vector. The deep Transformer’s job is to make the relevant next-token evidence linearly readable at the end.
 
@@ -773,13 +773,13 @@ $$
 E \in \mathbb{R}^{V \times d}
 $$
 
-On the way **into** the model, token ID \(t\) selects one row:
+On the way **into** the model, token ID $t$ selects one row:
 
 $$
 x = E_t
 $$
 
-Without weight tying, the vocabulary projection owns a separate matrix \(W_U \in \mathbb{R}^{d \times V}\). The input embedding and output classifier can therefore learn two unrelated coordinate systems.
+Without weight tying, the vocabulary projection owns a separate matrix $W_U \in \mathbb{R}^{d \times V}$. The input embedding and output classifier can therefore learn two unrelated coordinate systems.
 
 With **weight tying**, the output projection reuses the embedding table:
 
@@ -793,7 +793,7 @@ $$
 z = hE^\top
 $$
 
-The score for candidate token \(t\) is simply:
+The score for candidate token $t$ is simply:
 
 $$
 z_t = h \cdot E_t
@@ -809,7 +809,7 @@ On the way out
     contextual vector → compare with every token row
 ```
 
-This does not mean the model merely searches for an input embedding that is semantically similar to the context. The final vector \(h\) has passed through every Transformer block, and dot-product compatibility can use vector direction and magnitude in ways that are not cleanly human-interpretable. The important point is that training must make the two jobs cooperate in one shared coordinate system.
+This does not mean the model merely searches for an input embedding that is semantically similar to the context. The final vector $h$ has passed through every Transformer block, and dot-product compatibility can use vector direction and magnitude in ways that are not cleanly human-interpretable. The important point is that training must make the two jobs cooperate in one shared coordinate system.
 
 Suppose `Paris` is the observed next token. Cross-entropy pushes the model toward a larger value of:
 
@@ -817,7 +817,7 @@ $$
 h \cdot E_{\text{Paris}}
 $$
 
-relative to the scores for competing tokens. But \(E_{\text{Paris}}\) is also the row inserted into the residual stream whenever `Paris` appears as an input. The same numbers must work as both an **input representation** and an **output target direction**.
+relative to the scores for competing tokens. But $E_{\text{Paris}}$ is also the row inserted into the residual stream whenever `Paris` appears as an input. The same numbers must work as both an **input representation** and an **output target direction**.
 
 That is the deeper architectural lesson:
 
@@ -825,7 +825,7 @@ That is the deeper architectural lesson:
 
 The compatibility is not hand-designed. The network is constrained to share the table, and gradient descent discovers representations that make the shared arrangement useful. This is an example of an **inductive bias**: architecture changes what kinds of solutions are easy for training to find.
 
-The parameter saving is substantial too. With \(V=50{,}000\) and \(d=768\), one table contains 38.4 million parameters. An untied input table and output matrix would require two such collections; tying saves 38.4 million parameters.
+The parameter saving is substantial too. With $V=50{,}000$ and $d=768$, one table contains 38.4 million parameters. An untied input table and output matrix would require two such collections; tying saves 38.4 million parameters.
 
 In PyTorch, the idea is almost literal:
 
@@ -837,7 +837,7 @@ output_head = nn.Linear(width, vocab_size, bias=False)
 output_head.weight = token_embedding.weight
 ```
 
-`nn.Linear` stores its weights as `[output_features, input_features]`, so `output_head(h)` computes \(hE^\top\). [Press and Wolf (2017)](https://arxiv.org/abs/1608.05859) showed that this sharing can reduce parameters and improve language-model generalization.
+`nn.Linear` stores its weights as `[output_features, input_features]`, so `output_head(h)` computes $hE^\top$. [Press and Wolf (2017)](https://arxiv.org/abs/1608.05859) showed that this sharing can reduce parameters and improve language-model generalization.
 
 Logits can be positive or negative and do not add to one. Softmax turns them into probabilities:
 
@@ -873,7 +873,7 @@ Exponentiating gives approximately:
 [7.39, 2.72, 1.00]
 ```
 
-The total is \(11.11\), so the probabilities are:
+The total is $11.11$, so the probabilities are:
 
 ```text
 cat     7.39 / 11.11 ≈ 0.665
@@ -885,7 +885,7 @@ Softmax preserves the ranking but converts it into a distribution.
 
 ### Loss tells training how surprised the model was
 
-If `cat` is the correct next token, the model assigned it probability \(0.665\). Cross-entropy loss for this example is:
+If `cat` is the correct next token, the model assigned it probability $0.665$. Cross-entropy loss for this example is:
 
 $$
 L = -\log p_{\text{correct}}
@@ -951,7 +951,7 @@ Training does not directly reward fluent paragraphs, truth, reasoning, or helpfu
 - C. Every attention head uses a different label.
 - D. The model changes vocabulary at every position.
 
-**Answers:** 1-B. An ID is a label; the embedding table supplies learned geometry. 2-C. There is one score per possible next token. 3-A. \(-\log(p)\) gets smaller as \(p\) approaches one. 4-A. The model predicts the next token at every position while the mask blocks future information.
+**Answers:** 1-B. An ID is a label; the embedding table supplies learned geometry. 2-C. There is one score per possible next token. 3-A. $-\log(p)$ gets smaller as $p$ approaches one. 4-A. The model predicts the next token at every position while the mask blocks future information.
 
 ---
 
@@ -1056,7 +1056,7 @@ The important point is not the brand name of the activation. Nonlinearity lets t
 
 ### Parameters are adjustable knobs
 
-Every number in \(W\), \(b\), the embedding table, and the other learned matrices is a **parameter** or **weight**.
+Every number in $W$, $b$, the embedding table, and the other learned matrices is a **parameter** or **weight**.
 
 At initialization, the parameters are mostly small random values. The network’s predictions are therefore mostly random. Training discovers a configuration that makes better predictions.
 
@@ -1098,7 +1098,7 @@ $$
 y = x + F(x)
 $$
 
-Instead of learning a whole new representation from scratch, the sublayer \(F\) can learn a useful **change** to the existing representation.
+Instead of learning a whole new representation from scratch, the sublayer $F$ can learn a useful **change** to the existing representation.
 
 ### The notebook analogy
 
@@ -1120,14 +1120,14 @@ $$
 y = x + F(x)
 $$
 
-the derivative with respect to \(x\) includes an identity term:
+the derivative with respect to $x$ includes an identity term:
 
 $$
 \frac{\partial y}{\partial x}
 = I + \frac{\partial F}{\partial x}
 $$
 
-Even if the derivative through \(F\) becomes awkward, the \(I\) path gives learning signals a more direct route backward. This is the central insight of residual networks.
+Even if the derivative through $F$ becomes awkward, the $I$ path gives learning signals a more direct route backward. This is the central insight of residual networks.
 
 ### The Transformer has two residual updates per block
 
@@ -1163,11 +1163,11 @@ There is a loose analogy to additive modeling: each sublayer contributes a corre
 
 ## 6. Normalization: keep the workspace numerically healthy
 
-If every layer keeps adding updates, the scale of the residual stream can drift. One coordinate might sit around \(0.01\), another around \(500\), and the distributions can change as training proceeds. That makes optimization brittle.
+If every layer keeps adding updates, the scale of the residual stream can drift. One coordinate might sit around $0.01$, another around $500$, and the distributions can change as training proceeds. That makes optimization brittle.
 
 **Layer normalization** rescales the features for one token.
 
-Given a vector \(x\) of width \(d\), compute its mean:
+Given a vector $x$ of width $d$, compute its mean:
 
 $$
 \mu = \frac{1}{d}\sum_{i=1}^{d}x_i
@@ -1193,10 +1193,10 @@ Read it in four steps:
 
 1. subtract the vector’s average;
 2. divide by its typical scale;
-3. multiply by a learned per-feature gain \(\gamma\);
-4. add a learned per-feature bias \(\beta\).
+3. multiply by a learned per-feature gain $\gamma$;
+4. add a learned per-feature bias $\beta$.
 
-The small \(\epsilon\) prevents division by zero.
+The small $\epsilon$ prevents division by zero.
 
 ### A four-number example
 
@@ -1206,7 +1206,7 @@ $$
 x = [1, 2, 3, 4]
 $$
 
-The mean is \(2.5\). The centered vector is:
+The mean is $2.5$. The centered vector is:
 
 $$
 [-1.5, -0.5, 0.5, 1.5]
@@ -1218,7 +1218,7 @@ $$
 \frac{2.25 + 0.25 + 0.25 + 2.25}{4} = 1.25
 $$
 
-The standard deviation is approximately \(1.118\). Ignoring learned \(\gamma\) and \(\beta\), the normalized vector is approximately:
+The standard deviation is approximately $1.118$. Ignoring learned $\gamma$ and $\beta$, the normalized vector is approximately:
 
 $$
 [-1.34, -0.45, 0.45, 1.34]
@@ -1324,7 +1324,7 @@ We have not implemented `Attention` or `MLP` yet. Their interfaces already make 
 - C. The residual stream
 - D. The training labels
 
-**Answers:** 1-B. A residual sublayer computes \(x + F(x)\). 2-A. Composed linear maps remain one linear map. 3-C. LayerNorm normalizes the features within each token representation. 4-C. Attention and MLP sublayers read and update the residual stream.
+**Answers:** 1-B. A residual sublayer computes $x + F(x)$. 2-A. Composed linear maps remain one linear map. 3-C. LayerNorm normalizes the features within each token representation. 4-C. Attention and MLP sublayers read and update the residual stream.
 
 ---
 
@@ -1346,7 +1346,7 @@ Self-attention gives each token a content-dependent way to retrieve information 
 
 ### Query, key, and value
 
-For every token vector \(x_i\), learned projections produce three new vectors:
+For every token vector $x_i$, learned projections produce three new vectors:
 
 $$
 q_i = x_iW_Q
@@ -1378,7 +1378,7 @@ If one shared vector had to serve all three roles directly, retrieval compatibil
 
 ### Step 1: compare one query with all available keys
 
-For a current position \(i\), calculate a dot product with each earlier key \(k_j\):
+For a current position $i$, calculate a dot product with each earlier key $k_j$:
 
 $$
 s_{ij} = q_i \cdot k_j
@@ -1416,7 +1416,7 @@ book:   [1, 0] · [0.0, 1] = 0.0
 
 The query aligns most strongly with Bob’s key.
 
-In real attention, the score is divided by \(\sqrt{d_k}\):
+In real attention, the score is divided by $\sqrt{d_k}$:
 
 $$
 s_{ij} = \frac{q_i \cdot k_j}{\sqrt{d_k}}
@@ -1424,9 +1424,9 @@ $$
 
 As vector width grows, unscaled dot products tend to grow in magnitude. The division prevents softmax from becoming excessively sharp just because the head is wide.
 
-The \(\sqrt{d_k}\) appears for a statistical reason. If query and key components are roughly independent, zero-mean, and unit-variance, their dot product sums \(d_k\) random products. The sum’s variance grows roughly like \(d_k\), so its standard deviation grows like \(\sqrt{d_k}\). Dividing by that quantity keeps score scale approximately stable as head width changes.
+The $\sqrt{d_k}$ appears for a statistical reason. If query and key components are roughly independent, zero-mean, and unit-variance, their dot product sums $d_k$ random products. The sum’s variance grows roughly like $d_k$, so its standard deviation grows like $\sqrt{d_k}$. Dividing by that quantity keeps score scale approximately stable as head width changes.
 
-To keep the next toy calculation easy to verify by hand, we will continue with the three unscaled raw scores. The real implementation applies the \(\sqrt{d_k}\) scaling shown above.
+To keep the next toy calculation easy to verify by hand, we will continue with the three unscaled raw scores. The real implementation applies the $\sqrt{d_k}$ scaling shown above.
 
 ### Step 2: mask the future
 
@@ -1498,7 +1498,7 @@ The model did not copy the word `Bob`. It retrieved a learned mixture of feature
 
 ### The complete matrix equation
 
-Stack the queries, keys, and values for every position into matrices \(Q\), \(K\), and \(V\):
+Stack the queries, keys, and values for every position into matrices $Q$, $K$, and $V$:
 
 $$
 \operatorname{Attention}(Q,K,V)
@@ -1511,11 +1511,11 @@ $$
 
 Read it from left to right:
 
-1. \(QK^\top\): every query compares with every key;
-2. divide by \(\sqrt{d_k}\): keep score scale reasonable;
-3. add \(M\): hide future positions;
+1. $QK^\top$: every query compares with every key;
+2. divide by $\sqrt{d_k}$: keep score scale reasonable;
+3. add $M$: hide future positions;
 4. softmax: turn each row into retrieval weights;
-5. multiply by \(V\): return weighted mixtures of value vectors.
+5. multiply by $V$: return weighted mixtures of value vectors.
 
 The dimensions make the operation concrete:
 
@@ -1581,7 +1581,7 @@ One attention operation produces one pattern of retrieval. Language benefits fro
 
 Multi-head attention splits the model width into several heads. Each head gets its own query, key, and value projections. One head may become useful for nearby syntax, another for matching names, another for punctuation, another for copying a formatting pattern.
 
-If the model width is \(768\) and there are \(12\) heads, each head may use width \(64\):
+If the model width is $768$ and there are $12$ heads, each head may use width $64$:
 
 ```text
 12 heads × 64 features per head = 768 total features
@@ -1597,7 +1597,7 @@ $$
 
 Heads are not assigned jobs by a programmer. Training discovers useful divisions of labor.
 
-Heads are also not isolated miniature models. Their outputs are concatenated and mixed back into the residual width by \(W_O\). A feature can be assembled from several heads, and one head can participate in many behaviors.
+Heads are also not isolated miniature models. Their outputs are concatenated and mixed back into the residual width by $W_O$. A feature can be assembled from several heads, and one head can participate in many behaviors.
 
 ### What attention is—and is not
 
@@ -1634,7 +1634,7 @@ $$
 
 ### Expand, activate, compress
 
-In GPT-2 small, the residual width is \(768\). The MLP expands to \(3072\), applies GELU, and projects back to \(768\):
+In GPT-2 small, the residual width is $768$. The MLP expands to $3072$, applies GELU, and projects back to $768$:
 
 ```text
 768 features
@@ -1829,10 +1829,10 @@ Stack many blocks, and later blocks can operate on relationships and features di
 
 ### Checkpoint 3
 
-**1. What determines the attention weight from position \(i\) to position \(j\)?**
+**1. What determines the attention weight from position $i$ to position $j$?**
 
 - A. The numeric distance between their token IDs
-- B. Compatibility between \(q_i\) and \(k_j\), followed by masking and softmax
+- B. Compatibility between $q_i$ and $k_j$, followed by masking and softmax
 - C. The value vector alone
 - D. The MLP expansion width
 
@@ -1904,7 +1904,7 @@ $$
 \frac{\partial L}{\partial w}
 $$
 
-for every parameter \(w\).
+for every parameter $w$.
 
 This derivative answers a local question:
 
@@ -1933,7 +1933,7 @@ $$
 w \leftarrow w - \eta \frac{\partial L}{\partial w}
 $$
 
-where \(\eta\) is the learning rate.
+where $\eta$ is the learning rate.
 
 Real LLM training commonly uses AdamW, which tracks moving averages of gradients and squared gradients, applies per-parameter adaptive scaling, and separately decays weights. The intuition remains: use gradients to make small, carefully scaled updates.
 
@@ -1977,7 +1977,7 @@ A memorable starting point from the Chinchilla scaling-law work is:
 
 > **For every parameter in a dense language model, plan on roughly 20 training tokens.**
 
-If \(N\) is parameter count and \(D\) is the total number of training tokens, the shorthand is:
+If $N$ is parameter count and $D$ is the total number of training tokens, the shorthand is:
 
 $$
 D \approx 20N
@@ -2049,7 +2049,7 @@ This is where a project such as [Language Model Builder](https://languagemodelbu
 
 > **Practice lens — keep a fixed sample panel**
 >
-> At each evaluation interval, generate from the same small set of prompts with a fixed random seed and recorded sampler settings. Also keep one free-running random sample. The fixed panel makes checkpoints comparable; the free sample reveals the broader texture of the model. If the prompts, seed, temperature, and top-\(k\) all change, qualitative progress becomes impossible to separate from sampling noise.
+> At each evaluation interval, generate from the same small set of prompts with a fixed random seed and recorded sampler settings. Also keep one free-running random sample. The fixed panel makes checkpoints comparable; the free sample reveals the broader texture of the model. If the prompts, seed, temperature, and top-$k$ all change, qualitative progress becomes impossible to separate from sampling noise.
 
 ### Loss is essential but incomplete
 
@@ -2176,11 +2176,11 @@ p_i
 \right)
 $$
 
-- \(T < 1\): sharper, more conservative distribution;
-- \(T = 1\): unchanged;
-- \(T > 1\): flatter, more varied and risky.
+- $T < 1$: sharper, more conservative distribution;
+- $T = 1$: unchanged;
+- $T > 1$: flatter, more varied and risky.
 
-Top-\(k\) and top-\(p\) sampling discard very unlikely tails before sampling.
+Top-$k$ and top-$p$ sampling discard very unlikely tails before sampling.
 
 ### A minimal generation loop
 
@@ -2200,7 +2200,7 @@ Every visible response is produced by repeating this loop, though production sys
 
 > **Practice lens — sampling settings are part of the result**
 >
-> Save the prompt, checkpoint identifier, random seed, temperature, top-\(k\), top-\(p\), maximum token count, and stop conditions with an interesting generation. Otherwise you have saved an anecdote, not a reproducible observation.
+> Save the prompt, checkpoint identifier, random seed, temperature, top-$k$, top-$p$, maximum token count, and stop conditions with an interesting generation. Otherwise you have saved an anecdote, not a reproducible observation.
 >
 > When comparing two checkpoints, hold the sampler fixed. When studying the sampler, hold the checkpoint fixed. Changing both at once makes a better-looking paragraph impossible to attribute.
 
@@ -2276,9 +2276,9 @@ The KV cache does not teach the model permanently. Closing the session discards 
 
 ### Why long context is expensive
 
-With ordinary attention, a prompt of \(N\) tokens creates a score for many pairs of positions during prefill. The attention score matrix scales roughly with \(N^2\).
+With ordinary attention, a prompt of $N$ tokens creates a score for many pairs of positions during prefill. The attention score matrix scales roughly with $N^2$.
 
-During decoding, each new token compares with \(N\) cached keys in each full-attention layer. The cache itself grows with \(N\).
+During decoding, each new token compares with $N$ cached keys in each full-attention layer. The cache itself grows with $N$.
 
 FlashAttention makes exact attention far more memory-efficient by avoiding unnecessary movement and materialization of the full score matrix in high-bandwidth memory. It does not change full attention into a non-quadratic function during prefill.
 
@@ -2364,7 +2364,7 @@ Recall that the MLP transforms each position’s features after attention.
 
 Instead of using one dense MLP for every token, K3’s Stable LatentMoE has 896 routed experts. Each token activates 16 of them, plus shared experts.
 
-The token is projected from model width \(7168\) into latent width \(3584\), processed by selected experts, normalized, and projected back.
+The token is projected from model width $7168$ into latent width $3584$, processed by selected experts, normalized, and projected back.
 
 This produces:
 
@@ -2735,12 +2735,12 @@ Answer these before checking the key.
 - C. token IDs are probabilities.
 - D. embeddings are always two-dimensional.
 
-**2. The model’s vocabulary has \(V\) entries. The final projection produces:**
+**2. The model’s vocabulary has $V$ entries. The final projection produces:**
 
 - A. one logit total.
-- B. \(V\) logits per predicted position.
+- B. $V$ logits per predicted position.
 - C. one logit per attention head.
-- D. \(V^2\) logits per block.
+- D. $V^2$ logits per block.
 
 **3. Why does the attention score matrix have a tokens-by-tokens shape?**
 
@@ -2772,8 +2772,8 @@ Answer these before checking the key.
 
 **7. What is the simplest description of a residual block?**
 
-- A. Replace \(x\) with a completely unrelated vector.
-- B. Compute an update \(F(x)\) and add it to \(x\).
+- A. Replace $x$ with a completely unrelated vector.
+- B. Compute an update $F(x)$ and add it to $x$.
 - C. Delete the earlier layers.
 - D. Average the vocabulary IDs.
 

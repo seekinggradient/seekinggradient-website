@@ -491,7 +491,7 @@ Inference mostly needs weights and a KV cache. Training also needs gradients, op
 
 ### Weight memory is the easy part
 
-For \(N\) parameters stored at \(b\) bytes each:
+For $N$ parameters stored at $b$ bytes each:
 
 $$
 M_{\text{weights}} = Nb
@@ -533,19 +533,19 @@ FP32 Adam second moment    4 bytes
                            16 bytes
 ```
 
-Implementations differ. Some keep gradients in FP32, some avoid a separate master weight, fused optimizers pack state differently, and frameworks create transient buffers. But \(16N\) is a useful planning floor for unsharded mixed-precision Adam before activations.
+Implementations differ. Some keep gradients in FP32, some avoid a separate master weight, fused optimizers pack state differently, and frameworks create transient buffers. But $16N$ is a useful planning floor for unsharded mixed-precision Adam before activations.
 
 For an 8B model, that is about **128 GB of model state**, not counting activations. The same checkpoint that performs inference on one 24GB or 48GB GPU after quantization may require several 80GB GPUs to full-fine-tune comfortably.
 
 ### Activations are the shape-shifter
 
-Activation memory grows with microbatch size \(B\), sequence length \(T\), width \(d\), and layers \(L\). A simplified view is:
+Activation memory grows with microbatch size $B$, sequence length $T$, width $d$, and layers $L$. A simplified view is:
 
 $$
 M_{\text{activations}} \propto BTLd
 $$
 
-Naive attention also materializes structures proportional to \(BT^2\) per head. Memory-efficient attention kernels avoid storing the full score matrix, but the computation still gets more expensive as context grows.
+Naive attention also materializes structures proportional to $BT^2$ per head. Memory-efficient attention kernels avoid storing the full score matrix, but the computation still gets more expensive as context grows.
 
 This explains a common surprise: a model fits at 1,024 tokens and fails at 8,192 even though its parameter count did not change.
 
@@ -561,13 +561,13 @@ This explains a common surprise: a model fits at 1,024 tokens and fails at 8,192
 
 **Sequence packing** fills training rows with real tokens instead of padding. It can dramatically improve useful tokens per second, provided document boundaries and attention/loss masks are correct.
 
-**Flash/memory-efficient attention** changes how attention is computed and tiled so the full \(T \times T\) matrix need not reside in high-bandwidth memory.
+**Flash/memory-efficient attention** changes how attention is computed and tiled so the full $T \times T$ matrix need not reside in high-bandwidth memory.
 
 **CPU/NVMe offload** moves states away from the GPU. It can make an otherwise impossible run fit, but PCIe and storage transfers may make it painfully slow.
 
 ### Effective batch and number of updates
 
-If every row has \(T\) non-padding tokens processed, then:
+If every row has $T$ non-padding tokens processed, then:
 
 $$
 \text{tokens/update}
@@ -575,7 +575,7 @@ $$
 G \times B \times T \times A
 $$
 
-where \(G\) is GPU count, \(B\) is microbatch sequences per GPU, and \(A\) is gradient-accumulation steps.
+where $G$ is GPU count, $B$ is microbatch sequences per GPU, and $A$ is gradient-accumulation steps.
 
 Example:
 
@@ -649,9 +649,9 @@ $$
 \text{training FLOPs} \approx 6ND
 $$
 
-where \(N\) is parameter count and \(D\) is training tokens. It is an order-of-magnitude model, not a bill: architecture, sequence length, attention implementation, sparsity, recomputation, padding, and hardware utilization all move the result.
+where $N$ is parameter count and $D$ is training tokens. It is an order-of-magnitude model, not a bill: architecture, sequence length, attention implementation, sparsity, recomputation, padding, and hardware utilization all move the result.
 
-If one GPU sustains \(F\) useful training FLOPs/second and multi-GPU scaling efficiency is \(e\):
+If one GPU sustains $F$ useful training FLOPs/second and multi-GPU scaling efficiency is $e$:
 
 $$
 \text{hours}
@@ -790,7 +790,7 @@ budget:
 - Comparing H100 prices without distinguishing PCIe from SXM or one GPU from an 8-GPU node.
 - Assuming eight GPUs make the job eight times faster.
 - Counting raw examples or supervised targets instead of all processed non-padding tokens.
-- Ignoring evaluation generation, which can dominate RL and best-of-\(n\) pipelines.
+- Ignoring evaluation generation, which can dominate RL and best-of-$n$ pipelines.
 - Leaving a notebook instance alive overnight.
 - Downloading a multi-hundred-gigabyte checkpoint repeatedly instead of caching it on a controlled volume.
 - Saving every checkpoint forever.
@@ -943,7 +943,7 @@ The Hugging Face Hub is a discovery mechanism, not a due-diligence substitute. R
 
 ### Dataset mixture as a curriculum
 
-Let source \(i\) have sampling weight \(w_i\), with \(\sum_i w_i = 1\). The expected training distribution is:
+Let source $i$ have sampling weight $w_i$, with $\sum_i w_i = 1$. The expected training distribution is:
 
 $$
 p_{\text{train}}(x) = \sum_i w_i p_i(x)
@@ -957,7 +957,7 @@ $$
 w_i = \frac{n_i^\alpha}{\sum_j n_j^\alpha}, \qquad 0 < \alpha < 1
 $$
 
-where \(n_i\) is source size. This is a starting heuristic, not a substitute for measuring per-domain gains and regressions.
+where $n_i$ is source size. This is a starting heuristic, not a substitute for measuring per-domain gains and regressions.
 
 ### A streaming inspection snippet
 
@@ -1180,7 +1180,7 @@ Pretraining teaches a model to continue text from a broad distribution. Supervis
 
 > When the context looks like this, produce an answer shaped like that.
 
-For a sequence of tokens \(x_1, \ldots, x_T\), ordinary causal loss is:
+For a sequence of tokens $x_1, \ldots, x_T$, ordinary causal loss is:
 
 $$
 L_{\text{LM}}
@@ -1189,7 +1189,7 @@ L_{\text{LM}}
 \log p_\theta(x_t \mid x_{<t})
 $$
 
-In instruction SFT, we often mask the user/system/tool-input tokens and calculate loss only on tokens the assistant should generate. With a binary mask \(m_t\):
+In instruction SFT, we often mask the user/system/tool-input tokens and calculate loss only on tokens the assistant should generate. With a binary mask $m_t$:
 
 $$
 L_{\text{SFT}}
@@ -1361,7 +1361,7 @@ This gives maximum flexibility and can be appropriate for large domain shifts, a
 
 ### LoRA: learn a low-rank update
 
-For a frozen weight matrix \(W \in \mathbb{R}^{d_{out}\times d_{in}}\), LoRA learns:
+For a frozen weight matrix $W \in \mathbb{R}^{d_{out}\times d_{in}}$, LoRA learns:
 
 $$
 W' = W + \frac{\alpha}{r}BA
@@ -1375,15 +1375,15 @@ A \in \mathbb{R}^{r\times d_{in}},
 B \in \mathbb{R}^{d_{out}\times r}
 $$
 
-and rank \(r\) is much smaller than either full dimension. The adapter has:
+and rank $r$ is much smaller than either full dimension. The adapter has:
 
 $$
 r(d_{in}+d_{out})
 $$
 
-parameters instead of \(d_{in}d_{out}\).
+parameters instead of $d_{in}d_{out}$.
 
-For a \(4096 \times 4096\) projection at rank 16:
+For a $4096 \times 4096$ projection at rank 16:
 
 ```text
 full matrix      = 16,777,216 parameters
@@ -1555,7 +1555,7 @@ First measure fertility—tokens per word/character or bytes per token—on targ
 
 When you optimize only on a narrow distribution, updates that help it can hurt behavior elsewhere. This is **interference**, and its visible consequence can be forgetting.
 
-Let \(L_A\) be loss on old/general data and \(L_B\) loss on the new domain. For a small update \(\Delta\theta = -\eta \nabla L_B\), the first-order change in old loss is approximately:
+Let $L_A$ be loss on old/general data and $L_B$ loss on the new domain. For a small update $\Delta\theta = -\eta \nabla L_B$, the first-order change in old loss is approximately:
 
 $$
 \Delta L_A
@@ -1711,7 +1711,7 @@ For Panel A, evaluate at 0, 25M, 50M, 100M, 150M, and 200M total processed token
 
 ### Metrics
 
-For each task \(k\), define change from the untouched reference:
+For each task $k$, define change from the untouched reference:
 
 $$
 \Delta_k = S_k(\theta_t) - S_k(\theta_0)
@@ -1818,7 +1818,7 @@ OpenAI described the InstructGPT recipe as demonstrations for SFT, human ranking
 
 ### The post-training toolbox
 
-**Rejection sampling or best-of-\(n\).** Requires prompts and a scorer/verifier, plus generation to make candidates. Use it to select successful answers or manufacture a better dataset.
+**Rejection sampling or best-of-$n$.** Requires prompts and a scorer/verifier, plus generation to make candidates. Use it to select successful answers or manufacture a better dataset.
 
 **SFT on selected successes.** Requires prompt-answer demonstrations but no online generation during optimization. Use it to distill verified behavior into the policy.
 
@@ -1836,7 +1836,7 @@ Use the simplest row that can express the feedback.
 
 ### Rejection sampling is an underrated baseline
 
-For each prompt, sample \(n\) candidates, score them with a test or rubric, and keep the best successful one. Then either serve that selection process or train on the selected examples.
+For each prompt, sample $n$ candidates, score them with a test or rubric, and keep the best successful one. Then either serve that selection process or train on the selected examples.
 
 ```text
 prompt
@@ -1851,7 +1851,7 @@ This can improve the training distribution without unstable online policy update
 
 ### Collect preferences correctly
 
-A pairwise record has a prompt \(x\), preferred response \(y_w\), and rejected response \(y_l\). The label is meaningful only relative to a rubric.
+A pairwise record has a prompt $x$, preferred response $y_w$, and rejected response $y_l$. The label is meaningful only relative to a rubric.
 
 Good collection practice:
 
@@ -1885,7 +1885,7 @@ L_{\text{DPO}}
 \right)
 $$
 
-The reference terms discourage solving the comparison by drifting arbitrarily far from the starting policy. \(\beta\) controls the strength/scale of that relative preference tradeoff according to the implementation.
+The reference terms discourage solving the comparison by drifting arbitrarily far from the starting policy. $\beta$ controls the strength/scale of that relative preference tradeoff according to the implementation.
 
 DPO is attractive because it turns preference learning into a supervised-style classification loss instead of separately fitting a reward model and running online PPO. The original paper reported competitive or better results in its studied settings with simpler training. [Rafailov et al. (2023)](https://arxiv.org/abs/2305.18290)
 
@@ -1936,7 +1936,7 @@ For **PEFT DPO**, either pass a `LoraConfig` as `peft_config` to wrap a full SFT
 
 ### Classic RLHF: reward model plus online policy optimization
 
-A reward model \(r_\phi(x,y)\) is often trained from comparisons using a Bradley–Terry-style loss:
+A reward model $r_\phi(x,y)$ is often trained from comparisons using a Bradley–Terry-style loss:
 
 $$
 L_{RM}
@@ -1972,8 +1972,8 @@ Group Relative Policy Optimization was introduced in the DeepSeekMath work as a 
 
 A simplified intuition:
 
-1. sample a group \(y_1,\ldots,y_G\) for prompt \(x\);
-2. score each with reward \(r_i\);
+1. sample a group $y_1,\ldots,y_G$ for prompt $x$;
+2. score each with reward $r_i$;
 3. normalize or rank rewards within the group to estimate relative advantages;
 4. increase probability of better-than-group outputs while constraining drift.
 
@@ -2025,7 +2025,7 @@ $$
 r = w_c r_c + w_s r_s + w_b r_b + w_{safe} r_{safe} - w_{cost}c
 $$
 
-the weights define tradeoffs and the components may conflict. Increasing \(w_b\) can make answers terse but incomplete. A high aggregate can hide safety failures.
+the weights define tradeoffs and the components may conflict. Increasing $w_b$ can make answers terse but incomplete. A high aggregate can hide safety failures.
 
 Report each component and hard constraint separately. Some properties should be filters or termination conditions, not exchangeable reward points.
 
@@ -2061,7 +2061,7 @@ Try SFT, rejection sampling, DPO, tools, or better product structure first.
 
 1. Build 500 held-out problems with executable answer verification.
 2. Evaluate the base and a prompted baseline.
-3. Generate multiple candidates and measure pass@\(k\).
+3. Generate multiple candidates and measure pass@$k$.
 4. Keep verified successes and SFT on them.
 5. Collect hard negatives or chosen/rejected pairs and try DPO.
 6. Only if the policy now produces varied successes, run a small GRPO/RLOO experiment.
@@ -2306,7 +2306,7 @@ Diffusion and flow-based image generators do not autoregressively choose pixels 
 
 ### Latent diffusion, slowly
 
-An autoencoder maps an image \(x\) to latent \(z_0\). During training, noise is added according to a schedule to create \(z_t\). A denoising network receives noisy latent \(z_t\), timestep \(t\), and text conditioning \(c\), and predicts noise or another equivalent target:
+An autoencoder maps an image $x$ to latent $z_0$. During training, noise is added according to a schedule to create $z_t$. A denoising network receives noisy latent $z_t$, timestep $t$, and text conditioning $c$, and predicts noise or another equivalent target:
 
 $$
 z_t
@@ -2329,7 +2329,7 @@ $$
 
 At inference, the model begins with noise and repeatedly follows a scheduler toward a clean latent, then the decoder maps it back to pixels.
 
-Modern systems may use a Transformer denoiser rather than a U-Net and predict velocity or flow. In flow matching, one constructs a path \(z_t\) between noise \(z_0\) and data \(z_1\), then learns a vector field \(v_\theta(z_t,t,c)\) matching the path’s target velocity \(u_t\):
+Modern systems may use a Transformer denoiser rather than a U-Net and predict velocity or flow. In flow matching, one constructs a path $z_t$ between noise $z_0$ and data $z_1$, then learns a vector field $v_\theta(z_t,t,c)$ matching the path’s target velocity $u_t$:
 
 $$
 L_{\text{flow}}
@@ -2613,7 +2613,7 @@ The artifact release test should therefore run through the real endpoint.
 
 **Quantize after merge** when serving memory/cost requires it. Evaluate every candidate precision; do not assume a 4-bit export inherits BF16 scores.
 
-**Distill** when the adapted model or best-of-\(n\) search is too expensive. Generate a high-quality, verified corpus from the stronger system, train a smaller student, and compare total quality/cost. The teacher does not transfer capabilities absent from its generated data automatically.
+**Distill** when the adapted model or best-of-$n$ search is too expensive. Generate a high-quality, verified corpus from the stronger system, train a smaller student, and compare total quality/cost. The teacher does not transfer capabilities absent from its generated data automatically.
 
 ### Serving engines optimize a different loop
 
@@ -2636,13 +2636,13 @@ M_{KV}
 2 \times L \times T \times H_{kv} \times d_h \times b
 $$
 
-where the leading 2 is keys plus values, \(L\) layers, \(T\) cached tokens, \(H_{kv}\) key/value heads, \(d_h\) head dimension, and \(b\) bytes per element. Grouped-query and multi-query attention reduce \(H_{kv}\), which can greatly improve concurrency.
+where the leading 2 is keys plus values, $L$ layers, $T$ cached tokens, $H_{kv}$ key/value heads, $d_h$ head dimension, and $b$ bytes per element. Grouped-query and multi-query attention reduce $H_{kv}$, which can greatly improve concurrency.
 
 Long advertised context does not mean long context is free. It consumes memory, reduces batching headroom, increases prefill latency, and may lower effective throughput.
 
 ### Cost per useful result
 
-If a GPU costs \(C_h\) per hour and the service sustains \(Q\) output tokens/second at the target latency:
+If a GPU costs $C_h$ per hour and the service sustains $Q$ output tokens/second at the target latency:
 
 $$
 \text{GPU cost per 1M output tokens}
@@ -2777,7 +2777,7 @@ Each project below produces one durable skill and supplies evidence for the next
 
 **Systems:** prompted baseline → rejection sampling → SFT on verified successes → DPO on pass/fail pairs → small GRPO or RLOO run.
 
-**Measures:** held-out pass@1 and pass@\(k\), reward correlation, code length, exploit rate, general coding regression, generation GPU-hours.
+**Measures:** held-out pass@1 and pass@$k$, reward correlation, code length, exploit rate, general coding regression, generation GPU-hours.
 
 **Lesson:** online rollouts, reward design, hidden checks, and reward hacking.
 
@@ -2967,7 +2967,7 @@ SFT on chosen responses
 DPO on chosen/rejected pairs
 ```
 
-Measure blinded win rate, citation support, verbosity, refusals, and broad regression. If DPO learns “longer wins,” repair the preference process rather than tuning \(\beta\) indefinitely.
+Measure blinded win rate, citation support, verbosity, refusals, and broad regression. If DPO learns “longer wins,” repair the preference process rather than tuning $\beta$ indefinitely.
 
 ### Stage 6 — a bounded RL layer
 
@@ -2980,7 +2980,7 @@ Use RL only for the code/data subset with hidden verifiers:
 - red-team scorer access;
 - monitor pass rate independent of training reward.
 
-Begin with rejection sampling and SFT on successes. Run GRPO/RLOO only if the SFT policy already has meaningful pass@\(k\) and the external held-out success curve justifies online generation cost.
+Begin with rejection sampling and SFT on successes. Run GRPO/RLOO only if the SFT policy already has meaningful pass@$k$ and the external held-out success curve justifies online generation cost.
 
 ### Stage 7 — optional multimodal extension
 

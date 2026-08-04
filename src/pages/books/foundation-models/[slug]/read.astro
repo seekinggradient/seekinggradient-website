@@ -53,7 +53,11 @@ const chapterHeadings = headings.filter((heading) => heading.depth === 2);
       <p class="eyebrow">Contents</p>
       <ol>
         {chapterHeadings.map((heading, index) => (
-          <li><a href={`#${heading.slug}`}><span>{String(index + 1).padStart(2, '0')}</span>{heading.text}</a></li>
+          <li>
+            <a href={`#${heading.slug}`} data-section-id={heading.slug}>
+              <span>{String(index + 1).padStart(2, '0')}</span>{heading.text}
+            </a>
+          </li>
         ))}
       </ol>
     </aside>
@@ -78,14 +82,79 @@ const chapterHeadings = headings.filter((heading) => heading.depth === 2);
 
 <script>
   const progressBar = document.querySelector<HTMLElement>('.reader-progress span');
+  const tableOfContents = document.querySelector<HTMLElement>('.reader-toc');
+  const tocLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('.reader-toc a[data-section-id]'));
+  const sections = tocLinks
+    .map((link) => document.getElementById(link.dataset.sectionId ?? ''))
+    .filter((section): section is HTMLElement => Boolean(section));
+
   const updateProgress = () => {
     if (!progressBar) return;
     const scrollable = document.documentElement.scrollHeight - window.innerHeight;
     const progress = scrollable > 0 ? Math.min(1, window.scrollY / scrollable) : 0;
     progressBar.style.transform = `scaleX(${progress})`;
   };
-  updateProgress();
-  window.addEventListener('scroll', updateProgress, { passive: true });
+
+  let activeSectionId = '';
+  const setActiveSection = (sectionId: string) => {
+    if (!sectionId || sectionId === activeSectionId) return;
+    activeSectionId = sectionId;
+
+    tocLinks.forEach((link) => {
+      const isActive = link.dataset.sectionId === sectionId;
+      link.classList.toggle('is-active', isActive);
+      if (isActive) link.setAttribute('aria-current', 'location');
+      else link.removeAttribute('aria-current');
+    });
+
+    if (!tableOfContents || window.matchMedia('(max-width: 900px)').matches) return;
+    const activeLink = tocLinks.find((link) => link.dataset.sectionId === sectionId);
+    if (!activeLink) return;
+
+    const tocRect = tableOfContents.getBoundingClientRect();
+    const linkRect = activeLink.getBoundingClientRect();
+    const isOutsideView = linkRect.top < tocRect.top || linkRect.bottom > tocRect.bottom;
+    if (isOutsideView) {
+      tableOfContents.scrollTo({
+        top: tableOfContents.scrollTop + linkRect.top - tocRect.top - tableOfContents.clientHeight / 2 + linkRect.height / 2,
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  const updateActiveSection = () => {
+    if (!sections.length) return;
+    const readingLine = Math.min(180, window.innerHeight * 0.28);
+    let currentSection = sections[0];
+
+    for (const section of sections) {
+      if (section.getBoundingClientRect().top > readingLine) break;
+      currentSection = section;
+    }
+
+    const isAtEnd = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2;
+    setActiveSection(isAtEnd ? sections[sections.length - 1].id : currentSection.id);
+  };
+
+  let updateFrame = 0;
+  const requestReaderUpdate = () => {
+    if (updateFrame) return;
+    updateFrame = window.requestAnimationFrame(() => {
+      updateFrame = 0;
+      updateProgress();
+      updateActiveSection();
+    });
+  };
+
+  tocLinks.forEach((link) => {
+    link.addEventListener('click', () => setActiveSection(link.dataset.sectionId ?? ''));
+  });
+
+  requestReaderUpdate();
+  document.fonts?.ready.then(requestReaderUpdate);
+  window.addEventListener('scroll', requestReaderUpdate, { passive: true });
+  window.addEventListener('resize', requestReaderUpdate, { passive: true });
+  window.addEventListener('hashchange', requestReaderUpdate);
 </script>
 
 <style is:global>
@@ -107,8 +176,10 @@ const chapterHeadings = headings.filter((heading) => heading.depth === 2);
   .reader-toc > .eyebrow { margin: 0 0 1.3rem; color: var(--color-accent); }
   .reader-toc ol { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--color-rule); }
   .reader-toc li { border-bottom: 1px solid color-mix(in srgb, var(--color-rule), transparent 35%); }
-  .reader-toc a { display: grid; grid-template-columns: 2rem 1fr; gap: 0.65rem; padding: 0.72rem 0; color: var(--color-ink-mute); font-size: 0.7rem; line-height: 1.35; transition: color 160ms ease, padding 160ms ease; }
-  .reader-toc a:hover { padding-left: 0.35rem; color: var(--color-accent); }
+  .reader-toc a { display: grid; grid-template-columns: 2rem 1fr; gap: 0.65rem; border-left: 2px solid transparent; padding: 0.72rem 0.5rem; color: var(--color-ink-mute); font-size: 0.7rem; line-height: 1.35; transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease, transform 160ms ease; }
+  .reader-toc a:hover { color: var(--color-accent); transform: translateX(0.2rem); }
+  .reader-toc a.is-active { border-left-color: var(--color-orange); background: color-mix(in srgb, var(--color-yellow), transparent 48%); color: var(--color-ink); }
+  .reader-toc a.is-active span { color: var(--color-accent); }
   .reader-toc a span { font-family: var(--font-mono); font-size: 0.57rem; color: var(--color-orange); }
   .reader-main { min-width: 0; padding: 4.5rem 0 0; }
   article.book-body > h1:first-child { display: none; }

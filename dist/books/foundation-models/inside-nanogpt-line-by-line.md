@@ -233,17 +233,17 @@ self.bias = nn.Parameter(torch.zeros(ndim)) if bias else None
 
 For a token vector $x \in \mathbb{R}^{C}$, LayerNorm computes
 
-\[
+$$
 \mu = \frac{1}{C}\sum_{j=1}^{C}x_j
-\]
+$$
 
-\[
+$$
 \sigma^2 = \frac{1}{C}\sum_{j=1}^{C}(x_j-\mu)^2
-\]
+$$
 
-\[
+$$
 y_j = \gamma_j\frac{x_j-\mu}{\sqrt{\sigma^2+\epsilon}}+\beta_j.
-\]
+$$
 
 In nanoGPT, $\epsilon=10^{-5}$, $\gamma$ is `weight`, and $\beta$ is `bias` when enabled. The initial $\gamma=1$ and $\beta=0$, so the learned affine part begins as an identity transformation after normalization.
 
@@ -392,20 +392,20 @@ self.c_proj = nn.Linear(C, C, bias=config.bias)
 
 Mathematically, writing separate matrices is clearer:
 
-\[
+$$
 Q=XW_Q^\top,\qquad K=XW_K^\top,\qquad V=XW_V^\top.
-\]
+$$
 
 The packed implementation simply stacks the three weight matrices:
 
-\[
+$$
 W_{QKV}=
 \begin{bmatrix}
 W_Q\\W_K\\W_V
 \end{bmatrix},
 \qquad
 [Q\;K\;V]=XW_{QKV}^{\top}.
-\]
+$$
 
 Packing does not force queries, keys, and values to use the same weights. They occupy different rows of one larger parameter tensor. It reduces Python and kernel overhead and lets hardware handle one larger matrix multiplication.
 
@@ -446,17 +446,17 @@ The heads become different because their slices come from different learned rows
 
 For one example and one head:
 
-\[
+$$
 Q_h\in\mathbb{R}^{T\times D},\qquad
 K_h\in\mathbb{R}^{T\times D}.
-\]
+$$
 
 The raw compatibility grid is
 
-\[
+$$
 S_h=\frac{Q_hK_h^\top}{\sqrt{D}}
 \in\mathbb{R}^{T\times T}.
-\]
+$$
 
 Entry (S_{i,j}) measures how strongly the query at destination position (i) matches the key at source position (j). This orientation is worth memorizing:
 
@@ -502,27 +502,27 @@ This is why training can process the entire sequence at once. Every row computes
 
 After masking:
 
-\[
+$$
 A_{i,:}=\operatorname{softmax}(S_{i,:}).
-\]
+$$
 
 Call this pre-dropout probability matrix $A$. Every row of $A$ sums to one: masked locations receive zero probability and the remaining locations share all the mass.
 
 In evaluation mode, or whenever the configured dropout rate is zero, value retrieval is simply
 
-\[
+$$
 Y_h=AV_h,
-\]
+$$
 
 where $A\in\mathbb{R}^{T\times T}$ and $V_h\in\mathbb{R}^{T\times D}$, yielding $Y_h\in\mathbb{R}^{T\times D}$.
 
 Training with attention dropout inserts a distinct matrix between those two steps:
 
-\[
+$$
 A'=\operatorname{Dropout}(A),
 \qquad
 Y_h=A'V_h.
-\]
+$$
 
 PyTorch uses inverted dropout. If the drop probability is $p$, each retained entry is scaled by $1/(1-p)$. Therefore $\mathbb{E}[A']=A$ and the **expected** row sum remains one, but a particular sampled row of $A'$ generally does not sum to one. This distinction matters when inspecting attention maps: $A$ is a normalized probability distribution; $A'$ is the stochastic, rescaled matrix actually used to mix values during that training pass.
 
@@ -579,9 +579,9 @@ Why `.contiguous()`? A transpose usually changes tensor strides without physical
 
 Finally:
 
-\[
+$$
 \operatorname{Attention}(X)=\operatorname{Dropout}(YW_O^\top+b_O),
-\]
+$$
 
 where the output projection mixes information across head features and returns `(B,T,C)`. The Block can now add it to the residual stream.
 
@@ -692,12 +692,12 @@ self.c_proj = nn.Linear(4 * C, C, bias=bias)
 
 Its equation is
 
-\[
+$$
 \operatorname{MLP}(x)=
 \operatorname{Dropout}\left(
 W_2\operatorname{GELU}(W_1x+b_1)+b_2
 \right).
-\]
+$$
 
 For every position, the path is:
 
@@ -736,9 +736,9 @@ The factor four is a GPT-2 architectural convention, not a theorem. Expansion gi
 
 The expansion is also where many Transformer parameters live. Ignoring bias:
 
-\[
+$$
 C(4C)+(4C)C=8C^2.
-\]
+$$
 
 At $C=768$, that is 4,718,592 weights per MLP—twice the attention projection weights in the same block. Saying “attention is the whole model” misses a large fraction of its learned capacity and compute.
 
@@ -746,9 +746,9 @@ At $C=768$, that is 4,718,592 weights per MLP—twice the attention projection w
 
 GELU is
 
-\[
+$$
 \operatorname{GELU}(x)=x\Phi(x),
-\]
+$$
 
 where $\Phi$ is the standard Gaussian cumulative distribution function. Unlike ReLU's hard rule “keep positive, zero negative,” GELU smoothly weights inputs according to magnitude. Small negative values can pass weakly; large positive values pass nearly unchanged. The definition comes from the [GELU paper](https://arxiv.org/abs/1606.08415).
 
@@ -793,13 +793,13 @@ x = x + self.mlp(self.ln_2(x))
 
 In equations:
 
-\[
+$$
 x' = x + \operatorname{Attention}(\operatorname{LN}_1(x)),
-\]
+$$
 
-\[
+$$
 x'' = x' + \operatorname{MLP}(\operatorname{LN}_2(x')).
-\]
+$$
 
 The output (x'') becomes the next block's input.
 
@@ -822,18 +822,18 @@ The second line repeats the pattern with a fresh norm and a position-wise MLP. I
 
 Normalization occurs before each sublayer. This is called **pre-norm**. A post-norm alternative would look conceptually like
 
-\[
+$$
 x'=\operatorname{LN}(x+\operatorname{Attention}(x)).
-\]
+$$
 
 GPT-2 moved normalization to the input of each sub-block and added a final norm after the stack, as described in its [technical report](https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf). nanoGPT follows that arrangement.
 
 Pre-norm gives the residual path an especially direct identity route through depth. If a sublayer initially proposes a small update, the block is close to $x\mapsto x$. In backpropagation, the derivative includes an identity term:
 
-\[
+$$
 \frac{\partial}{\partial x}\left[x+f(\operatorname{LN}(x))\right]
 = I + \frac{\partial f}{\partial x}.
-\]
+$$
 
 The model does not need every sublayer's Jacobian to transmit the entire learning signal. This does not make deep optimization automatic, but it is a major structural aid.
 
@@ -929,16 +929,16 @@ Call the shared table $E\in\mathbb{R}^{V\times C}$.
 
 On the way in, token ID $t$ selects row $E_t$:
 
-\[
+$$
 x_t=E_t.
-\]
+$$
 
 On the way out, a final contextual vector $h\in\mathbb{R}^{C}$ is scored against every row:
 
-\[
+$$
 z=hE^\top,
 \qquad z_t=h\cdot E_t.
-\]
+$$
 
 One token table therefore serves as both:
 
@@ -979,9 +979,9 @@ Initialization is not “the model's starting knowledge.” It is a scale regime
 
 After general initialization, nanoGPT scans parameter names. Every name ending in `c_proj.weight` is redrawn with
 
-\[
+$$
 \sigma_{\text{proj}}=\frac{0.02}{\sqrt{2L}}.
-\]
+$$
 
 For (L=12), this is approximately 0.004082.
 
@@ -1058,9 +1058,9 @@ pos = torch.arange(0, t, dtype=torch.long, device=device)
 
 with shape `(t,)`, not `(b,t)`. Looking them up yields `(t,C)`. Token lookup yields `(b,t,C)`. When added, PyTorch broadcasts the same positional rows across all batch examples:
 
-\[
+$$
 x_{b,i}=E_{\text{token}_{b,i}}+P_i.
-\]
+$$
 
 This is exactly intended. Every example uses the same position coordinate system.
 
@@ -1096,10 +1096,10 @@ The tied head maps `(b,t,C)` to `(b,t,V)`. Flattening produces:
 
 Cross-entropy treats the first dimension as a collection of $b\times t$ classification examples. For valid target $y_{b,i}$, the contribution is
 
-\[
+$$
 -\log\frac{\exp z_{b,i,y_{b,i}}}
 {\sum_{v=1}^{V}\exp z_{b,i,v}}.
-\]
+$$
 
 The returned loss is the mean over positions whose target is not `-1`.
 
@@ -1379,9 +1379,9 @@ Adam adapts each coordinate using moving estimates of first and second gradient 
 
 Conceptually, an update includes a shrinkage term like
 
-\[
+$$
 \theta \leftarrow (1-\eta\lambda)\theta
-\]
+$$
 
 alongside Adam's moment-normalized gradient step.
 
@@ -1436,9 +1436,9 @@ It is a model-based estimate, not a hardware-counter measurement.
 
 The code defines:
 
-\[
+$$
 \text{FLOPs/token}=6N+12LHQT,
-\]
+$$
 
 where:
 
@@ -1450,14 +1450,14 @@ where:
 
 Then:
 
-\[
+$$
 \text{FLOPs/forward-backward}=T(6N+12LHQT),
-\]
+$$
 
-\[
+$$
 \text{FLOPs/iteration}=\text{FLOPs/forward-backward}
 \times \text{sequences per iteration}.
-\]
+$$
 
 Dividing by elapsed seconds estimates achieved FLOPs/s; dividing that by `312e12` gives MFU.
 
@@ -1546,9 +1546,9 @@ Generation also needs at least one prompt token whenever `max_new_tokens > 0`. A
 
 If the running sequence has grown beyond `block_size`, generation keeps its last `block_size` tokens:
 
-\[
+$$
 \text{idx\_cond}=\text{idx}[:, -T_{\max}:].
-\]
+$$
 
 The returned sequence `idx` still contains the entire generated history. Only the conditioning input is cropped.
 
@@ -1566,9 +1566,9 @@ The second last-position selection looks redundant because the time dimension al
 
 The code divides logits by positive temperature $\tau$:
 
-\[
+$$
 p_i=\frac{\exp(z_i/\tau)}{\sum_j\exp(z_j/\tau)}.
-\]
+$$
 
 - $\tau<1$: differences grow; the distribution sharpens.
 - $\tau=1$: unchanged.
@@ -1613,17 +1613,17 @@ These omissions keep the causal loop visible. They also explain why this method 
 
 Let the initial prompt contain $p$ tokens and suppose nanoGPT generates $n$ tokens before reaching the context cap. Decode step $j$ reruns the model over $p+j$ tokens, so its attention interactions cost roughly $O((p+j)^2C)$. Across all decode steps:
 
-\[
+$$
 \sum_{j=0}^{n-1}O((p+j)^2C)
 =O\!\left((np^2+pn^2+n^3)C\right).
-\]
+$$
 
 The familiar $O(n^3C)$ statement treats prompt length as fixed or assumes generated length eventually dominates it. It can badly understate work when $p$ is already large. The repeated dense projections contribute separately:
 
-\[
+$$
 \sum_{j=0}^{n-1}O((p+j)C^2)
 =O\!\left((np+n^2)C^2\right).
-\]
+$$
 
 With a KV cache, prefill still costs roughly $O(p^2C)$ attention interactions plus $O(pC^2)$ dense work. Afterward, one new query attends to the $p+j$ cached keys. Pre-cap decoding therefore costs $O((np+n^2)C)$ for attention and roughly $O(nC^2)$ for dense layers. Caching reduces repeated attention over the growing prefix, but it does not make attention over an unbounded history constant-time, and it spends memory to retain every layer's K and V tensors.
 
@@ -1718,11 +1718,11 @@ The source recipe is historically useful, not a modern recommendation to train o
 
 At [train.py lines 114–131](https://github.com/karpathy/nanoGPT/blob/3adf61e154c3fe3fca428ad6bc3818b27a3b8291/train.py#L114-L131), a memory map opens `train.bin` or `val.bin`. Random start indices select windows. For each start $i$:
 
-\[
+$$
 X=data[i:i+T],
 \qquad
 Y=data[i+1:i+T+1].
-\]
+$$
 
 The code converts storage-efficient `uint16` values to `int64`, because embedding lookup and cross-entropy expect integer index tensors of the appropriate type. On CUDA it pins host memory and requests nonblocking device transfer.
 
@@ -1977,10 +1977,10 @@ Simply deleting `wpe` removes the learned **absolute coordinate** supplied to ea
 
 RMSNorm scales by root mean square without subtracting the mean:
 
-\[
+$$
 \operatorname{RMSNorm}(x)=
 \gamma\odot\frac{x}{\sqrt{\frac1C\sum_jx_j^2+\epsilon}}.
-\]
+$$
 
 It preserves `(B,T,C)` and fits the same pre-norm locations. Checkpoint parameters and numerical behavior change; a LayerNorm checkpoint does not become an RMSNorm checkpoint merely because both gains have shape `(C,)`.
 
@@ -1988,9 +1988,9 @@ It preserves `(B,T,C)` and fits the same pre-norm locations. Checkpoint paramete
 
 A SwiGLU-style branch resembles
 
-\[
+$$
 \operatorname{MLP}(x)=W_o\left(\operatorname{SiLU}(W_gx)\odot W_vx\right).
-\]
+$$
 
 You now need two input-side projections or one packed projection with two segments. Hidden width is often adjusted so parameter and compute budgets remain comparable. The external `(B,T,C)→(B,T,C)` contract should remain, preserving residual addition.
 
