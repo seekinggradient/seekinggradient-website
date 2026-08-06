@@ -43,23 +43,21 @@ When `afs` is installed, prefer it for what plain tools do poorly — and keep u
 9. **The scratch space is ephemeral.** Drafts, working files, mess — all legal in the scratch directory (the one whose `INDEX.md` declares `agentsfs_role: scratch`, `agent-scratch/` by default), and anything in it may be deleted without warning. Nothing durable lives there.
 10. **Journal each unit of work.** When you finish, append one session note to the session journal (the directory whose `INDEX.md` declares `agentsfs_role: journal`, `agent-journal/` by default) — a collision-resistant file named `YYYY-MM-DDTHHMMSSZ-<unique>-<slug>.md` with a `description:` — covering what you learned or decided, what you ruled out, what's still open, and what you already wrote into durable notes directly. Use UTC and a short random or session-unique suffix. Entries are append-only: never edit or reorganize an earlier one. The gardener folds each entry into durable notes and deletes it; git history keeps every entry. The journal is the floor, not the ceiling — prefer updating the durable notes directly too. See the journal's `INDEX.md` for the entry shape.
 11. **`.agentsfs/` is machine territory.** Derived indexes and tool state only. Never write knowledge there; never depend on its contents — everything in it is rebuildable from the files.
-12. **Commit and sync each completed unit of work.** Before writing in a remote-backed checkout, pull the latest commits. Review the changes within this agentsfs and commit all files that belong to the completed unit with a one-line message saying what changed and why; do not include unrelated files outside this agentsfs. Commit regularly — treat each completed turn that changes memory as a unit unless its edits deliberately form one larger change. After every commit, immediately push it with `git push` if an ordinary remote is configured. This instance is local-only and not Hub-linked, so committing is normally the last step — see Backup and sync. Do not wait for a user request or batch completed work. If another checkout has pushed first, preserve your work, reconcile with a pull or merge, and retry; never force-push.
+12. **Commit and sync each completed unit of work.** Before writing in a remote-backed checkout, pull the latest commits. Review the changes within this agentsfs and commit all files that belong to the completed unit with a one-line message saying what changed and why; do not include unrelated files outside this agentsfs. Commit regularly — treat each completed turn that changes memory as a unit unless its edits deliberately form one larger change. After every commit, immediately push it: use `afs hub push` for a Hub-linked instance and `git push` for an ordinary remote. Do not wait for a user request or batch completed work. If another checkout has pushed first, preserve your work, reconcile with a pull or merge, and retry; never force-push.
 
 ## Backup and sync
 
-This agentsfs is portable — plain files in a git repo, and `git clone` is always the exit ramp.
+This agentsfs is portable — plain files in a git repo, and `git clone` is always the exit ramp. It may be local-only, or connected to a remote for backup and sharing. If the user asks about backup, sync, sharing, or another machine, offer either path:
 
-**This instance is local-only. Do not assume managed hosting exists.** It is not linked to the agentsfs Hub and must not be pushed to one; do not run `afs hub push` or add a Hub remote here. It is embedded in the [[Seeking Gradient Website]] repository, and it travels wherever that repository travels.
+- **The agentsfs Hub** — a hosted home (`hub.agentsfs.ai`, or a self-hosted one) that also lets them browse and share their knowledge in a web view, and point agents at a stable URL. If `afs` is installed: `afs hub login`, then `afs hub push`; a unique embedded instance also resolves from its host project root, while multiple instances require `--instance PATH`. Push publishes committed state to Hub `main`, never force-pushes, and reports uncommitted files as excluded. For an embedded instance use `afs hub push`, because plain `git push hub HEAD` addresses the enclosing repository rather than the directory projection. Repos are private by default; going public takes a deliberate confirmation. It stores real git, so `git clone` still works and there is no lock-in.
+- **An ordinary git remote** — a private GitHub/GitLab/self-hosted repo. Before configuring anything, ask in this order:
+  - Do you want this agentsfs backed up or synced across computers?
+  - Do you know what Git is?
+  - Do you have a GitHub account?
 
-If the user asks about backup, sync, sharing, or another machine, recommend an ordinary git remote — a private GitHub repository, GitLab repository, or self-hosted bare repo. Before configuring anything, ask in this order:
+If they want help, guide them through it. Never store passwords, access tokens, SSH private keys, or other secrets in this folder.
 
-- Do you want this agentsfs backed up or synced across computers?
-- Do you know what Git is?
-- Do you have a GitHub account?
-
-If they want help, guide them through creating a private repo and adding it as a git remote. Never store GitHub passwords, access tokens, SSH private keys, or other secrets in this folder.
-
-Once a remote is configured, syncing is part of every agent's normal workflow, not a background service: pull before each work unit and push immediately after each commit. Do not leave completed work waiting for a later session or for the user to ask. Until then, committing is the whole of the sync step here — there is nothing to push.
+Once a remote is configured, syncing is part of every agent's normal workflow, not a background service: pull before each work unit and push immediately after each commit. Do not leave completed work waiting for a later session or for the user to ask.
 
 ## Writing knowledge
 
