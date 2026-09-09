@@ -142,7 +142,7 @@ const statusTint: Record<string, string> = {
 								style={r.owner_approved
 									? 'border-color:var(--color-mint);background:color-mix(in srgb, var(--color-mint) 30%, transparent);color:var(--color-ink)'
 									: 'border-color:var(--color-rule);color:var(--color-ink-mute)'}
-								title={r.owner_approved ? 'Akshay has personally approved this RFC' : 'awaiting Akshay’s personal sign-off'}
+								title={r.owner_approved ? 'The owner has personally approved this RFC' : 'awaiting the owner’s personal sign-off'}
 							>{r.owner_approved ? '✓ owner-approved' : '✗ owner pending'}</span>
 						</div>
 

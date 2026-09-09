@@ -1034,6 +1034,45 @@ export const ideas: Idea[] = [
       },
     ],
   },
+  {
+    slug: 'agentic-home-finder',
+    number: 'N° 019',
+    title: 'Agentic home finder',
+    tagline: 'Share homes you love. Get a fresh shortlist every day, in slides, audio, or video.',
+    domain: 'Consumer · Real estate',
+    status: 'seed',
+    year: '2026',
+    tags: ['agents', 'home search', 'personalization', 'podcasts', 'video', 'subscription'],
+    summary:
+      'Give an agent links to Zillow or Redfin houses you like, and let it learn what you are looking for. Every day, it finds new homes that match your criteria and sends a slideshow alongside a podcast or video walkthrough. The search keeps running and improves as you react to the results.',
+    sections: [
+      {
+        heading: 'Start with houses, not a blank search form',
+        body:
+          'A few saved listings can express taste that filters miss: the light in a living room, an open kitchen, a particular architectural style, or a backyard that feels right. Paste Zillow or Redfin links and explain what you like about each home.\n\nThe agent proposes a search profile for you to confirm, separating preferences from hard constraints such as budget, location, bedrooms, and move timing. Liking a house should not imply liking everything about it.',
+      },
+      {
+        heading: 'A search that keeps going',
+        body:
+          'Each day, the agent checks for newly available homes that fit the confirmed profile, removes duplicates, and ranks the strongest matches. It remembers what you have already seen and can flag meaningful changes to saved homes, such as a price reduction.\n\nSave a home, dismiss it, or explain what is wrong with a recommendation, and the next shortlist gets more precise. On a quiet day, say there are no strong new matches instead of filling the update with weak ones.',
+      },
+      {
+        heading: 'Your daily home briefing',
+        body:
+          'The delivery is a slideshow of new houses, paired with a short podcast or a narrated video. Each home gets its listing photos, price, location, key details, why it matches, and the tradeoffs worth noticing, with a link back to the original listing.\n\nBrowse the slides together over breakfast, listen to the podcast on a commute, or watch the video in the evening. Each format tells the same story: here is what is new, and here is why these homes might be worth your attention. Missing information stays clearly marked rather than becoming invented narration.',
+      },
+      {
+        heading: 'Two days free, then a paid subscription',
+        body:
+          'The initial offer: sign up, share a few homes, and receive the first two days of personalized briefings free. Continue with a paid subscription to keep the daily search and deliveries running. The trial should demonstrate the quality of the matches and the usefulness of the briefing before asking someone to pay.\n\nTwo days is the starting hypothesis; a full week is another trial length to test, especially in markets with fewer new listings. Subscription price and billing cadence remain open, with the terms made clear at signup.',
+      },
+      {
+        heading: 'What to validate first',
+        body:
+          'Can a handful of example homes teach the agent enough to beat a saved search? Do people prefer a podcast, a video, or simply the slides? Is two days enough to see useful new inventory and decide to subscribe?\n\nStart with one market and a small group of active home seekers. Validate a reliable, permitted source of current listing data and imagery before promising broad coverage, and measure whether the daily shortlist produces homes people actually want to visit.',
+      },
+    ],
+  },
 ];
 
 export const ideaBySlug = (slug: string) => ideas.find((i) => i.slug === slug);

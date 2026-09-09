@@ -28,4 +28,5 @@ Publishing rules:
 
 Current newest entry:
 
+- Agentic home finder is `N° 019`, slug `agentic-home-finder`: example listing links teach preferences; daily matches arrive as a slideshow plus podcast or video. Two free days is the initial trial hypothesis, with a week as an alternative and pricing undecided. Source: owner request, September 8, 2026.
 - [[Markdown To]] is `N° 018`.
